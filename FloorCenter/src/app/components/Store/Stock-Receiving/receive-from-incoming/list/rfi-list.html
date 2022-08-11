@@ -1,0 +1,428 @@
+           <div class="container-fluid">
+                <!-- breadcrumbs -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                              <a href="#">Stock Receive</a>
+                            </li>
+                            <li class="breadcrumb-item active">Receive From Incoming</li>
+                        </ol>
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <!-- /.row -->
+                
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h2 class="fw-b m-title m-title2">Receive From Incoming</h2>
+                    </div>
+                </div>
+                <form>
+                    <div class="line">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="form-group row">
+                                  <label for="" class="col-sm-4 col-form-label sa-input">Transaction:</label>
+                                    <div class="col-sm-7">
+                                        <select class="form-control" name="transaction" id="transaction">
+                                            <option></option>
+                                            <option>PO</option>
+                                            <option>Request</option>
+                                            <option>Transfer</option>
+                                            <option>Transfer Incoming</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                  <label for="" class="col-sm-4 col-form-label sa-input">Trans/PO No.:</label>
+                                    <div class="col-sm-7">
+                                        <input class="form-control" type="text">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4">
+                                <div class="form-group row">
+                                    <label for="example-text-input" class="col-sm-4 col-form-label sa-input"> Trans/PO Date:</label>
+                                    <div class="col-sm-7">
+                                        <div class="input-group date" id="datetimepicker">
+                                            <input type="date" class="form-control" id="rDate">
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4">
+                                <div class="form-group row">
+                                    <label for="" class="col-sm-2 col-form-label sa-input">To</label>
+                                    <div class="col-sm-7">
+                                        <div class="input-group date" id="datetimepicker">
+                                            <input type="date" class="form-control" id="rDate2">
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                         <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group row btn-con7">
+                                    <input type="submit" name="" class="btn btn-danger" value="Search">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <p class="search_status">4 Records Found</p>
+                                        </div>
+                                        
+                                        <div class="col-md-6">
+                                            <div class="text-right">
+                                                <!-- <button type="button" class="btn btn-outline btn-danger" data-toggle="modal" data-target="#advanceSearch">Advanced Search</button> -->
+                                                <input type="button" name="" class="btn btn-danger" value="Download List">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="table-responsive table-bordered">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Transaction No.</th>
+                                                    <th>Transaction</th>
+                                                    <th>Status</th>
+                                                    <th>PO. No.</th>
+                                                    <th>PO/Request Date</th>
+                                                    <th>Origin</th>
+                                                    <th>DR No.</th>
+                                                    <th>DR Date</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let stock of stockList">
+                                                    <td>{{stock.id}}</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>Warehouse</td>
+                                                    <td>B0001</td>
+                                                    <td>1/03/2018</td>
+                                                    <td>
+                                                        <a routerLink="details/{{stock.id}}" class="btn btn-danger">Receive</a>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>B0002</td>
+                                                    <td>1/03/2018</td>
+                                                    <td>
+                                                        <a routerLink="details/" class="btn btn-danger">Receive</a>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>P000003</td>
+                                                    <td>PO</td>
+                                                    <td>Pending</td>
+                                                    <td>210003</td>
+                                                    <td>1/21/1018</td>
+                                                    <td>Warehouse</td>
+                                                    <td>B0003</td>
+                                                    <td>1/03/2018</td>
+                                                    <td>
+                                                        <a routerLink="details/P000003" class="btn btn-danger">Receive</a>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>P000004</td>
+                                                    <td>PO</td>
+                                                    <td>Pending</td>
+                                                    <td>210004</td>
+                                                    <td>1/21/1018</td>
+                                                    <td>Warehouse</td>
+                                                    <td>B0004</td>
+                                                    <td>1/03/2018</td>
+                                                    <td>
+                                                        <a routerLink="details/P000004" class="btn btn-danger">Receive</a>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <app-pager [module]="module" (displayPageList)="getStockList($event)"></app-pager>
+                            <div class="btn-con">
+                                <input type="button" name="" class="btn btn-danger" value="Download List">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" id="advanceSearch" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                    <h4 class="modal-title" id="myModalLabel">Stock Receiving Advanced Search</h4>
+
+                                </div>
+                                <div class="modal-body">
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+
+                                            <div class="form-group row">
+                                              <label for="" class="col-sm-3 col-form-label sa-input">PO Period From:</label>
+                                                <div class="col-sm-6">
+                                                    <div class="input-group date" id="datetimepicker">
+                                                        <input type="date" class="form-control" id="poDate">
+                                                        <span class="input-group-addon">
+                                                            <span class="glyphicon glyphicon-calendar"></span>
+                                                        </span>
+                                                    </div>
+                                                    <label for="" class="col-form-label sa-input">To</label>
+                                                    <div class="input-group date" id="datetimepicker">
+                                                        <input type="date" class="form-control" id="poDate2">
+                                                        <span class="input-group-addon">
+                                                            <span class="glyphicon glyphicon-calendar"></span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                              <label for="" class="col-sm-3 col-form-label sa-input">PO Number:</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" class="form-control" name="">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                              <label for="" class="col-sm-3 col-form-label sa-input">DR Period From:</label>
+                                                <div class="col-sm-6">
+                                                    <div class="input-group date" id="datetimepicker">
+                                                        <input type="text" class="form-control" id="drDate">
+                                                        <span class="input-group-addon">
+                                                            <span class="glyphicon glyphicon-calendar"></span>
+                                                        </span>
+                                                    </div>
+                                                    <label for="" class="col-form-label sa-input">To</label>
+                                                    <div class="input-group date" id="datetimepicker">
+                                                        <input type="text" class="form-control" id="drDate2">
+                                                        <span class="input-group-addon">
+                                                            <span class="glyphicon glyphicon-calendar"></span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                              <label for="" class="col-sm-3 col-form-label sa-input">DR Number:</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" class="form-control" name="">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                              <label for="" class="col-sm-3 col-form-label sa-input">Item Name:</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" class="form-control" name="">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                              <label for="" class="col-sm-3 col-form-label sa-input">Received By:</label>
+                                                <div class="col-sm-6">
+                                                    <select class="form-control">
+                                                        <option></option>
+                                                        <option>John Doe</option>
+                                                        <option>Christine Doe</option>
+                                                        <option>Mary Doe</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                            <label for="example-text-input" class="col-sm-3 col-form-label sa-input">Origin:</label>
+                                            <div class="date col-sm-6" id="datetimepicker">
+                                                <div class="checkbox s-check">
+                                                    <input id="checkbox2" type="checkbox">
+                                                    <label for="checkbox2">Warehouse</label><br>
+                                                    <input id="checkbox3" type="checkbox">
+                                                    <label for="checkbox3">Inter-company</label><br>
+                                                    <input id="checkbox4" type="checkbox">
+                                                    <label for="checkbox4">Inter-branch</label><br>
+                                                    <input id="checkbox5" type="checkbox">
+                                                    <label for="checkbox5">Returned</label><br>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="modal-footer">
+                                    <input type="submit" name="" class="btn btn-danger" value="Search">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                </div>
+                            </div>
+                            <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                    </div>
+
+                    <div class="modal fade" id="details_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                    <h4 class="modal-title" id="myModalLabel">Trans No. 100001<!-- [Transaction No.] --></h4>
+
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="row">
+                                              <label for="" class="col-sm-4 col-form-label sa-input">Transaction:</label>
+                                                <div class="col-sm-6">
+                                                    <p class="sa-input sa-input2">PO</p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                              <label for="" class="col-sm-4 col-form-label sa-input">PO No.:</label>
+                                                <div class="col-sm-6">
+                                                    <p class="sa-input">210001</p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                              <label for="" class="col-sm-4 col-form-label sa-input">Requestee:</label>
+                                                <div class="col-sm-6">
+                                                    <p class="sa-input">Warehouse</p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="row">
+                                              <label for="" class="col-sm-4 col-form-label sa-input">Status:</label>
+                                                <div class="col-sm-6">
+                                                    <p class="sa-input sa-input2">PENDING</p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                              <label for="" class="col-sm-4 col-form-label sa-input">PO/Request Date:</label>
+                                                <div class="col-sm-6">
+                                                    <p class="sa-input">01/10/2018</p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                              <label for="" class="col-sm-4 col-form-label sa-input">Approved:</label>
+                                                <div class="col-sm-6">
+                                                    <p class="sa-input">No</p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                              <label for="" class="col-sm-2 col-form-label sa-input">Remarks:</label>
+                                                <div class="col-sm-8">
+                                                    <p class="">
+                                                        <input class="form-control " placeholder="" name="" type="text">
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="table-responsive table-bordered">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Serial No.</th>
+                                                            <th>Item Code</th>
+                                                            <th>Item Name</th>
+                                                            <th>Size</th>
+                                                            <th>Tonality</th>
+                                                            <th>Qty</th>
+                                                            <th>Remarks</th>
+                                                            <th>Main Office Remarks</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>11023781</td>
+                                                            <td>I26BU0</td>
+                                                            <td>Ludwig Beige</td>
+                                                            <td>20x60</td>
+                                                            <td>170911</td>
+                                                            <td>100</td>
+                                                            <td>
+                                                                <input class="form-control " placeholder="" name="" type="text">
+                                                            </td>
+                                                            <td></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>11023782</td>
+                                                            <td>U264U</td>
+                                                            <td>Carrara Brick</td>
+                                                            <td>20x60</td>
+                                                            <td>170912</td>
+                                                            <td>100</td>
+                                                            <td>
+                                                                <input class="form-control " placeholder="" name="" type="text">
+                                                            </td>
+                                                            <td></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <input type="submit" name="" class="btn btn-danger" value="Save & Close">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel Request</button>
+                                </div>
+                            </div>
+                            <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                    </div>
+
+                </form>
+
+
+            </div>
+            <!-- /.container-fluid -->

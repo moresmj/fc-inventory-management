@@ -1,0 +1,214 @@
+            <div class="container-fluid">
+                <!-- breadcrumbs -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                              Trasaction
+                            </li>
+                            <li class="breadcrumb-item active">Add Warehouse</li>
+                        </ol>
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <!-- /.row -->
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h2 class="fw-b m-title m-title2">Add Warehouse</h2> 
+                    </div>
+                </div>
+                        
+                <form>
+
+                    <div class="row">
+                        <div class="col-lg-12 sv-buttons">
+                            <div class="input-group">
+                              <input class="form-control search-input" type="text" placeholder="Search" name="code"[(ngModel)]="search" (keyup.enter)="filterRecord()"  (keyup)="onSearch()" >
+                              <span class="input-group-btn">
+                                <button class="btn btn-danger btn-sr" type="button" (click)="filterRecord()">
+                                  <i class="fa fa-search"></i>
+                                </button>
+                              </span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row" *ngIf="userType == 1">
+                        <div class="col-lg-12 sv-buttons">
+                            <!-- <button type="button" class="btn btn-danger" data-toggle="collapse" data-target="#addItems">Add New Items</button> -->
+                            <button type="button" class="btn btn-danger addNew" (click)="addPanelShow()">Add Warehouse(s)</button>
+                            <!-- <button type="button" class="btn btn-outline btn-danger" data-toggle="modal" data-target="#advanceSearch">Advanced Search</button> -->
+
+                            <!-- Add Item Panel -->
+                            <app-warehouse-add *ngIf="showAddPanel" (hidePanelAdd)="addPanelShow()" (updatePage)="reloadRecord($event)"   ></app-warehouse-add>
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <p class="search_status"> <b> {{totalRecordMessage}} </b> {{pageRecordMessage}} </p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="text-right">
+                                                <input type="button" name="" class="btn btn-danger" *ngIf="warehouses.length != 0" value="Download List" (click)="downloadWarehouseList()">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="panel-body">
+                                    <div class="table-responsive table-bordered">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Warehouse Code</th>
+                                                    <th>Warehouse Name</th>
+                                                    <th>Address</th>
+                                                    <th>Contact No.</th>
+                                                    <th>Date Added</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let warehouse of warehouses">
+                                                    <td>{{warehouse.code}}</td>
+                                                    <td>{{warehouse.name}}</td>
+                                                    <td>{{warehouse.address}}</td>
+                                                    <td>{{warehouse.contactNumber}}</td>
+                                                    <td>{{warehouse.dateCreated | date: 'medium' }}</td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#product_modal"(click)="onSelect(warehouse)">Update</button>
+                                                    </td>
+                                                </tr>
+                                             
+                                            </tbody>
+                                        </table>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        
+                        <div class="col-md-12">
+
+                            <app-pager [module]="module" (displayPageList)="loadAllWarehouse($event)"></app-pager>
+                            
+                            <div class="row">
+                                <div class="col-md-12 btn-con6">
+                                    <input type="button" name="" class="btn btn-danger" *ngIf="warehouses.length != 0" value="Download List" (click)="downloadWarehouseList()">
+                                </div>
+                            </div>
+
+                        </div> <!-- col-md-12 -->
+
+                    </div>
+
+                    <!-- modal -->
+                    <div class="row">
+                        <!-- advance search modal -->
+                        <div class="modal fade" id="advanceSearch" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                        <h4 class="modal-title" id="myModalLabel">Warehouse Advanced Search</h4>
+
+                                    </div>
+                                    <div class="modal-body">
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group row">
+                                                  <label for="" class="col-sm-3 col-form-label sa-input">Store:</label>
+                                                    <div class="col-sm-6">
+                                                        <select class="form-control">
+                                                            <option>ABC</option>
+                                                            <option>DEF</option>
+                                                            <option>GHK</option>
+                                                            <option>LMO</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+    
+                                                <div class="form-group row">
+                                                  <label for="" class="col-sm-3 col-form-label sa-input">OR Number:</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="text" class="form-control" name="">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                  <label for="" class="col-sm-3 col-form-label sa-input">Customer Name:</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="text" class="form-control" name="">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                  <label for="" class="col-sm-3 col-form-label sa-input">Item Code:</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="text" class="form-control" name="">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                  <label for="" class="col-sm-3 col-form-label sa-input">Status:</label>
+                                                    <div class="col-sm-6">
+                                                        <div class="checkbox s-check">
+                                                            <input id="checkbox2" type="checkbox">
+                                                            <label for="checkbox2">New Order</label><br>
+                                                            <input id="checkbox3" type="checkbox">
+                                                            <label for="checkbox3">For Delivery</label><br>
+                                                            <input id="checkbox4" type="checkbox">
+                                                            <label for="checkbox4">Delivered</label><br>
+                                                            <input id="checkbox4" type="checkbox">
+                                                            <label for="checkbox4">Cancelled</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                  <label for="" class="col-sm-3 col-form-label sa-input">List Option:</label>
+                                                    <div class="col-sm-6">
+                                                        <select class="form-control">
+                                                            <option>By OR</option>
+                                                            <option>BY PO</option>
+                                                            <option>BY DR</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <input type="submit" name="" class="btn btn-danger" value="Search">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                    </div>
+                                </div>
+                                <!-- /.modal-content -->
+                            </div>
+                            <!-- /.modal-dialog -->
+                        </div>
+
+                        <!-- details modal -->
+
+                        <app-warehouse-update [warehouseUpdateForm]="warehouseForm" (updatePage)="reloadRecord($event)"></app-warehouse-update>
+
+                    </div>
+
+                </form>
+
+                    
+
+
+            </div>
+            <!-- /.container-fluid -->

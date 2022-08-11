@@ -1,0 +1,175 @@
+                   <div class="modal fade" id="ewarehouse_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                        <div class="modal-dialog modal-lg modal-xlg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                    <h4 class="modal-title" id="myModalLabel">Warehouse Delivery Update</h4>
+
+                                </div>
+                                <form method="post">
+                                    <div class="modal-body">
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group row">
+                                                  <label for="" class="col-sm-4 col-form-label sa-input">DR No.:</label>
+                                                    <div class="col-sm-6">
+                                                        <p class="sa-input">DR100102</p>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                  <label for="" class="col-sm-4 col-form-label sa-input">DR Date:</label>
+                                                    <div class="col-sm-6">
+                                                        <p class="sa-input">02/05/2018</p>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group row">
+                                                  <label for="" class="col-sm-3 col-form-label sa-input">Delivery Schedule:</label>
+                                                    <div class="col-sm-6">
+                                                        <select class="form-control" id="warehouse_delivery_edit" name="warehouse_delivery_edit">
+                                                            <option></option>
+                                                            <option>New</option>
+                                                            <option>12/15/2017 10:00 AM</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                  <label for="" class="col-sm-3 col-form-label sa-input">Delivery Date:</label>
+                                                    <div class="col-sm-6">
+                                                        <div class="input-group date" id="datetimepicker">
+                                                            <input type="date" class="form-control" id="wdeliveryDate">
+                                                            <span class="input-group-addon">
+                                                                <span class="glyphicon glyphicon-calendar"></span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+
+                                        <div class="row delivery_items" id="warehouse_deli_edit1">
+                                            <div class="col-md-6">
+                                                <div class="form-group row">
+                                                  <label for="" class="col-sm-3 col-form-label sa-input">Plate No.:</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="text" class="form-control" name="">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                  <label for="" class="col-sm-3 col-form-label sa-input">Driver:</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="text" class="form-control" name="">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group row">
+                                                  <label for="" class="col-sm-3 col-form-label sa-input">Truck:</label>
+                                                    <div class="col-sm-6">
+                                                        <select class="form-control">
+                                                            <option></option>
+                                                            <option>Truck1</option>
+                                                            <option>Truck2</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                  <label for="" class="col-sm-3 col-form-label sa-input">Helper:</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="text" class="form-control" name="">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row delivery_items_disabled" id="warehouse_deli_edit2">
+                                            <div class="col-md-6">
+                                                <div class="form-group row">
+                                                  <label for="" class="col-sm-3 col-form-label sa-input">Plate No.:</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="text" class="form-control" name="" placeholder="XYZ1234" disabled>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                  <label for="" class="col-sm-3 col-form-label sa-input">Driver:</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="text" class="form-control" name="" placeholder="Juan Cruz" disabled>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group row">
+                                                  <label for="" class="col-sm-3 col-form-label sa-input">Truck:</label>
+                                                    <div class="col-sm-6">
+                                                        <select class="form-control" disabled>
+                                                            <option></option>
+                                                            <option>Truck1</option>
+                                                            <option>Truck2</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                  <label for="" class="col-sm-3 col-form-label sa-input">Helper:</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="text" class="form-control" name="" placeholder="Juan Cruz" disabled>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <p class="sa-input fb">Item Summary</p>
+                                                <div class="table-responsive table-bordered">
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Item Code</th>
+                                                                <th>Item Name / Size / Tonality</th>
+                                                                <th>Qty</th>
+                                                                <th>Delivery Qty</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>122234</td>
+                                                                <td>Ceramic Blue / 30x60 / 172394</td>
+                                                                <td>50</td>
+                                                                <td>
+                                                                    <input class="qty-input form-control" type="number" value="1">
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>134564</td>
+                                                                <td>Granite Ceramic / 30x60 / 123497    </td>
+                                                                <td>30</td>
+                                                                <td>
+                                                                    <input class="qty-input form-control" type="number" value="1">
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>  
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                
+                                    <div class="modal-footer">
+                                        <input type="submit" name="" class="btn btn-danger" value="Save">
+                                        <input type="button" name="" class="btn btn-warning" value="Delete">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                    </div>
+
+                                </form>
+
+                                
+                            </div>
+                            <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                    </div>

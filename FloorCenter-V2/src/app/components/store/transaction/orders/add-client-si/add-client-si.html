@@ -1,0 +1,204 @@
+
+                    <div class="modal fade" *ngIf="addSiForm" id="add_client_si_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                        <div *ngIf="orderStock" class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                    <h4 class="modal-title" id="myModalLabel">Trans No. {{orderStock.transactionNo}}<!-- [Transaction No.] --></h4>
+
+                                </div>
+
+                            <div>
+                                <div class="alert alert-danger" style="text-align: center" *ngIf="errorMessage">
+                                                <p *ngFor="let err of errorMessage"> {{ err }} </p>
+                                </div>
+                                
+                                <div class="alert alert-success" style="text-align: center" *ngIf="successMessage">
+                                                    <p>  {{ successMessage }} </p>
+                                </div>
+                            </div>
+                                <form [formGroup]="addSiForm" (ngSubmit)="onUpdate()">
+                                <div class="modal-body">
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="row">
+                                              <label for="" class="col-sm-4 col-form-label sa-input">Transaction:</label>
+                                                <div class="col-sm-6">
+                                                    <p class="sa-input">{{orderStock.transactionTypeStr}}</p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                              <label for="" class="col-sm-4 col-form-label sa-input">PO No.:</label>
+                                                <div class="col-sm-6">
+                                                    <p class="sa-input">{{orderStock.poNumber}}</p>
+                                                </div>
+                                            </div>
+                                            
+
+
+                                          
+
+                                            <div class="row" >
+                                              <label for="" class="col-sm-4 col-form-label sa-input">Ordered To:</label>
+                                                <div class="col-sm-6">
+                                                    <p class="sa-input">{{orderStock.orderedTo}}</p>
+                                                </div>
+                                            </div>
+
+                                              <div class="row" *ngIf="orderStock.transactionType == 6">
+                                              <label for="" class="col-sm-4 col-form-label sa-input">TOR/DR NO.:</label>
+                                                <div class="col-sm-6">
+                                                    <p class="sa-input">{{orderStock.whdrNumber}}
+                                                    {{orderStock.orNumber}}</p>
+                                                </div>
+                                            </div>
+
+                                            <div class="row" *ngIf="orderStock.whdrNumber && orderStock.orderType != 3">
+                                              <label for="" class="col-sm-4 col-form-label sa-input">WHDR No:</label>
+                                                <div class="col-sm-6">
+                                                    <p class="sa-input">{{orderStock.whdrNumber}}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="row">
+                                              <label for="" class="col-sm-4 col-form-label sa-input">Status:</label>
+                                                <div class="col-sm-6">
+                                                    <p class="sa-input">{{orderStock.requestStatusStr}}</p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                              <label for="" class="col-sm-4 col-form-label sa-input">Order Type:</label>
+                                                <div class="col-sm-6">
+                                                    <p class="sa-input">{{orderStock.orderTypeStr}}</p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                              <label for="" class="col-sm-4 col-form-label sa-input">Ordered Date:</label>
+                                                <div class="col-sm-6">
+                                                    <p class="sa-input">{{orderStock.poDate | date: mediumDate}}</p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                              <label for="" class="col-sm-4 col-form-label sa-input">Delivery Mode:</label>
+                                                <div class="col-sm-6">
+                                                    <p class="sa-input">{{orderStock.deliveryTypeStr}}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="row">
+                                              <label for="" class="col-sm-4 col-form-label sa-input">Remarks:</label>
+                                                <div class="col-sm-8">
+                                                    <p class="sa-input">
+                                                       {{orderStock.remarks}}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div *ngIf="orderStock.clientSINumber == null" class="col-md-6">
+                                            <div class="row">
+                                              <label for="" class="col-sm-4 col-form-label sa-input">Client SI No.<span class="ic-red">*</span>:</label>
+                                                <div class="col-sm-8">
+                                                    {{orderStock.clientSINumber}}
+                                                      <input type="text" class="form-control" maxlength="50" formControlName="clientSINumber" (input)="onChange($event.target.value)">
+
+                                                      <show-errors [control]="addSiForm.controls.clientSINumber"></show-errors>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        
+
+                                        <!-- Client details-->
+                                         <div *ngIf="orderStock.orderType == 2" class="col-md-6">
+                                            <div class="row">
+                                              <label for="" class="col-sm-4 col-form-label sa-input">Client Name:</label>
+                                                <div class="col-sm-6">
+                                                    <p class="sa-input">{{orderStock.clientName}}</p>
+                                                </div>
+                                            </div>
+
+
+ <!-- 
+                                           <div *ngIf="orderStock.orderType == 2 && orderStock.deliveryType == 2">
+
+                                              <div class="row">
+                                              <label for="" class="col-sm-4 col-form-label sa-input">Address:</label>
+                                                <div class="col-sm-6">
+                                                    <p class="sa-input sa-input2">{{orderStock.address1}} {{orderStock.address2}} {{orderStock.address3}}</p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                              <label for="" class="col-sm-4 col-form-label sa-input">Contact Number:</label>
+                                                <div class="col-sm-6">
+                                                    <p class="sa-input">{{orderStock.contactNumber}}</p>
+                                                </div>
+                                            </div>
+
+                                           </div>
+                                           -->
+                                          
+                                       
+                            
+                                        </div>
+                                         <!-- Client details-->
+
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="table-responsive table-bordered">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Serial No.</th>
+                                                            <th>Item Code</th>
+                                                            <th>Item Name</th>
+                                                            <th>Size</th>
+                                                            <th>Tonality</th>
+                                                            <th>Qty</th>
+                                                            <th>Approved Qty</th>
+                                                            <th>Main Office Remarks</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr *ngFor="let items of orderStock.orderedItems">
+                                                            <td>{{items.serialNumber}}</td>
+                                                            <td>{{items.code}}</td>
+                                                            <td>{{items.itemName}}</td>
+                                                            <td>{{items.sizeName}}</td>
+                                                            <td>{{items.tonality}}</td>
+                                                            <td>{{items.requestedQuantity}}</td>
+                                                            <td>{{items.approvedQuantity}}</td> 
+                                                            <td>{{items.approvedRemarks}}</td>
+                                                        </tr>
+                                            
+                                                    </tbody>
+                                                </table>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="modal-footer">
+                                     <input *ngIf="orderStock.clientSINumber == null"  type="submit" name="" class="btn btn-danger" value="Submit" id="submitBtn" [disabled]="!addSiForm.valid">
+                                     <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                </div>
+
+                            </form>
+                            </div>
+                            <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                    </div>

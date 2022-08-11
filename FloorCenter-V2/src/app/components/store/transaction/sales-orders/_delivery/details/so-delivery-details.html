@@ -1,0 +1,125 @@
+<div class="modal fade" id="uclient_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;" *ngIf="details">
+                <div class="modal-dialog modal-lg modal-xlg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h4 class="modal-title" id="myModalLabel">Client Delivery Details</h4>
+
+                        </div>
+                            <div class="modal-body">
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label for="" class="col-sm-4 col-form-label sa-input">Requested Delivery Date<span class="ic-red">*</span>:</label>
+                                            <div class="col-sm-6">
+                                                <div class="input-group date" id="datetimepicker">
+                                                    <input class="form-control"  [value]="details.deliveryDate" disabled>
+                                                    <span class="input-group-addon">
+                                                        <span class="glyphicon glyphicon-calendar"></span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="" class="col-sm-4 col-form-label sa-input">SI No.<span class="ic-red">*</span>:</label>
+                                            <div class="col-sm-6">
+                                                <p> {{ details.siNumber }} </p>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="" class="col-sm-4 col-form-label sa-input">OR No.<span class="ic-red">*</span>:</label>
+                                            <div class="col-sm-6">
+                                                <p> {{ details.orNumber }} </p>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="" class="col-sm-4 col-form-label sa-input">DR No.<span class="ic-red">*</span>:</label>
+                                            <div class="col-sm-6">
+                                                <p> {{ details.drNumber }} </p>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="" class="col-sm-4 col-form-label sa-input">Preferred Time:</label>
+                                            <div class="col-sm-6">
+                                                <p *ngIf="details.preferredTime == 1">
+                                                    Morning
+                                                </p>
+                                                <p *ngIf="details.preferredTime == 2">
+                                                    Afternoon
+                                                </p>
+                                                <p *ngIf="details.preferredTime == 3">
+                                                    Evening
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label for="" class="col-sm-4 col-form-label sa-input">Client's Name:</label>
+                                            <div class="col-sm-6">
+                                                <p> {{ details.clientName }} </p>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="" class="col-sm-4 col-form-label sa-input">Address:</label>
+                                            <div class="col-sm-6">
+                                                <p> {{ details.address1 }} </p>
+                                                <p> {{ details.address2 }} </p>
+                                                <p> {{ details.address3 }} </p>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="" class="col-sm-4 col-form-label sa-input">Contact Details:</label>
+                                            <div class="col-sm-6">
+                                                <p> {{ details.contactNumber }} </p>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="" class="col-sm-4 col-form-label sa-input">Remarks:</label>
+                                            <div class="col-sm-6">
+                                                <p> {{ details.remarks }} </p>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <p class="sa-input fb">Item Summary</p>
+                                        <div class="table-responsive table-bordered">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Item Code</th>
+                                                        <th>Item Name / Size / Tonality</th>
+                                                        <th>Qty</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngFor="let item of details.items">
+                                                        <td> {{ item.code }} </td>
+                                                        <td> {{ item.itemName }} / {{ item.sizeName }}  / {{ item.tonality }}  </td>
+                                                        <td> {{ item.quantity }}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>

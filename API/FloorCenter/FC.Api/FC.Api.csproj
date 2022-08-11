@@ -1,0 +1,69 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Migrations\20181220090019_StshowroomflagforPartialReceiving3.cs" />
+    <Compile Remove="Migrations\20181220090019_StshowroomflagforPartialReceiving3.Designer.cs" />
+    <Compile Remove="Migrations\20190723070850_AddAllocationTableForAdvanceOrder.cs" />
+    <Compile Remove="Migrations\20190723070850_AddAllocationTableForAdvanceOrder.Designer.cs" />
+    <Compile Remove="Migrations\20190724093736_CustomItemFromSTAdvanceOrder.cs" />
+    <Compile Remove="Migrations\20190724093736_CustomItemFromSTAdvanceOrder.Designer.cs" />
+    <Compile Remove="Migrations\20191113012550_AddItemStatus.cs" />
+    <Compile Remove="Migrations\20191113012550_AddItemStatus.Designer.cs" />
+    <Compile Remove="Migrations\20200214030331_isTonalityAny.cs" />
+    <Compile Remove="Migrations\20200214030331_isTonalityAny.Designer.cs" />
+    <Compile Remove="Migrations\20200214031456_streturns.cs" />
+    <Compile Remove="Migrations\20200214031456_streturns.Designer.cs" />
+    <Compile Remove="Migrations\20200218044848_stAdvanceOrderChangeStatusReason.cs" />
+    <Compile Remove="Migrations\20200218044848_stAdvanceOrderChangeStatusReason.Designer.cs" />
+    <Compile Remove="Migrations\20200218110848_RemovedColumnChangeStatusReasonStAdvanc.cs" />
+    <Compile Remove="Migrations\20200218110848_RemovedColumnChangeStatusReasonStAdvanc.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="6.2.2" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="3.2.0" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="7.4.0" />
+    <PackageReference Include="log4net" Version="2.0.8" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.0.0-preview1-final" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.2" />
+  </ItemGroup>
+  
+  <Target Name="ReIncludeContent" BeforeTargets="BeforeBuild" Condition="'$(DeployTarget)'=='Package'">
+    <ItemGroup>
+      <Content Remove="Web.Test.config" />
+      <Content Remove="Web.Production.config" />
+    </ItemGroup>
+  </Target>
+
+  <ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.1" />
+    <DotNetCliToolReference Include="Microsoft.DotNet.Xdt.Tools" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FC.Core\FC.Core.csproj" />
+  </ItemGroup>
+
+  <Target Name="ApplyXdtConfigTransform" BeforeTargets="_TransformWebConfig">
+    <PropertyGroup>
+      <_SourceWebConfig>$(MSBuildThisFileDirectory)Web.config</_SourceWebConfig>
+      <_XdtTransform>$(MSBuildThisFileDirectory)Web.$(Configuration).config</_XdtTransform>
+      <_TargetWebConfig>$(PublishDir)Web.config</_TargetWebConfig>
+    </PropertyGroup>
+    <Exec Command="dotnet transform-xdt --xml &quot;$(_SourceWebConfig)&quot; --transform &quot;$(_XdtTransform)&quot; --output &quot;$(_TargetWebConfig)&quot;" Condition="Exists('$(_XdtTransform)')" />
+  </Target>
+
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JSONSchema="http://json.schemastore.org/bower" /></VisualStudio></ProjectExtensions>
+
+</Project>

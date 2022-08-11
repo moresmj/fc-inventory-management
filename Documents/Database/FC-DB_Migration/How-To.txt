@@ -1,0 +1,27 @@
+How to Setup :
+
+WAREHOUSE
+	1. Execute Function(s) and Stored Procedure SQL
+	2. Execute SQL : EXEC SP_WarehouseStockSummaryUpdater();
+
+STORE
+	1. Execute Function(s) and Stored Procedure SQL
+	2. Execute SQL : EXEC SP_StoreStockSummaryUpdater();
+
+How To Test :
+
+WAREHOUSE 
+	Scenario : 
+	1. Create Changes on Warehouse Inventory
+	2. Access SQL Server Management Studio
+	3. Access the Database of the Site
+	4. Execute SQL : EXEC SP_WarehouseStockSummaryUpdater();
+	5. Check Warehouse Inventory on Site.
+
+STORE
+	Scenario : 
+	1. Create Changes on Store Inventory
+	2. Access SQL Server Management Studio
+	3. Access the Database of the Site
+	4. Execute SQL : EXEC SP_StoreStockSummaryUpdater();
+	5. Check Store Inventory on Site.

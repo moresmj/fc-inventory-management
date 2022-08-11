@@ -1,0 +1,108 @@
+        <div class="modal fade" id="update_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;" *ngIf="id">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="myModalLabel">User Update</h4>
+
+                    </div>
+                    <form [formGroup]="updateUserForm" (ngSubmit)="onSubmit(updateUserForm)">
+                    <div class="alert alert-danger" style="text-align: center" *ngIf="errorMessage">
+                        <p *ngFor="let err of errorMessage"> {{ err }} </p>
+                    </div>
+                    <div class="alert alert-success" style="text-align: center" *ngIf="successMessage">
+                        <p>  {{ successMessage }} </p>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="" class="col-sm-4 col-form-label sa-input">User Name:</label>
+                                    <div class="col-sm-8">
+                                        <p class="sa-input"> {{username}}</p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="" class="col-sm-4 col-form-label sa-input">Full Name*:</label>
+                                    <div class="col-sm-8">
+                                        <input class="form-control sv-input" type="text" formControlName="FullName" name="FullName">
+                                        <show-errors [control]="updateUserForm.controls.FullName"></show-errors>
+                                    </div>
+                                </div>
+                                    <div class="form-group">
+                                        <label for="" class="col-sm-4 col-form-label sa-input">Password*:</label>
+                                        <div class="col-sm-8">
+                                            <input class="form-control sv-input" type="Password" formControlName="Password" name="Password">
+                                            <show-errors [control]="updateUserForm.controls.Password"></show-errors>
+                                        </div>
+                                    </div>
+                                <div class="form-group">
+                                    <label for="" class="col-sm-4 col-form-label sa-input">Assignment*:</label>
+                                    <div class="col-sm-8">
+                                        <div class="radio" *ngFor="let opt of assignmentList">
+                                            <label>
+                                                <input type="radio" formControlName="Assignment"  [value]="opt.value"> {{opt.name}} 
+                                            </label>
+                                        </div>
+                                        <select class="form-control" id="w-select2" formControlName="WarehouseId"  *ngIf="updateUserForm.controls.Assignment.value == 7">
+                                            <option></option>
+                                            <option *ngFor="let opt of warehouseList" [value]="opt.id">{{opt.name}}</option>
+                                        </select>
+                                        <select class="form-control" id="s-select2" formControlName="StoreId" *ngIf="updateUserForm.controls.Assignment.value == 8">
+                                            <option></option>
+                                            <option *ngFor="let opt of storeList" [value]="opt.id">{{opt.name}}</option>
+                                        </select>
+                                        <br/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="" class="col-sm-4 col-form-label sa-input">User Label:</label>
+                                    <div class="col-sm-8 modal-icon2">
+                                        <select class="form-control" formControlName="UserType" name="UserType">
+                                            <option></option>
+                                            <option *ngFor="let opt of userTypeList" [value]="opt.value">{{opt.name}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="" class="col-sm-4 col-form-label sa-input">Menu Settings:</label>
+                                    <div class="col-sm-8 modal-icon2">
+                                        <div class="s-check">
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" value="" id="checkbox1">Store Management
+                                                </label>
+                                            </div>
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" value="" id="checkbox2">Warehouse Management
+                                                </label>
+                                            </div>
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" value="" id="checkbox3">Product Management
+                                                </label>
+                                            </div>
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" value="" id="checkbox4">User Management
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" name="" class="btn btn-danger" value="Save &amp; Close" [disabled]="updateUserForm.status == 'INVALID'">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    </div>
+                    </form>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>

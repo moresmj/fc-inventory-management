@@ -1,0 +1,29 @@
+   <div>
+       <ng4-loading-spinner [template]="template"> </ng4-loading-spinner>
+   </div>
+    
+
+    <div class="container">
+        <div class="text-center">
+            <!-- pager -->
+            <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+                <li [ngClass]="{disabled:pager.currentPage === 1}">
+                    <a (click)="pager.currentPage === 1 || filterPageWithParams(1)">First</a>
+                </li>
+                <li [ngClass]="{disabled:pager.currentPage === 1}">
+                    <a (click)="pager.currentPage === 1 || filterPageWithParams(pager.currentPage - 1)">Previous</a>
+                </li>
+                <li *ngFor="let page of pager.pages" [ngClass]="{'paginate_button active': pager.currentPage === page, 'paginate_button': pager.currentPage !== page } ">
+                    <a (click)=" filterPageWithParams(page)">{{page}}</a>
+                </li>
+                <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                    <a (click)="pager.currentPage === pager.totalPages || filterPageWithParams(pager.currentPage + 1)">Next</a>
+                </li>
+                <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                    <a (click)="pager.currentPage === pager.totalPages || filterPageWithParams(pager.totalPages)">Last</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+                               

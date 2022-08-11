@@ -1,0 +1,139 @@
+<div>
+  <form [formGroup]="newUserForm" (ngSubmit)="onSubmit(newUserForm)">
+    <div
+      class="alert alert-danger"
+      style="text-align: center"
+      *ngIf="errorMessage"
+    >
+      <p *ngFor="let err of errorMessage">{{ err }}</p>
+    </div>
+    <div
+      class="alert alert-success"
+      style="text-align: center"
+      *ngIf="successMessage"
+    >
+      <p>{{ successMessage }}</p>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="form-group row">
+          <label for="" class="col-sm-4 col-form-label sa-input"
+            >User Name<span class="ic-red">*</span>:</label
+          >
+          <div class="col-sm-7">
+            <input
+              class="form-control"
+              type="text"
+              maxlength="50"
+              formControlName="UserName"
+            />
+            <show-errors
+              [control]="newUserForm.controls.UserName"
+            ></show-errors>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="" class="col-sm-4 col-form-label sa-input"
+            >Full Name<span class="ic-red">*</span>:</label
+          >
+          <div class="col-sm-7">
+            <input
+              class="form-control"
+              type="text"
+              maxlength="255"
+              formControlName="FullName"
+            />
+            <show-errors
+              [control]="newUserForm.controls.FullName"
+            ></show-errors>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="" class="col-sm-4 col-form-label sa-input"
+            >Password<span class="ic-red">*</span>:</label
+          >
+          <div class="col-sm-7">
+            <input
+              class="form-control"
+              type="password"
+              formControlName="Password"
+            />
+            <show-errors
+              [control]="newUserForm.controls.Password"
+            ></show-errors>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="form-group row">
+          <label for="" class="col-sm-4 col-form-label sa-input"
+            >Email<span class="ic-red">*</span>:</label
+          >
+          <div class="col-sm-7">
+            <input
+              class="form-control"
+              type="email"
+              maxlength="255"
+              formControlName="emailAddress"
+            />
+            <show-errors
+              [control]="newUserForm.controls.emailAddress"
+            ></show-errors>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="" class="col-sm-4 col-form-label sa-input"
+            >Contact No.:</label
+          >
+          <div class="col-sm-7">
+            <input
+              class="form-control"
+              contact
+              type="text"
+              formControlName="ContactNumber"
+            />
+            <show-errors
+              [control]="newUserForm.controls.ContactNumber"
+            ></show-errors>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <ng-multiselect-dropdown
+          *ngIf="storeList"
+          [placeholder]="'Select stores handled'"
+          [data]="storeList"
+          [(ngModel)]="storesHandled"
+          [ngModelOptions]="{ standalone: true }"
+          [settings]="dropdownSettings"
+        >
+        </ng-multiselect-dropdown>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="btn-con6">
+          <input
+            type="submit"
+            [disabled]="!newUserForm.valid || storesHandled.length == 0"
+            name=""
+            class="btn btn-danger"
+            value="Save"
+          />
+
+          <button
+            type="button"
+            class="btn btn-danger btn-r"
+            id="cancel"
+            (click)="cancelAdd()"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

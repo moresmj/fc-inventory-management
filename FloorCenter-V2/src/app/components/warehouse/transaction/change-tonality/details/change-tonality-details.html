@@ -1,0 +1,298 @@
+<div class="modal fade" id="details_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div *ngIf="releaseItemDetails != null" class="modal-dialog modal-lg modal-xlg">
+        <form [formGroup]="updateForm" (ngSubmit)="onSubmit()" id="updateForm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                    <h4 class="modal-title modal-text" id="myModalLabel">
+                        Trans. No.: <span class="span-text">{{releaseItemDetails.details.transactionNo}}</span>
+                    </h4>
+                </div>
+               <!--  <div class="g-title_lbl">
+                    <ul class="list-inline">
+                        <li><label>Trans. No.:</label></li>
+                        <li>10001</li>
+                    </ul>
+                </div> -->
+
+<div>
+        <div class="alert alert-danger" style="text-align: center" *ngIf="errorMessage">
+                        <p *ngFor="let err of errorMessage"> {{ err }} </p>
+        </div>
+        
+        <div class="alert alert-success" style="text-align: center" *ngIf="successMessage">
+                            <p>  {{ successMessage }} </p>
+        </div>
+</div>
+                <div class="modal-body">
+                 
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="row">
+                              <label for="" class="col-sm-4 col-form-label sa-input">Transaction:</label>
+                                <div class="col-sm-6">
+                                    <p class="sa-input sa-input2">{{releaseItemDetails.details?.transactionTypeStr}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                              <label for="" class="col-sm-4 col-form-label sa-input">PO No.:</label>
+                                <div class="col-sm-6">
+                                    <p class="sa-input">{{releaseItemDetails.details?.poNumber}}</p>
+                                </div>
+                            </div>
+                            <div *ngIf="releaseItemDetails.deliveryType != 1" class="row">
+                              <label for="" class="col-sm-4 col-form-label sa-input">WHDR No.:</label>
+                                <div class="col-sm-6">
+                                    <p class="sa-input">{{releaseItemDetails.details.whdrNumber}}</p>
+                                </div>
+                            </div>
+                            <div *ngIf="releaseItemDetails.orderType != 1" class="row">
+                              <label for="" class="col-sm-4 col-form-label sa-input">DR No.:</label>
+                                
+                              <div class="col-sm-6">
+                                   <!--added for ticket #211 [Client PO/Showroom Pickup] DR no. should be blank -->
+                                  
+                                    <ng-container *ngIf="releaseItemDetails.displayDr">
+                                            <p class="sa-input">{{releaseItemDetails.drNumber}}</p>
+                                    </ng-container>
+                                </div>
+                            </div>
+                        <ng-container *ngIf="releaseItemDetails.displaySiOr">
+
+
+                            <div class="row">
+                                    <label for="" class="col-sm-4 col-form-label sa-input">SI No.:</label>
+                                      
+                                    <div class="col-sm-6">
+                                          
+                                                  <p class="sa-input">{{releaseItemDetails.siNumber}}</p>
+                                      </div>
+                            </div>
+
+                            <div class="row">
+                                    <label for="" class="col-sm-4 col-form-label sa-input">OR No.:</label>
+                                      
+                                    <div class="col-sm-6">
+                                          
+                                                  <p class="sa-input">{{releaseItemDetails.orNumber}}</p>
+                                      </div>
+                            </div>
+
+                        </ng-container>
+
+                            
+                            <div *ngIf="releaseItemDetails.deliveryType != 1" class="row">
+                              <label for="" class="col-sm-4 col-form-label sa-input">Plate No.:</label>
+                                <div class="col-sm-6">
+                                    <p class="sa-input">{{releaseItemDetails.plateNumber}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                              <label for="" class="col-sm-4 col-form-label sa-input">Ordered By:</label>
+                                <div class="col-sm-6">
+                                    <p class="sa-input">{{releaseItemDetails.details?.store?.name}}</p>
+                                </div>
+                            </div>
+                           <!--<div *ngIf="releaseItemDetails.deliveryType != 1" class="row">-->
+                            <div class="row">
+                              <label for="" class="col-sm-4 col-form-label sa-input">Address:</label>
+                                <div class="col-sm-6">
+
+                                    <p *ngIf="releaseItemDetails.details.orderType == 1" class="sa-input">{{releaseItemDetails.details?.store?.address}}
+                                    </p>
+
+                                    <p *ngIf="releaseItemDetails.details.orderType == 2" class="sa-input">{{releaseItemDetails.details?.address1}}
+                                    {{releaseItemDetails.details?.address2}}
+                                    {{releaseItemDetails.details?.address3}}
+                                    </p>
+                                </div>
+                            </div>
+                            
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="row">
+                              <label for="" class="col-sm-4 col-form-label sa-input">PO Date:</label>
+                                <div class="col-sm-6">
+                                    <p class="sa-input sa-input2">{{releaseItemDetails.details.poDate | date : medium}}</p>
+                                </div>
+                            </div>
+                            <div *ngIf="releaseItemDetails.deliveryType != 1" class="row">
+                              <label for="" class="col-sm-4 col-form-label sa-input">Delivery Date:</label>
+                                <div class="col-sm-6">
+                                    <p class="sa-input">{{releaseItemDetails.approvedDeliveryDate | date : medium}}</p>
+                                </div>
+                            </div>
+                        <div *ngIf="releaseItemDetails.deliveryType != 1">
+
+                            <div class="row">
+                              <label for="" class="col-sm-4 col-form-label sa-input">Driver:</label>
+                                <div class="col-sm-6">
+                                    <p class="sa-input"  style="word-break: break-all">{{releaseItemDetails.driverName}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                              <label for="" class="col-sm-4 col-form-label sa-input">Contact No.:</label>
+                                <div class="col-sm-6">
+                                    <p *ngIf="releaseItemDetails.details?.orderType == 2" class="sa-input">{{releaseItemDetails.details?.contactNumber}}</p>
+                             
+                                    <p *ngIf="releaseItemDetails.details?.orderType != 2" class="sa-input">{{releaseItemDetails.details?.store?.contactNumber}}</p>
+                                </div>
+                            </div>
+                        </div>
+                         <div *ngIf="releaseItemDetails.deliveryType == 1">
+                             
+                             <div class="row">
+                              <label for="" class="col-sm-4 col-form-label sa-input">Contact No.:</label>
+                                <div class="col-sm-6">
+                                    <p class="sa-input">{{releaseItemDetails.details?.contactNumber}}</p>
+                             
+
+                                </div>
+                            </div>
+                         </div>
+
+                          <div *ngIf="releaseItemDetails.details?.orderType == 2">
+                             
+                             <div class="row">
+                              <label for="" class="col-sm-4 col-form-label sa-input">Customer's Name:</label>
+                                <div class="col-sm-6">
+                                    <p class="sa-input">{{releaseItemDetails.details?.clientName}}</p>
+                             
+
+                                </div>
+                            </div>
+                         </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row padt20 border-gtb">
+                        <!--
+                        <div class="col-md-6">
+                            <div class="row">
+                              <label for="" class="col-sm-4 col-form-label sa-input">Enter Released Date:</label>
+                                <div class="col-sm-8">
+                                    <div class="input-group date" id="datetimepicker">
+                                        <input type="text" class="form-control" id="drDate">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    -->
+                        <div class="col-md-6">
+                            
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table-responsive table-bordered tbl-mg">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Serial No.</th>
+                                            <th>Item Code</th>
+                                            <th>Item Name</th>
+                                            <th>Size</th>
+                                            <th>Tonality</th>
+                                            <th>Qty</th>
+                                            <th>New Tonality</th>
+                                            <th>Remarks</th>
+                                            <!--
+                                            <th>Release Qty</th>-->
+                                        </tr>
+                                    </thead>
+                                      <tbody *ngIf="releaseItemDetails.details.deliveryType == 1 " formArrayName="ModifyItemTonalityDetails">
+                                       
+                                        <tr *ngFor="let oi of ModifyItemTonalityDetails.controls; let i=index"  [formGroupName]="i">
+                                            <td>{{forReleasingItems2[i].item.serialNumber}}</td>
+                                            <td>{{forReleasingItems2[i].item.code}}</td>
+                                            <td>{{forReleasingItems2[i].item.name}}
+                                            </td>
+                                            <td>{{forReleasingItems2[i].item.size?.name}}
+                                            </td>
+                                            <!-- <td>{{forReleasingItems2[i].item.tonality}}
+                                            </td> -->
+                                            <td>{{forReleasingItems2[i].isTonalityAny == true ? "ANY/ " + forReleasingItems2[i].item.tonality : forReleasingItems2[i].item.tonality}}
+                                            </td>
+                                            <td>   {{forReleasingItems2[i].quantity}}</td>
+                                            <td>
+
+                                                <select class="form-control" formControlName="itemId" (change)="onChange($event.target.value)">
+                                                    <option></option>
+                                                    <ng-container *ngFor="let opt of itemList">
+                                                            <option   [value]="opt.itemId" *ngIf="opt.code.trim() == forReleasingItems2[i].item.code.trim() && opt.tonality != forReleasingItems2[i].item.tonality" > {{ opt.tonality }} | {{opt.available}}</option>
+                                                    </ng-container>
+                                                    
+                                                </select>
+                                     
+                                            </td>
+                                        
+                                         
+                                            <td>
+                                                <input type="text" class="form-control qty-input" name="remarks">
+                                            </td>
+                                        
+                                     </tr>
+                                      
+                                    </tbody>
+                                    <tbody *ngIf="releaseItemDetails.details.deliveryType == 2 || releaseItemDetails.details.deliveryType == 3" formArrayName="ModifyItemTonalityDetails">
+                                        <tr *ngFor="let oi of ModifyItemTonalityDetails.controls; let i=index"  [formGroupName]="i">
+                                            <td>{{forReleasingItems2[i].item.serialNumber}}</td>
+                                            <td>{{forReleasingItems2[i].item.code}}</td>
+                                            <td>{{forReleasingItems2[i].item.name}}
+                                            </td>
+                                            <td>{{forReleasingItems2[i].item.size?.name}}
+                                            </td>
+                                            <!-- <td>{{forReleasingItems2[i].item.tonality}}
+                                            </td> -->
+                                            <td>{{forReleasingItems2[i].isTonalityAny == true ? "ANY/ " + forReleasingItems2[i].item.tonality : forReleasingItems2[i].item.tonality}}
+                                            </td>
+                                            <td>   {{forReleasingItems2[i].quantity}}</td>
+
+                                            <td>
+                                                <!-- <select (input)="onChange($event.target.value)" class="form-control" formControlName="tonalitych" (change)="setReason($event.currentTarget.value,i)"> > -->
+                                                    <select  class="form-control"  formControlName="itemId" (change)="onChange($event.target.value)">
+                                                        <option></option>
+                                                        <ng-container *ngFor="let opt of itemList">
+                                                                <option  [value]="opt.itemId" *ngIf="opt.code.trim() == forReleasingItems2[i].item.code.trim() && opt.tonality != forReleasingItems2[i].item.tonality" > {{ opt.tonality }} | {{opt.available}}</option>
+                                                        </ng-container>
+                                                        
+                                                    </select>
+                                     
+                                        <!--<show-errors [control]="item.controls.returnReason"></show-errors>-->
+                                            </td>
+
+                                            <td>
+                                                <input type="text" class="form-control qty-input" name="remarks">
+                                            </td>
+                                         <!--
+                                            <td>
+                                                <input type="number" class="form-control qty-input" name="">
+                                            </td>
+                                        
+                                      --></tr>
+                                    </tbody>
+                                  
+                                </table>
+                                
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <!--will not display if release status is released-->
+                    <input *ngIf="forReleasingItems.releaseStatus == 3" type="submit" name="" class="btn btn-danger" value="Save" id="btnSave">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" id="btnCancel">Close</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </form>
+    </div><!-- /.modal-dialog -->
+</div>

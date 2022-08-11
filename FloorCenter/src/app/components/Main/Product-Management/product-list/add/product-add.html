@@ -1,0 +1,106 @@
+
+                                <div id="addItems" class="collapse add_new">
+                                           <div class="col-md-12">
+                                           
+                                              <ul *ngFor="let err of errorMessage"> 
+                                        <div class="alert alert-danger">
+                                            {{err}}
+                                        </div>
+                                    </ul>
+                                    <div *ngIf="statusMessage" class="alert alert-success">
+                                               {{statusMessage}}
+    </div >
+                                </div>
+                                   
+                                    <form [formGroup]="itemForm" (ngSubmit)="addRecord()">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group row">
+                                              <label for="" class="col-sm-4 col-form-label sa-input">Serial Number*</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control" type="text" placeholder="Serial Number" formControlName="SerialNumber">
+                                                </div>
+                                                 <show-errors [control]="itemForm.controls.SerialNumber"></show-errors>
+                                            </div>
+                                            <div class="form-group row">
+                                              <label for="" class="col-sm-4 col-form-label sa-input">Item Code*</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control" type="text" placeholder="Search" formControlName="Code">
+                                                </div>
+                                                 <show-errors [control]="itemForm.controls.Code"></show-errors>
+                                            </div>
+                                            <div class="form-group row">
+                                              <label for="" class="col-sm-4 col-form-label sa-input">Size*</label>
+                                                <div class="col-sm-8">
+                                                    <select class="form-control" formControlName="SizeId">
+                                                           <option></option>
+                                                        <option *ngFor="let opt of sizeList" value="{{opt.id}}">{{opt.name}}</option>
+                                                     
+                                                    </select>
+                                                         <show-errors [control]="itemForm.controls.SizeId"></show-errors>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                              <label for="" class="col-sm-4 col-form-label sa-input">Image</label>
+                                                <div class="col-sm-8">
+                                                    <div class="input-group">
+                                                        <label class="input-group-btn">
+                                                            <span class="btn btn-default">
+                                                                Select files <input #fileInput   type="file" style="display: none;" formControlName="Image" multiple="">
+                                                            </span>
+                                                        </label>
+                                                        <input type="text" class="form-control" readonly="">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-group row">
+                                              <label for="" class="col-sm-4 col-form-label sa-input">Item Name.*</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control" type="text" placeholder="Search" formControlName="Name">
+                                                </div>
+                                                 <show-errors [control]="itemForm.controls.Name"></show-errors>
+                                            </div>
+                                            <div class="form-group row">
+                                              <label for="" class="col-sm-4 col-form-label sa-input">Tonality*</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control" type="text" placeholder="Search" formControlName="Tonality">
+                                                </div>
+                                                       <show-errors [control]="itemForm.controls.Tonality"></show-errors>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-group row">
+                                              <label for="" class="col-sm-4 col-form-label sa-input">Description</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control" type="text" placeholder="Search" formControlName="Description">
+                                                </div>
+                                               
+                                            </div>
+                                            <div class="form-group row">
+                                              <label for="" class="col-sm-4 col-form-label sa-input">Remarks</label>
+                                                <div class="col-sm-8">
+                                                    <textarea class="form-control" rows="4" formControlName="Remarks"></textarea>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="btn-con6">
+                                                <input type="submit" name="" class="btn btn-danger" value="Save" [disabled]="!itemForm.valid">
+                                                <button type="button" class="btn btn-danger btn-r" id="cancel" (click)="reset()">Cancel</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </form>
+
+                                </div>
+

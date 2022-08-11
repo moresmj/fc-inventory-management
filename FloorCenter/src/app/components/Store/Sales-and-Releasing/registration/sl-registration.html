@@ -1,0 +1,225 @@
+<div class="container-fluid">
+    <!-- breadcrumbs -->
+    <div class="row">
+        <div class="col-lg-12">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                  <a href="#">Sales Volume Management</a>
+                </li>
+                <li class="breadcrumb-item active">Registration</li>
+            </ol>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    
+    <div class="row">
+        <div class="col-lg-12">
+            <h2 class="fw-b m-title m-title2">Registrations</h2>
+        </div>
+    </div>
+    <form [formGroup]="salesReleaseRegistrationForm" (ngSubmit)="onSubmit(salesReleaseRegistrationForm.value)" (keydown.enter)="$event.preventDefault()">
+
+        <div class="line2">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="btn-con6">
+                        <input type="submit" name="" class="btn btn-danger" value="Save">
+                        <a href="sales_list.html" class="btn btn-danger btn-r">Cancel</a>
+                    </div>
+                    <div>
+                        <div *ngIf="statusMessage" class="alert alert-success">
+                            {{statusMessage}}
+                        </div>
+                        <ul *ngFor="let error of errorMessage">
+                            <div class="alert alert-danger">{{error}}</div>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="form-group row">
+                  <label for="" class="col-sm-4 col-form-label sa-input">SI/PO Number<span class="ic-red">*</span>:</label>
+                    <div class="col-sm-7">
+                        <input type="text" class="form-control" formControlName="PONumber" id="po_num">
+                    </div>
+                </div>
+                <div class="form-group row">
+                  <label for="" class="col-sm-4 col-form-label sa-input">Customer Name<span class="ic-red">*</span>:</label>
+                    <div class="col-sm-7">
+                        <input type="text" class="form-control" formControlName="CustomerName" id="cust_name">
+                    </div>
+                </div>
+                <div class="form-group row">
+                  <label for="" class="col-sm-4 col-form-label sa-input">Delivery Address<span class="ic-red">*</span>:</label>
+                    <div class="col-sm-7">
+                        <input type="text" class="form-control text-input" formControlName="DeliveryAddress" id="deliv_address">
+                        <input type="text" class="form-control text-input" formControlName="DeliveryAddress2" id="deliv_address2">
+                        <input type="text" class="form-control" formControlName="DeliveryAddress3" id="deliv_address3">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="form-group row">
+                    <label for="example-text-input" class="col-sm-4 col-form-label sa-input">SI/PO Date<span class="ic-red">*</span>:</label>
+                    <div class="input-group date col-sm-6" id="datetimepicker">
+                        <input type="text" class="form-control" formControlName="PODate" id="poDate">
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                  <label for="" class="col-sm-4 col-form-label sa-input">Contact Numbers:</label>
+                    <div class="col-sm-6 text-group1">
+                        <input type="text" class="form-control text-input" formControlName="ContactNumber">
+                        <input type="text" class="form-control text-input" formControlName="ContactNumber2">
+                        <input type="text" class="form-control" formControlName="ContactNumber3">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="example-text-input" class="col-sm-4 col-form-label sa-input">Sales Agent:</label>
+                    <div class="col-sm-6 text-group1">
+                        <input type="text" class="form-control" formControlName="SalesAgent">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="form-group row">
+                    <label for="example-text-input" class="col-sm-4 col-form-label sa-input">Remarks:</label>
+                    <div class="col-sm-7">
+                        <textarea class="form-control" rows="4" formControlName="Remarks"></textarea>
+                    </div>
+                </div>
+                <div class="form-group row">
+                  <label for="" class="col-sm-4 col-form-label sa-input">Payment Mode:</label>
+                    <div class="col-sm-7">
+                        <select class="form-control">
+                            <option></option>
+                            <option>Cash</option>
+                            <option>COD</option>
+                            <option>Cheque</option>
+                            <option>Cheque on Delivery</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                  <label for="" class="col-sm-4 col-form-label sa-input">Delivery Option:</label>
+                    <div class="col-sm-7">
+                        <select class="form-control">
+                            <option></option>
+                            <option>Pick-up</option>
+                            <option>Delivery</option>
+                            <option>Pick-up and Delivery</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row grid">
+            <div class="col-md-8 text-left">
+                <label for="" class="col-sm-4 col-form-label sa-input">
+                    Enter Serial to add Items
+                    <span class="ic-red">*</span>:
+                </label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" (keyup.enter)="getItemDetails($event)">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Item List
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Item Code</th>
+                                        <th>Serial</th>
+                                        <th>Item Name</th>
+                                        <th>Size</th>
+                                        <th>Tonality</th>
+                                        <th>Qty</th>
+                                        <th>Status</th>
+                                        <th>Remarks</th>
+                                        <th>Remove</th>
+                                    </tr>
+                                </thead>
+                                <tbody formArrayName="SalesReleasedItems">
+                                    <tr *ngFor="let item of SalesReleasedItems.controls; let i=index" [formGroupName]="i">
+                                        <td>
+                                            <input class="form-control" [value]="itemDetail[i].code">
+                                        </td>
+                                        <td>
+                                            <input class="form-control" [value]="itemDetail[i].serialNumber">
+                                        </td>
+                                        <td>{{itemDetail[i].name}}</td>
+                                        <td>{{itemDetail[i].sizeId}}</td>
+                                        <td>{{itemDetail[i].tonality}}</td>
+                                        <td>
+                                            <input class="form-control" formControlName="Quantity">
+                                        </td>
+                                        <td>On Stock</td>
+                                        <td>
+                                            <input class="form-control">
+                                        </td>
+                                        <td>
+                                            <button type="button" name="" class="btn btn-danger" (click)="deleteRow(i)">
+                                                <i class="fa fa-times"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="line2">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="btn-con6">
+                        <input type="button" name="" class="btn btn-danger" value="Save" data-toggle="modal" data-target="#saveModal">
+                        <a href="sales_list.html" class="btn btn-danger btn-r">Cancel</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="saveModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="myModalLabel">Save</h4>
+
+                    </div>
+                    <div class="modal-body">
+                        <h5 class="modal-text">Are you sure you want to proceed?</h5>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" name="" class="btn btn-danger" value="Save">
+                        <a href="stock_list.html" data-dismiss="modal" class="btn btn-danger btn-r">Cancel</a>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        
+
+    </form>
+
+
+</div>

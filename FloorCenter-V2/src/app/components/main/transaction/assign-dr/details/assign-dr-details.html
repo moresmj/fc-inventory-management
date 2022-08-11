@@ -1,0 +1,137 @@
+            
+
+                <div *ngIf="updateForm" class="modal fade" id="details_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+
+
+                            <form  [formGroup]="updateForm" (ngSubmit)="onSubmit()">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                    <h4 class="modal-title" id="myModalLabel">{{delivery.transactionNo}}<!-- [Transaction No.] --></h4>
+
+                                </div>
+
+                                 <div class="alert alert-success" style="text-align: center" *ngIf="successMessage">
+                                    <p>  {{ successMessage }} </p>
+                                </div>
+                                <div class="alert alert-danger" style="text-align: center" *ngIf="errorMessage">
+                                    <p *ngFor="let err of errorMessage"> {{ err }} </p>
+                                </div>
+                                <div class="download_page">
+                                     <button type="button" (click)="print(delivery)" ><i class="fa fa-print fa-2x fa-fw ic-red"> </i> </button>
+                                </div>
+                                                               
+                                <div class="modal-body" id="printable">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="row">
+
+                                              <label for="" class="col-sm-5 col-form-label sa-input">Warehouse DR No.<span class="ic-red">*</span>:</label>
+                                                <div name='divRemove' class="col-sm-7">
+                                                    <p name='divRemove' class="sa-input">{{delivery.whdrNumber != null ? delivery.whdrNumber : "" }}</p>
+                                                </div>
+                                              
+                                                <div class="col-sm-7 modal-update">
+                                                 
+                                                    <input *ngIf="delivery.whdrNumber == null" class="form-control sv-input" maxlength="50" type="text" formControlName="WHDRNumber">
+                                                    
+                                                    <show-errors [control]="updateForm.controls.WHDRNumber"></show-errors>
+                                                </div>
+                                                
+                                            </div>
+                                            <div class="row">
+                                              <label for="" class="col-sm-5 col-form-label sa-input">PO No.:</label>
+                                          
+                                                <div name='divRemove' class="col-sm-7">
+                                                    <p name='divRemove' class="sa-input" id="po" >{{delivery.poNumber}}</p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                              <label for="" class="col-sm-5 col-form-label sa-input">Store:</label>
+                                              
+                                                <div name='divRemove' class="col-sm-7">
+                                                    <p name='divRemove' class="sa-input">{{delivery.orderedBy}}</p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                              <label for="" class="col-sm-5 col-form-label sa-input">Remarks:</label>
+                                              
+                                                <div name='divRemove' class="col-sm-7">
+                                                   
+                                                    <p class="sa-input" name='divRemove'>{{delivery.remarks}}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="row">
+                                              <label for="" class="col-sm-5 col-form-label sa-input">Status:</label>
+                                              
+                                                <div  name='divRemove' class="col-sm-7">
+                                                    <p name='divRemove' class="sa-input sa-input sv-input">{{delivery.requestStatusStr}}</p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                              <label for="" class="col-sm-5 col-form-label sa-input">PO Date:</label>
+                                              
+                                                <div name='divRemove' class="col-sm-7">
+                                                    <p name='divRemove' class="sa-input">{{delivery.poDate | date : mediumDate }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="table-responsive table-bordered table_modal">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Serial No.</th>
+                                                            <th>Item Code</th>
+                                                            <th>Item Name</th>
+                                                            <th>Size</th>
+                                                            <th>Tonality</th>
+                                                            <th>Qty</th>
+                                                            <th>Approved Qty</th>
+                                                            <th>Main Office Remarks</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr *ngFor="let item of delivery.orderedItems">
+                                                            <td *ngIf="item.approvedQuantity != 0">{{item.serialNumber}}</td>
+                                                            <td *ngIf="item.approvedQuantity != 0">{{item.itemCode}}</td>
+                                                            <td *ngIf="item.approvedQuantity != 0">{{item.itemName}}</td>
+                                                            <td *ngIf="item.approvedQuantity != 0">{{item.sizeName}}</td>
+                                                            <!-- <td *ngIf="item.approvedQuantity != 0">{{item.tonality}}</td> -->
+                                                            <td *ngIf="item.approvedQuantity != 0">{{item.isTonalityAny == true ? "ANY/ " + item.tonality : item.tonality }}</td>
+                                                            <td *ngIf="item.approvedQuantity != 0">{{item.requestedQuantity}}</td>
+                                                            <td *ngIf="item.approvedQuantity != 0">{{item.approvedQuantity}}</td>
+                                                            <td *ngIf="item.approvedQuantity != 0">
+                                                                {{item.approvedRemarks}}
+                                                            </td>
+                                                        </tr>
+                                                       
+                                                    </tbody>
+                                                </table>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                            <div class="modal-footer border-n">
+                                                <button id="btnCancel" type="button" (click)="onCancel()" *ngIf="showSaveBtn" class="btn btn-danger" style= "float: left;">Cancel Order</button>
+                                                <button id="btnSave" type="button" (click)="onSubmit()" *ngIf="showSaveBtn" [disabled]="!updateForm.valid" class="btn btn-danger">Save</button>
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            </div>
+                            </form>
+                            </div>
+
+                            <!-- /.modal-content -->
+                        </div>
+                       
+                        <!-- /.modal-dialog -->
+                    </div>

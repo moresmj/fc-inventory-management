@@ -1,0 +1,150 @@
+    <div class="modal fade" id="add_client_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;" *ngIf="newForm">
+        <div class="modal-dialog modal-lg modal-xlg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="myModalLabel"> {{ details.deliveryType == 1 ? 'Add Pickup Date' : 'Add Client Delivery' }}</h4>
+
+                </div>
+                <form [formGroup]="newForm" (ngSubmit)="onSubmit()" (keydown.enter)="$event.preventDefault()">
+                    <div class="modal-body">
+                        <div class="alert alert-danger" style="text-align: center" *ngIf="errorMessage">
+                                        <p *ngFor="let err of errorMessage"> {{ err }} </p>
+                        </div>
+                        
+                        <div class="alert alert-success" style="text-align: center" *ngIf="successMessage">
+                                            <p>  {{ successMessage }} </p>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label for="" class="col-sm-4 col-form-label sa-input">{{ details.deliveryType == 1 ? 'Pickup Date' : 'Requested Delivery Date' }}<span class="ic-red">*</span>:</label>
+                                    <div class="col-sm-6">
+                                        <div class="input-group date" id="datetimepicker">
+                                            <input type="date" class="form-control" formControlName="deliveryDate" (input)="onChange()">
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                        </div>
+                                        <show-errors [control]="newForm.controls.deliveryDate"></show-errors>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="" class="col-sm-4 col-form-label sa-input">SI No.<span class="ic-red">*</span>:</label>
+                                    <div class="col-sm-6">
+                                        <p> {{ details.siNumber }} </p>
+                                        <!-- <input class="form-control" formControlName="siNumber" type="text" (input)="onChange()">
+                                        <show-errors [control]="newForm.controls.siNumber"></show-errors> -->
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="" class="col-sm-4 col-form-label sa-input">OR No.<span class="ic-red">*</span>:</label>
+                                    <div class="col-sm-6">
+                                        <p> {{ details.orNumber }} </p>
+                                        <!-- <input class="form-control address" formControlName="orNumber" type="text" (input)="onChange()">
+                                        <show-errors [control]="newForm.controls.orNumber"></show-errors> -->
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="" class="col-sm-4 col-form-label sa-input">DR No.<span class="ic-red" *ngIf="details.deliveryType != 1">*</span>:</label>
+                                    <div class="col-sm-6">
+                                        <p> {{ details.drNumber }} </p>
+                                        <!-- <input class="form-control address" formControlName="drNumber" type="text" (input)="onChange()">
+                                        <show-errors [control]="newForm.controls.drNumber"></show-errors> -->
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="" class="col-sm-4 col-form-label sa-input">Preferred Time<span class="ic-red">*</span>:</label>
+                                    <div class="col-sm-6">
+                                        <div class="radio" *ngFor="let opt of preferredTimeList; let i=index">
+                                            <label>
+                                                <input type="radio" (click)="chkEvent($event)" name="radio" id="preferredtime{{i}}" [value]="false" [value]="opt.value">{{ opt.name }}
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label for="" class="col-sm-4 col-form-label sa-input">Client's Name<span class="ic-red">*</span>:</label>
+                                    <div class="col-sm-6">
+                                        <p> {{ details.clientName }} </p>
+                                        <!-- <input class="form-control address" formControlName="clientName" type="text" (input)="onChange()">
+                                        <show-errors [control]="newForm.controls.clientName"></show-errors> -->
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="" class="col-sm-4 col-form-label sa-input">Address<span class="ic-red" *ngIf="details.deliveryType != 1">*</span>:</label>
+                                    <div class="col-sm-6">
+                                        <p> {{ details.address1 }} </p>
+                                        <p> {{ details.address2 }} </p>
+                                        <p> {{ details.address3 }} </p>
+                                        <!-- <input class="form-control address" formControlName="address1" type="text" (input)="onChange()">
+                                        <show-errors [control]="newForm.controls.address1"></show-errors>
+                                        <input class="form-control address" formControlName="address2" type="text" (input)="onChange()">
+                                        <input class="form-control address" formControlName="address3" type="text" (input)="onChange()"> -->
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="" class="col-sm-4 col-form-label sa-input">Contact No.<span class="ic-red" *ngIf="details.deliveryType != 1">*</span>:</label>
+                                    <div class="col-sm-6">
+                                        <p> {{ details.contactNumber }} </p>
+                                        <!--<input type="text" class="form-control" contact formControlName="contactNumber" (input)="onChange()">
+                                        <show-errors [control]="newForm.controls.contactNumber"></show-errors> -->
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="" class="col-sm-4 col-form-label sa-input">Remarks:</label>
+                                    <div class="col-sm-6">
+                                        <textarea class="form-control" rows="4" formControlName="remarks"></textarea>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p class="sa-input fb">Item Summary</p>
+                                <div class="table-responsive table-bordered">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Item Code</th>
+                                                <th>Item Name / Size / Tonality</th>
+                                                <th>Qty</th>
+                                                <th>Delivery Qty<span class="ic-red">*</span></th>
+                                            </tr>
+                                        </thead>
+                                            <tbody formArrayName="clientDeliveries">
+                                                <tr *ngFor="let item of ClientDeliveries.controls; let i=index" [formGroupName]="i">
+                                                    <td> {{ details.soldItems[i].code }} </td>
+                                                    <td> {{ details.soldItems[i].itemName }} / {{ details.soldItems[i].sizeName }} / {{ details.soldItems[i].tonality }}</td>
+                                                    <td> {{ details.soldItems[i].quantity }}</td>
+                                                    <td>
+                                                        <input class="qty-input form-control" onlyNumber  min="0"  type="number" formControlName="quantity">
+                                                        <show-errors [control]="item.controls.quantity"></show-errors>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <input type="submit" name="" class="btn btn-danger" *ngIf="details.remainingForDelivery != 0" [disabled]="prefTimeisChecked == false || !newForm.valid" value="Save">
+                        <button type="button" class="btn btn-default" data-dismiss="modal"> {{ successMessage == null ? "Cancel" : "Close" }} </button>
+                    </div>
+
+                </form>
+
+
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>

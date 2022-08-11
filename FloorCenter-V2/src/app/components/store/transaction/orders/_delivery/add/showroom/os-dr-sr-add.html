@@ -1,0 +1,131 @@
+  <div class="modal fade" id="add_showroom_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                        <div *ngIf="showRoomForm" class="modal-dialog modal-lg modal-xlg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                    <h4 class="modal-title" id="myModalLabel">Add Showroom Delivery</h4>
+
+                                </div>
+                                 <div>
+                            <div class="alert alert-danger" style="text-align: center" *ngIf="errorMessage">
+                                    <p *ngFor="let err of errorMessage"> {{ err }} </p>
+                            </div>
+                            <div class="alert alert-success" style="text-align: center" *ngIf="successMessage">
+                                        <p>  {{ successMessage }} </p>
+                                    </div>
+                            </div>
+                                <form [formGroup]="showRoomForm" (ngSubmit)="onSubmit()">
+                                    <div class="modal-body">
+
+                                        <div class="row">
+                                            
+                                            <div *ngIf="stockItemDetails.deliveryType == 3" class="col-md-6">
+                                                <div class="form-group row">
+                                                  <label for="" class="col-sm-4 col-form-label sa-input">
+                                                    <ng-container *ngIf="drLabel != null">
+                                                        {{drLabel}}
+                                                    </ng-container>
+                                                    <ng-container *ngIf="drLabel == null">
+                                                         Warehouse DR No.
+                                                    </ng-container>
+                                                   
+
+                                                    <span *ngIf="stockItemDetails.deliveryType != 3" class="ic-red">*</span>:</label>
+                                                    <div class="col-sm-6">
+                                                        
+                                                        <p class="sa-input">
+                                                          <ng-container *ngIf="drLabel == null">{{stockItemDetails.whdrNumber}}
+                                                          </ng-container>
+                                                          <ng-container *ngIf="drLabel != null">{{stockItemDetails?.orNumber}}
+                                                          {{stockItemDetails?.whdrNumber}}
+                                                          </ng-container>
+
+
+
+                                                          </p>
+                                                         
+                                                        
+                                                    </div>
+                                                    <input  type="hidden" class="form-control" formControlName="DRNumber" (input)="onChange($event.target.value)" disabled>
+                                                    
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group row">
+                                                  <label for="" class="col-sm-3 col-form-label sa-input">Requested Delivery Date<span class="ic-red">*</span>:</label>
+                                                    <div class="col-sm-6">
+                                                        <div class="input-group date" id="datetimepicker">
+                                                            <input type="date" class="form-control" formControlName="DeliveryDate" (input)="onChange($event.target.value)">
+                                                            <span class="input-group-addon">
+                                                                <span class="glyphicon glyphicon-calendar"></span>
+                                                            </span>
+
+                                                        </div>
+                                                              <show-errors [control]="showRoomForm.controls.DeliveryDate"></show-errors>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group row">
+                                                    <label for="example-text-input" class="col-sm-4 col-form-label sa-input">Remarks:</label>
+                                                    <div class="col-sm-7">
+                                                        <textarea class="form-control" rows="4" formControlName="Remarks"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <p class="sa-input fb">Item Summary</p>
+                                                <div class="table-responsive table-bordered">
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Item Code</th>
+                                                                <th>Item Name / Size / Tonality</th>
+                                                                <th>Qty</th>
+                                                                <th>Delivery Qty<span class="ic-red">*</span></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody formArrayName="ShowroomDeliveries">
+                                                            <ng-container *ngFor="let oi of ShowroomDeliveries.controls; let i=index"  [formGroupName]="i">
+                                                                <tr *ngIf="stockItemDetails.orderedItems[i].approvedQuantity != 0">
+                                                                    <td>{{stockItemDetails.orderedItems[i].item.code}}</td>
+                                                                    <td>{{stockItemDetails.orderedItems[i].item.name}} / {{stockItemDetails.orderedItems[i].item.size.name}} / {{stockItemDetails.orderedItems[i].item.tonality}}</td>
+                                                                    <td>{{stockItemDetails.orderedItems[i].approvedQuantity}}</td>
+                                                                    <td>
+                                                                        <input class="qty-input form-control" type="number" min="0" onlyNumber formControlName="quantity" value="1" (input)="onChange($event.target.value)">
+                                                                       
+                                                                    </td>
+                                                                    <td>
+                                                                           <show-errors [control]="oi.controls.quantity"></show-errors>
+                                                                    </td>
+                                                                 
+
+
+                                                                </tr>
+                                                            </ng-container>
+                                                    
+                                                        </tbody>
+                                                    </table>  
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                
+                                    <div class="modal-footer">
+                                        <input type="submit" name="" class="btn btn-danger" value="Save" id="submit"  [disabled]="!showRoomForm.valid">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    </div>
+
+                                </form>
+
+                                
+                            </div>
+                            <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                    </div>

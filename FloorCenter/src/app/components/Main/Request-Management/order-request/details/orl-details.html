@@ -1,0 +1,111 @@
+<div *ngIf="orderRequest" class="modal fade" id="details_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-lg">
+        <form [formGroup]="updateRequestForm" (ngSubmit)="onSubmit()">
+      
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel">Trans No. 100001<!-- [Transaction No.] --></h4>
+
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="row">
+                          <label for="" class="col-sm-4 col-form-label sa-input">Transaction:</label>
+                            <div class="col-sm-6">
+                                <p class="sa-input sa-input2">{{orderRequest.id}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                          <label for="" class="col-sm-4 col-form-label sa-input">PO No.:</label>
+                            <div class="col-sm-6">
+                                <p class="sa-input">{{orderRequest.poNumber}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                          <label for="" class="col-sm-4 col-form-label sa-input">Store:</label>
+                            <div class="col-sm-6">
+                                <p class="sa-input">{{orderRequest.storeId}}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="row">
+                          <label for="" class="col-sm-4 col-form-label sa-input">Status:</label>
+                            <div class="col-sm-6">
+                                <p class="sa-input sa-input2">{{orderRequest.requestStatusStr}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                          <label for="" class="col-sm-4 col-form-label sa-input">PO/Request Date:</label>
+                            <div class="col-sm-6">
+                                <p class="sa-input">{{orderRequest.poDate | date: 'MM/dd/yyyy hh:mm:ss'}}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="row">
+                          <label for="" class="col-sm-2 col-form-label sa-input">Remarks:</label>
+                            <div class="col-sm-8">
+                                <p class="sa-input">{{orderRequest.remarks}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive table-bordered table_modal">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Serial No.</th>
+                                        <th>Item Code</th>
+                                        <th>Item Name</th>
+                                        <th>Size</th>
+                                        <th>Tonality</th>
+                                        <th>Qty</th>
+                                        <th>Approved Qty</th>
+                                        <th>Main Office Remarks</th>
+                                    </tr>
+                                </thead>
+                                <tbody formArrayName="requestedItems">
+                                    <tr *ngFor="let item of RequestedItems.controls; let i=index"  [formGroupName]="i">
+                                        <td>{{itemDetail[i].item.id}}</td>
+                                        <td>{{itemDetail[i].item.code}}</td>
+                                        <td>{{itemDetail[i].item.name}}</td>
+                                        <td>{{itemDetail[i].item.size}}</td>
+                                        <td>{{itemDetail[i].item.tonality}}</td>
+                                        <td>{{itemDetail[i].requestedQuantity}}</td>
+                                        <td>
+                                            <input class="form-control qty-input" placeholder="" name="" type="text" formControlName="approvedQuantity">
+                                        </td>
+                                        <td>
+                                            <input class="form-control " placeholder="" name="" type="text" formControlName="approvedRemarks">
+                                        </td>
+                                    </tr>
+                                   
+                                </tbody>
+                            </table>
+                            
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <input type="submit" name="" class="btn btn-danger" value="Save & Close"[disabled]="!updateRequestForm.valid">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+          </form>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

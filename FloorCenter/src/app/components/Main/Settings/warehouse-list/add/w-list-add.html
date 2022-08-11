@@ -1,0 +1,93 @@
+                                <div id="addItems" class="collapse add_new ">
+                                 
+                                                    <form [formGroup]="warehouseForm" (ngSubmit)="addWare()">
+
+<div class="row">
+    <div class="col-md-4">
+
+    <!--<div *ngIf="(warehouseForm.controls.code.dirty || warehouseForm.controls.code.touched) && warehouseForm.controls.code.invalid" class="alert alert-danger errMess">
+                                             Warehouse code is required
+                                                </div>
+                                                    <div *ngIf="(warehouseForm.controls.address.dirty || warehouseForm.controls.address.touched) && warehouseForm.controls.address.invalid" class="alert alert-danger">
+                                                        </div>
+                                             Warehouse address is required
+                                                </div>-->
+                                                
+                                <div class="col-md-12">
+                                            <div *ngIf="statusMessage" class="alert alert-success"> {{statusMessage}}</div >
+                                    <ul *ngFor="let err of errorMessage"> 
+                                        <div class="alert alert-danger">
+                                            {{err}}
+                                        </div>
+                                    </ul>
+                                </div>
+        
+ 
+    </div>
+
+
+
+</div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group row">
+                                              <label for="" class="col-sm-5 col-form-label sa-input">Warehouse Code*</label>
+                                                <div class="col-sm-7">
+                                                    <input class="form-control" type="text" formControlName="code">
+                                                    <show-errors [control]="warehouseForm.controls.code"></show-errors>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-md-8">
+                                            <div class="form-group row">
+                                              <label for="" class="col-sm-3 col-form-label sa-input">Warehouse Name*</label>
+                                                <div class="col-sm-9">
+                                                    <input class="form-control" type="text" formControlName="name">
+                                                     <show-errors [control]="warehouseForm.controls.name"></show-errors>
+
+                                                </div>
+                                               
+                                            </div>
+                                        </div>
+
+                                      
+                                    </div>
+
+
+
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <div class="form-group row">
+                                              <label for="" class="col-sm-1 col-form-label sa-input">Address</label>
+                                                <div class="col-sm-11">
+                                                    <input class="form-control" type="text" formControlName="address">
+                                                    <show-errors [control]="warehouseForm.controls.address"></show-errors>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group row">
+                                              <label for="" class="col-sm-4 col-form-label sa-input">Contact No.</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control" type="text" formControlName="contactNumber">
+                                                        <show-errors [control]="warehouseForm.controls.contactNumber"></show-errors>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="btn-con6">
+                                                <input type="submit" name="" class="btn btn-danger" value="Add" [disabled]="!warehouseForm.valid">
+                                                <button type="button" class="btn btn-danger btn-r" id="cancel" (click)="reset()">Cancel</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                </div>

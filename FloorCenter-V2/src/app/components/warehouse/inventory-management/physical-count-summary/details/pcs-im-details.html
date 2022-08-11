@@ -1,0 +1,96 @@
+                            <div class="modal fade" id="detail_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;" *ngIf="details">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                            <h4 class="modal-title" id="myModalLabel">Item Details</h4>
+
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="row">
+                                                      <label for="" class="col-sm-5 col-form-label sa-input">Serial No.:</label>
+                                                        <div class="col-sm-7">
+                                                            <p class="sa-input"> {{details.serialNumber}} </p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                      <label for="" class="col-sm-5 col-form-label sa-input">Item Code:</label>
+                                                        <div class="col-sm-7">
+                                                            <p class="sa-input"> {{details.code}} </p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                      <label for="" class="col-sm-5 col-form-label sa-input">Name:</label>
+                                                        <div class="col-sm-7">
+                                                            <p class="sa-input"> {{details.itemName}} </p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                      <label for="" class="col-sm-5 col-form-label sa-input">Description:</label>
+                                                        <div class="col-sm-7">
+                                                            <p class="sa-input"> {{details.description}} </p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                      <label for="" class="col-sm-5 col-form-label sa-input">Specification:</label>
+                                                        <div class="col-sm-7">
+                                                            <p class="sa-input"> {{details.tonality}} </p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                      <label for="" class="col-sm-5 col-form-label sa-input">Stock-on-hand:</label>
+                                                        <div class="col-sm-7">
+                                                            <p class="sa-input"> {{details.onHand}} </p>
+                                                        </div>
+                                                    </div>
+                                                    <!--<div class="row">
+                                                      <label for="" class="col-sm-5 col-form-label sa-input">Update Reason:</label>
+                                                        <div class="col-sm-7">
+                                                            <p class="sa-input">Lorem ipsum dolot sit</p>
+                                                        </div> 
+                                                    </div> -->
+                                                    <!--<div class="row">
+                                                      <label for="" class="col-sm-5 col-form-label sa-input">Incoming:</label>
+                                                        <div class="col-sm-7">
+                                                            <p class="sa-input"> {{details.serialNumber}} </p>
+                                                        </div>
+                                                    </div> -->
+                                                    <!--<div class="row">
+                                                      <label for="" class="col-sm-5 col-form-label sa-input">For Return:</label>
+                                                        <div class="col-sm-7">
+                                                            <p class="sa-input"> {{details.serialNumber}} </p>
+                                                        </div>
+                                                    </div> -->
+                                                    <div class="row">
+                                                      <label for="" class="col-sm-5 col-form-label sa-input">Available:</label>
+                                                        <div class="col-sm-7">
+                                                            <p class="sa-input"> {{details.available}} </p>
+                                                        </div>
+                                                    </div>
+                                                    <!--<div class="row">
+                                                      <label for="" class="col-sm-5 col-form-label sa-input">Last Date Counted:</label>
+                                                        <div class="col-sm-7">
+                                                            <p class="sa-input">11/17/2017</p>
+                                                        </div>
+                                                    </div> -->
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group row">
+                                                        <div class="mpic_con3">
+                                                            <!-- //image file here -->
+                                                            <img src="assets/images/sample1.jpg">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <!-- <button type="button" class="btn btn-danger">Save</button> -->
+                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div><!-- /.modal-content -->
+                                </div><!-- /.modal-dialog -->
+                            </div>

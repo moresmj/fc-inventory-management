@@ -1,0 +1,14 @@
+--1. Receive Items at least 1 and 2
+
+insert INTO [WHReceiveDetails] (DateCreated,[ItemId],[Quantity],[WHReceiveId]) 
+SELECT GETDATE(),[Id], 10000,1   FROM [fc-db].[dbo].[Items] where ItemType = 1 AND SerialNumber>2 order by id;
+
+insert into WHStocks([Broken],[DateCreated],[DeliveryStatus],[ItemId],[OnHand]
+	      ,[TransactionType]
+	      ,[WHReceiveDetailId]
+	      ,[WarehouseId])
+	
+	SELECT 0,GETDATE(),1,Items.Id,w.Quantity
+	      ,2
+	      ,w.Id
+      ,1  FROM [Items] inner join [WHReceiveDetails] w on w.ItemId = Items.Id where Items.ItemType = 1 AND Items.SerialNumber>2 and w.WHReceiveId=1;

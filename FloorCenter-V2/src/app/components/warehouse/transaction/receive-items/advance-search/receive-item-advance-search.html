@@ -1,0 +1,112 @@
+     <div class="modal fade" id="advanceSearch" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                        <div class="modal-dialog">
+                        <form [formGroup]="advanceSearchForm" (ngSubmit)="onSearch()">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                    <h4 class="modal-title" id="myModalLabel">Stock Receiving Advanced Search</h4>
+
+                                </div>
+                                <div class="modal-body">
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+
+                               
+                                            <div class="form-group row">
+                                              <label for="" class="col-sm-3 col-form-label sa-input">PO Period From:</label>
+                                                <div class="col-sm-6">
+                                                    <div class="input-group date" id="datetimepicker">
+                                                        <input type="date" class="form-control" id="" formControlName="poDateFrom">
+                                                        <span class="input-group-addon">
+                                                            <span class="glyphicon glyphicon-calendar"></span>
+                                                        </span>
+                                                    </div>
+                                                    <label for="" class="col-form-label sa-input">To</label>
+                                                    <div class="input-group date" id="datetimepicker">
+                                                        <input type="date" class="form-control" id="" formControlName="poDateTo">
+                                                        <span class="input-group-addon">
+                                                            <span class="glyphicon glyphicon-calendar"></span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                              <label for="" class="col-sm-3 col-form-label sa-input">PO No.:</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" class="form-control" name="" formControlName="poNumber">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                              <label for="" class="col-sm-3 col-form-label sa-input">DR Period From:</label>
+                                                <div class="col-sm-6">
+                                                    <div class="input-group date" id="datetimepicker">
+                                                        <input type="date" class="form-control" id="" formControlName="drDateFrom">
+                                                        <span class="input-group-addon">
+                                                            <span class="glyphicon glyphicon-calendar"></span>
+                                                        </span>
+                                                    </div>
+                                                    <label for="" class="col-form-label sa-input">To</label>
+                                                    <div class="input-group date" id="datetimepicker">
+                                                        <input type="date" class="form-control" id="" formControlName="drDateTo">
+                                                        <span class="input-group-addon">
+                                                            <span class="glyphicon glyphicon-calendar"></span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                              <label for="" class="col-sm-3 col-form-label sa-input">DR No.:</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" class="form-control" name="" formControlName="drNumber">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                              <label for="" class="col-sm-3 col-form-label sa-input">Item Name:</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" class="form-control" name="" formControlName="itemName">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                              <label for="" class="col-sm-3 col-form-label sa-input">Received By:</label>
+                                                <div class="col-sm-6">
+                                                    <select class="form-control" formControlName="UserId">
+                                                         <option></option>
+                                                        <option *ngFor="let opt of useridList" value="{{opt.id}}">{{opt.fullName}}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                           <!-- <div class="form-group row">
+                                            <label for="example-text-input" class="col-sm-3 col-form-label sa-input">Origin:</label>
+                                            <div class="date col-sm-6" id="datetimepicker">
+                                                <div class="checkbox s-check">
+                                                    <input id="checkbox2" type="checkbox">
+                                                    <label for="checkbox2">Warehouse</label><br>
+                                                    <input id="checkbox3" type="checkbox">
+                                                    <label for="checkbox3">Inter-company</label><br>
+                                                    <input id="checkbox4" type="checkbox">
+                                                    <label for="checkbox4">Inter-branch</label><br>
+                                                    <input id="checkbox5" type="checkbox">
+                                                    <label for="checkbox5">Returned</label><br>
+                                                </div>
+                                            </div>
+                                        </div> -->
+
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="modal-footer">
+                                      <button type="button" class="btn btn-danger" (click)="onClear()">Clear</button>
+                                    <input type="submit" name="" class="btn btn-danger" value="Search">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal" (click)="onCancel()" >Cancel</button>
+                                </div>
+                            </div>
+                        </form>
+                            <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                    </div>
+                

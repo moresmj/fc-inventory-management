@@ -1,0 +1,124 @@
+            <div class="container-fluid">
+                <!-- breadcrumbs -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                Transaction
+                            </li>
+                            <li class="breadcrumb-item active">Assign DR</li>
+                        </ol>
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <!-- /.row -->
+                
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h2 class="fw-b m-title">Assign DR</h2>
+                    </div>
+                </div>
+                <form>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                            <div class="col-md-6">
+                                            <p class="search_status"><b> {{totalRecordMessage}} </b> {{pageRecordMessage}}</p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="text-right">
+                                                <button type="button" class="btn btn-outline btn-danger" data-toggle="modal" data-target="#advanceSearch">Advanced Search</button>
+                                                <input type="button" name="" class="btn btn-danger" value="Download List" *ngIf="deliveryList.length != 0" (click)="downloadList()">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="table-responsive table-bordered">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Transaction No.</th>
+                                                    <th>Order Type</th>
+                                                    <th>Status</th>
+                                                    <th>Ordered By</th>
+                                                    <th>Ordered To</th>
+                                                    <th>PO No.</th>
+                                                    <th>PO Date</th>
+                                                    <th>Ordered Date</th>
+                                                    <!-- <th>Delivery Option</th> -->
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                
+                                                <tr *ngFor="let delivery of deliveryList">
+                                                    <td> {{ delivery.transactionNo }} </td>
+                                                    <td> {{ delivery.orderTypeStr }} </td>
+                                                    <td> {{ delivery.requestStatusStr }} </td>
+                                                    <td> {{ delivery.orderedBy }} </td>
+                                                    <td> {{ delivery.orderedTo }} </td>
+                                                    <td> {{ delivery.poNumber }} </td>
+                                                    <td> {{ delivery.poDate | date : "mediumDate" }} </td>
+                                                    <td> {{ delivery.orderedDate | date : "mediumDate" }} </td>
+    
+                                                    <td>
+                                                        <button type="button" [ngClass]="(delivery.whdrNumber == null)  ? 'btn btn-danger btn' : 'btn btn-danger btn-r'" data-toggle="modal" data-target="#details_modal" (click)="onBtnUpdateClick(delivery)"> {{ delivery.whdrNumber == null ? "Update" : "Details" }}</button>
+                                                    </td>
+                                                </tr>
+                                     <!--
+                                                <tr>
+                                                    <td>P000001</td>
+                                                    <td>For Client</td>
+                                                    <td>Approved</td>
+                                                    <td>Angeles</td>
+                                                    <td>Lusterplus</td>
+                                                    <td>AN-003678</td>
+                                                    <td>2/15/2018</td>
+                                                    <!-- <td>Pick-up</td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#details_modal" (click)="onBtnUpdateClick()">Detail</button>
+                                                    </td>
+                                                </tr>
+                                                 -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- advance search modal-->
+                            <app-assign-dr-advanced-search (updatePage)="filterRecordWithParam($event)"> </app-assign-dr-advanced-search> 
+
+                            <!-- delivery update modal -->
+                            <app-assign-dr-details [showSaveBtn]="showSaveBtn" [isClient]="isClient" [delivery]="delivery" [updateForm]="updateForm" (updatePage)="reloadRecord($event)">
+                            </app-assign-dr-details>
+
+                            
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        
+                        <div class="col-md-12">
+
+                            <!-- <app-pager [module]="module" (displayPageList)="getDeliveries($event)"></app-pager> -->
+                            <app-pagernew [module]="module" [Keyword]="keyWord" (displayPageList)="getDeliveries($event)"></app-pagernew>
+
+                            <div class="row">
+                                <div class="col-md-12 btn-con6">
+                                    <input type="button" name="" *ngIf="deliveryList.length != 0" class="btn btn-danger" value="Download List" (click)="downloadList()">
+                                </div>
+                            </div>
+
+                        </div> <!-- col-md-12 -->
+                    </div>
+
+
+                </form>
+
+
+            </div>
+            <!-- /.container-fluid -->

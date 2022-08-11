@@ -1,0 +1,203 @@
+           <div class="container-fluid">
+                <!-- breadcrumbs -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                              <a href="#">Return/Breakage</a>
+                            </li>
+                            <li class="breadcrumb-item active">Return List</li>
+                        </ol>
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <!-- /.row -->
+                
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h2 class="fw-b m-title m-title2">Return List</h2>
+                    </div>
+                </div>
+                    <div class="line">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="form-group row">
+                                  <label for="" class="col-sm-4 col-form-label sa-input">Request No.:</label>
+                                    <div class="col-sm-7">
+                                        <input class="form-control" type="text">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4">
+                                <div class="form-group row">
+                                    <label for="example-text-input" class="col-sm-4 col-form-label sa-input"> Request Date:</label>
+                                    <div class="col-sm-7">
+                                        <div class="input-group date" id="datetimepicker">
+                                            <input type="date" class="form-control">
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                        </div>
+                                        <label for="" class="col-form-label sa-input">To</label>
+                                        <div class="input-group date" id="datetimepicker">
+                                            <input type="date" class="form-control">
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                            <div class="form-group row">
+                                <label for="example-text-input" class="col-sm-4 col-form-label sa-input"></label>
+                                <div class="date col-sm-7" id="datetimepicker">
+                                    <div class="checkbox">
+                                        <input id="checkbox2" type="checkbox">
+                                        <label for="checkbox2">Pending</label><br>
+                                        <input id="checkbox3" type="checkbox">
+                                        <label for="checkbox3">Processing</label><br>
+                                        <input id="checkbox5" type="checkbox">
+                                        <label for="checkbox5">Delivered</label><br>
+                                        <input id="checkbox6" type="checkbox">
+                                        <label for="checkbox6">Cancelled</label><br>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group row btn-con7">
+                                    <input type="submit" name="" class="btn btn-danger" value="Search">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <p class="search_status">3 Records Found</p>
+                                        </div>
+                                        
+                                        <div class="col-md-6">
+                                            <div class="text-right">
+                                                <!-- <button type="button" class="btn btn-outline btn-danger" data-toggle="modal" data-target="#advanceSearch">Advanced Search</button> -->
+                                                <input type="button" name="" class="btn btn-danger" value="Download List">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="table-responsive table-bordered">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Request No.</th>
+                                                    <th>Return To</th>
+                                                    <th>Status</th>
+                                                    <th>Request Date</th>
+                                                    <th>Destination</th>
+                                                    <th>Item Code</th>
+                                                    <th>Serial</th>
+                                                    <th>Item Name</th>
+                                                    <th>Size</th>
+                                                    <th>Tonality</th>
+                                                    <th>Qty</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>P000001</td>
+                                                    <td>Store</td>
+                                                    <td>Pending</td>
+                                                    <td>1/21/1018</td>
+                                                    <td>Store</td>
+                                                    <td>AK6004C</td>
+                                                    <td>1233122</td>
+                                                    <td>Superblack 3060</td>
+                                                    <td>30x60</td>
+                                                    <td>1709111</td>
+                                                    <td>60</td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#details_modal">Details</button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>P000002</td>
+                                                    <td>Warehouse</td>
+                                                    <td>Pending</td>
+                                                    <td>1/21/1018</td>
+                                                    <td>Warehouse</td>
+                                                    <td>AK6004</td>
+                                                    <td>2152345</td>
+                                                    <td>Superblack 4</td>
+                                                    <td>60x60</td>
+                                                    <td>1709212</td>
+                                                    <td>50</td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#details_modal">Details</button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>P000003</td>
+                                                    <td>Warehouse</td>
+                                                    <td>Pending</td>
+                                                    <td>1/21/1018</td>
+                                                    <td>Store</td>
+                                                    <td>ABA6200C</td>
+                                                    <td>2432435</td>
+                                                    <td>Aspen Shine 33 Light</td>
+                                                    <td>30x30</td>
+                                                    <td>1239111</td>
+                                                    <td>100</td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#details_modal">Details</button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>P000004</td>
+                                                    <td>Warehouse</td>
+                                                    <td>Pending</td>
+                                                    <td>1/21/1018</td>
+                                                    <td>Warehouse</td>
+                                                    <td>AC-010C</td>
+                                                    <td>2345435</td>
+                                                    <td>SPECIAL ORDER</td>
+                                                    <td>30x60</td>
+                                                    <td>170009</td>
+                                                    <td>150</td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#details_modal">Details</button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="btn-con">
+                                <input type="button" name="" class="btn btn-danger" value="Download List">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--Details Component-->
+                    <app-rb-details></app-rb-details>
+                    
+            </div>
+            <!-- /.container-fluid -->

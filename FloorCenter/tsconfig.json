@@ -1,0 +1,63 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "es5",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "lib": [
+      "es2017",
+      "dom"
+    ],
+    "baseUrl" : "src",
+    "paths" :{
+      "@assets/*" : ["assets/*"],
+      "@environments/*" : ["environments/*"],
+      "@baseComponents/*" : ["app/components/base/*"],
+      "@components/*" : ["app/components/*"],
+      "@pager/*" : ["app/components/Pager/*"],
+      "@directives/*" : ["app/library/directives/*"],
+      "@filters/*" : ["app/library/filters/*"],
+      "@validators/*" : ["app/library/validators/*"],
+      "@models/*" :["app/models/*"],
+      "@m_models/*" : ["app/models/main/*"],
+      "@s_models/*" : ["app/models/store/*"],
+      "@w_models/*" : ["app/models/warehouse/*"],
+      "@modules/*" : ["app/modules/*"],
+      "@services/*" : ["app/services/*"],
+      "@pageModules/*" : ["app/modules/pages/*"],
+      "@pageRoutes/*" : ["app/modules/routing/pages/*"],
+      "@main/*" : ["app/components/Main/*"],
+      "@m_srm/*" : ["app/components/Main/Stock-Receiving-Management/*"],
+      "@m_svm/*" : ["app/components/Main/Sales-Volume-Management/*"],
+      "@m_stm/*" : ["app/components/Main/Stock-Transfer-Management/*"],
+      "@m_drm/*" : ["app/components/Main/Delivery-Request-Management/*"],
+      "@m_im/*" : ["app/components/Main/Inventory-Management/*"],
+      "@m_pm/*" : ["app/components/Main/Product-Management/*"],
+      "@m_um/*" : ["app/components/Main/User-Management/*"],
+      "@m_rm/*" : ["app/components/Main/Request-Management/*"],
+      "@m_settings/*" : ["app/components/Main/Settings/*"],
+      "@store/*" : ["app/components/Store/*"],
+      "@s_stock_req/*" : ["app/components/Store/Stock-Request/*"],
+      "@s_stock_rec/*" : ["app/components/Store/Stock-Receiving/*"],
+      "@s_sar/*" : ["app/components/Store/Sales-and-Releasing/*"],
+      "@s_srm/*" : ["app/components/Store/Stock-Receiving-Management/*"],
+      "@s_svm/*" : ["app/components/Store/Sales-Volume-Management/*"],
+      "@s_stm/*" : ["app/components/Store/Stock-Transfer-Management/*"],
+      "@s_drm/*" : ["app/components/Store/Delivery-Request/*"],
+      "@s_rb/*" : ["app/components/Store/Return-Breakage/*"],
+      "@s_im/*" : ["app/components/Store/Inventory-Management/*"],
+      "@s_um/*" : ["app/components/Store/User-Management/*"],
+      "@s_settings/*" : ["app/components/Store/Settings/*"],
+      "@warehouse/*" : ["app/components/Warehouse/*"],
+      "@w_srm/*" : ["app/components/Warehouse/Stock-Recieving-Management/*"],
+      "@w_im/*" : ["app/components/Warehouse/Inventory-Management/*"]
+    }
+  }
+}

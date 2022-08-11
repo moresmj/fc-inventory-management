@@ -1,0 +1,47 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "es5",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "lib": [
+      "es2017",
+      "dom"
+    ],
+    "baseUrl" : "src",
+   "paths" :{
+      "@assets/*" : ["assets/*"],
+      "@components/*" : ["app/components/*"],
+      "@baseComponents/*" : ["app/components/base/*"],
+      "@common/*" : ["app/components/common/*"],
+      "@logistics/*" : ["app/components/logistics/*"],
+      "@l_deliveries/*" : ["app/components/logistics/deliveries/*"],
+      "@main/*" : ["app/components/main/*"],
+      "@m_transaction/*" : ["app/components/main/transaction/*"],
+      "@m_im/*" : ["app/components/main/inventory-management/*"],
+      "@m_reports/*" : ["app/components/main/reports/*"],     
+      "@marketing/*" : ["app/components/marketing/*"],
+      "@store/*" : ["app/components/store/*"],
+      "@s_transaction/*" : ["app/components/store/transaction/*"],
+      "@s_im/*" : ["app/components/store/inventory-management/*"],
+      "@warehouse/*" : ["app/components/warehouse/*"],
+      "@w_transaction/*" : ["app/components/warehouse/transaction/*"],
+      "@w_im/*" : ["app/components/warehouse/inventory-management/*"],
+      "@library/*" : ["app/library/*"],
+      "@directives/*" : ["app/library/directives/*"],
+      "@filters/*" : ["app/library/filters/*"],
+      "@validators/*" : ["app/library/validators/*"],
+      "@models/*" :["app/models/*"],
+      "@modules/*" : ["app/modules/*"],
+      "@services/*" : ["app/services/*"]
+    }
+  }
+}
+    

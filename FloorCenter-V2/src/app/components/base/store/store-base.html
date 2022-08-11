@@ -1,0 +1,256 @@
+<div *ngIf="loading" class="loader" ><img src="assets/images/loader.gif"></div>
+
+    <div id="wrapper">
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand navbar-brand2" routerLink="/Store/dashboard">
+                    <img src="assets/images/logo1.png"><span class="store-title">Inventory Management</span>
+                </a>
+            </div>
+            <!-- /.navbar-header -->
+
+            <ul class="nav navbar-top-links navbar-right">
+                <li class="dropdown notif-bg" *ngIf="notification">
+                    <a class="dropdown-toggle notif-a" data-toggle="dropdown" href="#" >
+                        <span>
+                            <i class="fa fa-bell fa-1x fa-fw"></i> <span class="btn btn-danger btn-circle2" *ngIf="notification.notificationsTotal > 0">{{ notification.notificationsTotal }}</span> 
+                        </span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-notif pull-left" *ngIf="notification.notificationsTotal > 0">
+                        <li *ngIf="notification.pendingOrdersTotal > 0">
+                            <a  routerLink="/Store/dashboard"><i class="fa fa-exchange fa-fw"></i> Pending Orders  <span class="ic-red"> {{ notification.pendingOrdersTotal }}</span></a>
+                        </li>
+                        <li *ngIf="notification.pendingDeliveriesTotal > 0">
+                            <a  routerLink="/Store/dashboard"><i class="fa fa-clipboard fa-fw"></i> Pending Deliveries <span class="ic-red">{{ notification.pendingDeliveriesTotal }}</span></a>
+                        </li>
+                        <li *ngIf="notification.waitingDeliveriesTotal > 0">
+                            <a  routerLink="/Store/dashboard"><i class="fa fa-clipboard fa-fw"></i> Waiting Deliveries <span class="ic-red">{{ notification.waitingDeliveriesTotal }}</span></a>
+                        </li>
+                        <li *ngIf="notification.waitingForPickUpTotal > 0">
+                            <a  routerLink="/Store/dashboard"><i class="fa fa-clipboard fa-fw"></i> Waiting For Pickup <span class="ic-red">{{ notification.waitingForPickUpTotal }}</span></a>
+                        </li>
+                        <li *ngIf="notification.pendingSalesTotal > 0">
+                            <a  routerLink="/Store/dashboard"><i class="fa fa-clipboard fa-fw"></i> Pending Sales <span class="ic-red">{{ notification.pendingSalesTotal }}</span></a>
+                        </li>
+                        <li *ngIf="notification.pendingToReceiveReturnsTotal > 0">
+                            <a  routerLink="/Store/dashboard"><i class="fa fa-clipboard fa-fw"></i> Pending To Receive <span class="ic-red">{{ notification.pendingToReceiveReturnsTotal }}</span></a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-user -->
+                </li>
+                <li class="dropdown notif-bg" *ngIf="notification2">
+                    <a class="dropdown-toggle notif-a" data-toggle="dropdown" href="#">
+                        <span>
+                            <i class="fa fa-bell fa-1x fa-fw"></i> <span class="btn btn-danger btn-circle2" *ngIf="notification2.notificationsTotal > 0">{{ notification2.notificationsTotal }}</span> 
+                        </span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-notif pull-left" *ngIf="notification2.notificationsTotal > 0">
+                        <li *ngIf="notification2.ordersWaitingForDeliveriesTotal > 0">
+                            <a  routerLink="/Store/orders" (click)="onSearch2(0)"><i class="fa fa-exchange fa-fw"></i> Orders Waiting For Delivery  <span class="ic-red"> {{ notification2.ordersWaitingForDeliveriesTotal }}</span></a>
+                        </li>
+                        <!-- <li *ngIf="notification2.ordersWaitingForAddDeliveriesTotal > 0">
+                            <a  routerLink="/Store/orders" (click)="onSearch2(1)"><i class="fa fa-exchange fa-fw"></i> Order Waiting For Add Delivery  <span class="ic-red"> {{ notification2.ordersWaitingForAddDeliveriesTotal }}</span></a>
+                        </li> -->
+                        <li *ngIf="notification2.pendingBranchOrdersApprovalTotal > 0">
+                            <a  routerLink="/Store/branch-orders"><i class="fa fa-clipboard fa-fw"></i> Pending Branch Order Approval <span class="ic-red">{{ notification2.pendingBranchOrdersApprovalTotal }}</span></a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-user -->
+                </li>
+                <li *ngIf="storeId" class="nav-item branch-name select_branch">
+                    <div class="">
+                        <select class="form-control" id="branch" (change)="setStoreSelected($event.currentTarget.value)">
+                            <option *ngFor="let store of storesHandled" [selected]="store.id == storeId" [value]="store.id">{{ store.name }} </option>
+                        </select>
+                    </div>
+                </li>
+                <li *ngIf="!!!storeId" class="nav-item branch-name">
+                    {{ assignedAt }}
+                </li>
+                <!-- <li class="nav-item">
+                    <form class="form-inline my-2 my-lg-0 mr-lg-2">
+                        <div class="input-group">
+                          <input class="form-control" type="text" placeholder="Search for...">
+                          <span class="input-group-btn">
+                            <button class="btn btn-danger" type="button">
+                              <i class="fa fa-search"></i>
+                            </button>
+                          </span>
+                        </div>
+                    </form>
+                </li> -->
+                <!-- /.dropdown -->
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li><a style="display: none" href="profile.html"><i class="fa fa-user fa-fw"></i> User Profile</a>
+                        </li>
+                        <li><a style="display: none" href="settings.html"><i class="fa fa-gear fa-fw"></i> Settings</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="../login" (click)="logoutUser()"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-user -->
+                </li>
+                <!-- /.dropdown -->
+            </ul>
+            <!-- /.navbar-top-links -->
+
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu">
+                        <li>
+                            <h4 class="mtext_user">Welcome, {{ username }}!</h4>
+                            <!-- /input-group -->
+                        </li>
+                        <li class="active">
+                            <a routerLink="dashboard"><i class="fa fa-dashboard fa-fw ic-red"></i> Dashboard</a>
+                        </li>
+                        <li>
+                            <a href="stock_request.html"><i class="fa fa-list-alt fa-fw ic-red"></i> Transactions</a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a routerLink="orders" routerLinkActive="active"><i class="fa fa-list-ul fa-fw ic-red"></i> Orders</a>
+                                </li>
+                                <li >
+                                    <a routerLink="branch-orders" routerLinkActive="active" style="font-size: 13px;"><i class="fa fa-code-fork fa-fw ic-red"></i> Interbranch/Intercompany</a>
+                                </li>
+                                <li >
+                                    <a  routerLink="advance_order_list" routerLinkActive="active"><i class="fa fa-code-fork fa-fw ic-red"></i> Advance Order List </a>
+                                </li>
+                                <!--
+                                <li>
+                                    <a routerLink="releasing" routerLinkActive="active"><i class="fa fa-arrow-circle-up fa-fw ic-red"></i> Releasing</a>
+                                </li>-->
+                                <li>
+                                    <a><i class="fa fa-arrow-circle-up fa-fw ic-red"></i> Releasing</a>
+                                    <ul class="nav nav-third-level">
+                                        <li style="display: none"><a routerLink="releasing" routerLinkActive="active">Releasing Old</a></li>
+                                        <li><a routerLink="for-client-releasing" routerLinkActive="active">For Client</a></li>
+                                       <li><a routerLink="sales-order-releasing" routerLinkActive="active">Sales Order</a></li>
+                                       <li><a routerLink="same-day-sales-releasing" routerLinkActive="active">Same Day Sales</a></li>
+                                       <li><a routerLink="transfer-releasing" routerLinkActive="active">Transfer</a></li>  
+                                       <li><a routerLink="returns-releasing" routerLinkActive="active">Returns</a></li>  
+
+
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a routerLink="sales" routerLinkActive="active"><i class="fa fa-truck fa-fw ic-red"></i> Sales Orders </a>
+                                </li>
+                                <li>
+                                    <a routerLink="returns" routerLinkActive="active"><i class="fa fa-sign-in fa-fw ic-red"></i> Returns</a>
+                                </li>
+                                <li>
+                                    <a><i class="fa fa-arrow-circle-up fa-fw ic-red"></i> Receive</a>
+                                <ul class="nav nav-third-level">
+                                    <li ><a routerLink="receive-items" routerLinkActive="active">Orders</a></li>
+                                    <li ><a routerLink="returns-receive-items" routerLinkActive="active">Returns</a></li>
+                                </ul>
+                                   <!-- <a routerLink="receive-items" routerLinkActive="active"><i class="fa fa-arrow-circle-down fa-fw ic-red"></i> Receive Items</a>-->
+                                </li>
+                    
+                                <!-- <li>
+                                    <a href="inquire_list.html"><i class="fa fa-pie-chart fa-fw ic-red"></i> Inquire</a>
+                                </li> -->
+                            </ul>
+                        </li>
+                        <!-- <li>
+                            <a href="stock_receiving.html"><i class="fa fa-pie-chart fa-fw ic-red"></i> Stock Receiving</a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="receive_registration.html">Registration</a>
+                                </li>
+                                <li>
+                                    <a href="receive_incoming.html">Receive From Incoming</a>
+                                </li>
+                                <li>
+                                    <a href="receive_list.html">Received List</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="sales_management.html"><i class="fa fa-money fa-fw ic-red"></i> Sales and Releasing</a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="sales_registration.html">Registration</a>
+                                </li>
+                                <li>
+                                    <a href="releasing_registration.html">Releasing Registration</a>
+                                </li>
+                                <li>
+                                    <a href="sales_list.html">Released List</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="warehouse_request.html"><i class="fa fa-truck fa-fw ic-red"></i> Delivery Request</a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="request_registration.html">Request Registration</a>
+                                </li>
+                                <li>
+                                    <a href="request_list.html">Request List</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="return_request.html"><i class="fa fa-exchange fa-fw ic-red"></i> Return/Breakage</a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="return_registration.html">Registration</a>
+                                </li>
+                                <li>
+                                    <a href="return_list.html">Return/Breakage List</a>
+                                </li>
+                            </ul>
+                        </li> -->
+                        <li>
+                            <a href="inventory_management.html"><i class="fa fa-table fa-fw ic-red"></i> Inventory Management</a>
+                            <ul class="nav nav-second-level">
+                                <li >
+                                    <a routerLink="inventory_list" routerLinkActive="active"><i class="fa fa-search fa-fw ic-red"></i> List/Search</a>
+                                </li>
+                                <li>
+                                  <a routerLink="register-store-physical-count" routerLinkActive="active"><i class="fa fa-upload fa-fw ic-red"></i> Register Physical Count</a>
+                                </li>
+                                <li >
+                                    <a routerLink="import-physical-count" routerLinkActive="active"><i class="fa fa-upload fa-fw ic-red"></i> Import Physical Count List</a>
+                                </li>
+                                <li><a routerLink="pc_summary_list" routerLinkActive="active"><i class="fa fa-list fa-fw ic-red"></i>Physical Count Summary</a></li>
+                            </ul>
+                        </li>
+                        <!-- <li>
+                            <a href="user_management.html"><i class="fa fa-user fa-fw ic-red"></i>User Management</a>
+                        </li>
+                        <li>
+                            <a href="settings.html"><i class="fa fa-gear fa-fw ic-red"></i> Settings</a>
+                        </li> -->
+                    </ul>
+                </div>
+                <!-- /.sidebar-collapse -->
+            </div>
+            <!-- /.navbar-static-side -->
+        </nav>
+
+        <!-- Page Content -->
+        <div id="page-wrapper">
+            
+            <router-outlet></router-outlet>
+        
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->

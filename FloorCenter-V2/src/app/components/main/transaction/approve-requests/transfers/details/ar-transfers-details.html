@@ -1,0 +1,165 @@
+<div class="modal fade" id="details_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;" *ngIf="updateForm">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h4 class="modal-title" id="myModalLabel"> {{ details.transactionNo }} </h4>
+
+                        </div>
+                        <div class="alert alert-success" style="text-align: center" *ngIf="successMessage">
+                            <p>  {{ successMessage }} </p>
+                        </div>
+                        <div class="alert alert-danger" style="text-align: center" *ngIf="errorMessage">
+                            <p *ngFor="let err of errorMessage"> {{ err }} </p>
+                        </div>
+                        <form [formGroup]="updateForm" (ngSubmit)="onSubmit()">
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="row">
+                                            <label for="" class="col-sm-4 col-form-label sa-input">Transaction No.:</label>
+                                            <div class="col-sm-6">
+                                                <p class="sa-input sa-input2">{{ details.transactionNo }}</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <label for="" class="col-sm-4 col-form-label sa-input">PO No.:</label>
+                                            <div class="col-sm-6">
+                                                <p class="sa-input">{{ details.poNumber }}</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <label for="" class="col-sm-4 col-form-label sa-input">Ordered By:</label>
+                                            <div class="col-sm-6">
+                                                <p class="sa-input">{{ details.orderedBy }}</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <label for="" class="col-sm-4 col-form-label sa-input">Customer:</label>
+                                            <div class="col-sm-6">
+                                                <p class="sa-input">{{ details.clientName }} </p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <label for="" class="col-sm-4 col-form-label sa-input"> {{ details.isInterbranch ? "TOR No." : "SI No." }}:</label>
+                                            <div class="col-sm-6">
+                                                <p class="sa-input">{{ details.isInterbranch ?  details.orNumber : details.siNumber }}</p>
+                                            </div>
+                                        </div>
+                                        <div class="row" *ngIf="!details.isInterbranch">
+                                            <label for="" class="col-sm-4 col-form-label sa-input"> Store DR No.:</label>
+                                            <div class="col-sm-6">
+                                                <p class="sa-input">{{ details.whdrNumber }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="row">
+                                            <label for="" class="col-sm-4 col-form-label sa-input">Status:</label>
+                                            <div class="col-sm-6">
+                                                <p class="sa-input sa-input2">{{ details.requestStatusStr }}</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="row">
+                                            <label for="" class="col-sm-4 col-form-label sa-input">Ordered Date:</label>
+                                            <div class="col-sm-6">
+                                                <p class="sa-input">{{ details.poDate | date : "mediumDate" }}</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <label for="" class="col-sm-4 col-form-label sa-input">Delivery Mode:</label>
+                                            <div class="col-sm-6">
+                                                <p class="sa-input">{{ details.deliveryTypeStr }}</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <label for="" class="col-sm-4 col-form-label sa-input">Payment Mode:</label>
+                                            <div class="col-sm-6">
+                                                <p class="sa-input">{{ details.paymentModeStr }} </p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <label for="" class="col-sm-4 col-form-label sa-input">Remarks:</label>
+                                            <div class="col-sm-6">
+                                                <p class="sa-input">{{ details.remarks }}</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <label for="" class="col-sm-4 col-form-label sa-input">Sales Agent:</label>
+                                            <div class="col-sm-6">
+                                                <p class="sa-input">{{ details.salesAgent }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <br />
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="table-responsive table-bordered">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Serial No.</th>
+                                                        <th>Item Code</th>
+                                                        <th>Item Name</th>
+                                                        <th>Size</th>
+                                                        <th>Tonality</th>
+                                                        <th>Qty</th>
+                                                        <th>Approved Qty<span class="ic-red">*</span></th>
+                                                        <th>Main Office Remarks</th>
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody  *ngIf="details.requestStatus != 2">
+                                                    <tr *ngFor="let oi of details.orderedItems">
+                                                        <td> {{ oi.serialNumber }} </td>
+                                                        <td> {{ oi.code }} </td>
+                                                        <td> {{ oi.itemName }} </td>
+                                                        <td> {{ oi.sizeName }} </td>
+                                                        <td> {{ oi.tonality }} </td>
+                                                        <td> {{ oi.requestedQuantity }} </td>
+                                                        <td> {{ oi.approvedQuantity }} </td>
+                                                        <td> {{ oi.approvedRemarks }} </td>
+                                                    </tr>
+                                                </tbody>
+
+                                                <tbody  *ngIf="details.requestStatus == 2" formArrayName="transferredItems">
+                                                    <tr *ngFor="let item of transferredItems.controls; let i=index" [formGroupName]="i" >
+                                                        <td> {{ details.orderedItems[i].serialNumber }} </td>
+                                                        <td> {{ details.orderedItems[i].code }} </td>
+                                                        <td> {{ details.orderedItems[i].itemName }} </td>
+                                                        <td> {{ details.orderedItems[i].sizeName }} </td>
+                                                        <td> {{ details.orderedItems[i].isTonalityAny == true ? "ANY /" + details.orderedItems[i].tonality : details.orderedItems[i].tonality }} </td>
+                                                        <td> {{ details.orderedItems[i].requestedQuantity }} </td>
+                                                        <td>
+                                                            <input class="form-control " min="0" formControlName="approvedQuantity" onlyNumber type="number">
+                                                            <show-errors [control]="item.controls.approvedQuantity"></show-errors>
+                                                        </td>
+                                                        <td>
+                                                            <input class="form-control " formControlName="approvedRemarks" type="text">
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <input type="button" id="btnCancel" class="btn btn-danger" value="Cancel Transfer" (click)="onCancel()" *ngIf="details.requestStatus == 2"  [disabled]="!updateForm.valid" style="float: left;">
+                                <input type="submit" id="btnSave" class="btn btn-danger" value="Save" *ngIf="details.requestStatus == 2"  [disabled]="!updateForm.valid">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>

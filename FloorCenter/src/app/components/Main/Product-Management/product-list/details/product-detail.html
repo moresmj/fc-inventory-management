@@ -1,0 +1,107 @@
+    <!-- details modal -->
+    <div class="modal fade" id="product_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;" *ngIf="updateItemForm">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="myModalLabel">Item Details</h4>
+
+                    </div>
+<div *ngIf="errorMessage">
+    <ul *ngFor="let err of errorMessage">
+        <div class="alert alert-danger">
+            {{err}}
+        </div>
+    </ul>
+  
+</div>
+<div *ngIf="statusMessage" class="alert alert-success">
+                                               {{statusMessage}}
+    </div >
+                    <form [formGroup]="updateItemForm" (ngSubmit)="onSubmit()">
+
+
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="" class="col-sm-3 col-form-label sa-input">Serial Number:*</label>
+                                    <div class="col-sm-9">
+                                        <input class="form-control sv-input" type="text" placeholder="Serial Number" formControlName="SerialNumber">
+                                    </div>
+                                    <show-errors [control]="updateItemForm.controls.SerialNumber"></show-errors>
+                                </div>
+                             
+                                <div class="form-group">
+                                  <label for="" class="col-sm-3 col-form-label sa-input">Item Code:</label>
+                                    <div class="col-sm-9">
+                                        <input class="form-control sv-input" type="text" formControlName="Code">
+                                    </div>
+                                      <show-errors [control]="updateItemForm.controls.Code"></show-errors>
+                                </div>
+                                <div class="form-group">
+                                  <label for="" class="col-sm-3 col-form-label sa-input">Item Name:</label>
+                                    <div class="col-sm-9">
+                                        <input class="form-control sv-input" type="text"  formControlName="Name">
+                                    </div>
+                                      <show-errors [control]="updateItemForm.controls.Name"></show-errors>
+                                </div>
+                                <div class="form-group">
+                                  <label for="" class="col-sm-3 col-form-label sa-input">Description:</label>
+                                    <div class="col-sm-9">
+                                        <input class="form-control sv-input" type="text" formControlName="Description">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                  <label for="" class="col-sm-3 col-form-label sa-input">Size:</label>
+                                    <div class="col-sm-9 modal-icon">
+                                        <select class="form-control" formControlName="SizeId">
+                                            <option></option>
+                                                        <option *ngFor="let opt of sizeList" value="{{opt.id}}">{{opt.name}}</option>
+                                        </select>
+                                    </div>
+                                      <show-errors [control]="updateItemForm.controls.SizeId"></show-errors>
+                                </div>
+                                <div class="form-group">
+                                  <label for="" class="col-sm-3 col-form-label sa-input">Tonality:</label>
+                                    <div class="col-sm-9">
+                                        <input class="form-control sv-input" type="text" formControlName="Tonality">
+                                    </div>
+                                      <show-errors [control]="updateItemForm.controls.Tonality"></show-errors>
+                                </div>
+                                <div class="form-group">
+                                  <label for="" class="col-sm-3 col-form-label sa-input">Image</label>
+                                    <div class="col-sm-9">
+                                        <div class="input-group">
+                                            <label class="input-group-btn">
+                                                <span class="btn btn-default">
+                                                    Select files <input type="file" style="display: none;" multiple="">
+                                                </span>
+                                            </label>
+                                            <input type="text" class="form-control" readonly="">
+                                        </div>
+                                        <div class="image-con">
+                                            <div class="mpic_con3">
+                                                <!-- //image file here -->
+                                                <img src="../images/sample1.jpg">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" name="" class="btn btn-danger" value="Save" [disabled]="!updateItemForm.valid">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+                </div>
+                 
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>

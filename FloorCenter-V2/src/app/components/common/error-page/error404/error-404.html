@@ -1,0 +1,68 @@
+  <!--<div class="container">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <div class="login-panel panel panel-default">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <div class="m-logo">
+                                <img src="assets/images/logoX130.png"> 
+                            </div>
+                        </div>
+                       
+                            <fieldset>
+                                
+                           
+                               
+                                <div align="center">
+                                    <div *ngIf="redirectTo">
+                                        <div class="alert alert-danger">
+                                            <p align="center">You are not authorize to access this page</p>
+                                        </div>
+                                        <a href="{{redirectTo}}">Go back to Page assigned</a>
+                                    </div>
+                                    <div *ngIf="redirectTo == null">
+                                        <div class="alert alert-danger">
+                                            <p align="center">Your session has expired. Please login to continue.</p>
+                                        </div>
+                                        <a href="login" class="btn btn-md btn-danger btn-block">Back to Login</a> 
+                                    </div>
+                                 
+                                </div>
+                              
+                            </fieldset>
+                   
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+
+
+ Page Content -->
+       
+            <div class="container-fluid">
+                <!-- breadcrumbs -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="error">
+                        
+                                    <h1>404</h1>
+                                    <h4>Page not found</h4>
+                                    <p>The page you are looking for doesn't exist or an other error occurred.<br>
+                                    </p>
+                                     
+                                        <button (click)="goBack()" class="btn btn-danger">Go Back<i class="fa fa-angle-right"></i></button> 
+                         
+                         
+                        </div>
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <!-- /.row -->
+
+
+
+
+            </div>
+            <!-- /.container-fluid -->
+  

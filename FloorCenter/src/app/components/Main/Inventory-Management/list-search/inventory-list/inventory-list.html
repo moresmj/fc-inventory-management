@@ -1,0 +1,189 @@
+<div class="container-fluid">
+
+ <!-- breadcrumbs -->
+   <div class="row">
+                    <div class="col-lg-12">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                              <a href="#">Inventory Management</a>
+                            </li>
+                            <li class="breadcrumb-item active">Products List</li>
+                        </ol>
+                    </div>
+                    <!-- /.col-lg-12 -->
+</div>
+ <!-- breadcrumbs end -->
+
+      <div class="row">
+                    <div class="col-lg-12">
+                        <h2 class="fw-b m-title">Products List</h2> 
+                        <form class="form my-2 my-lg-0 mr-lg-2 search-body">
+                            <div class="input-group">
+                              <input class="form-control search-input" type="text" placeholder="Search">
+                              <span class="input-group-btn">
+                                <button class="btn btn-danger btn-sr" type="button">
+                                  <i class="fa fa-search"></i>
+                                </button>
+                              </span>
+                            </div>
+                        </form>
+                        
+                        <form>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <p class="search_status">4 Records Found</p>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="text-right">
+                                                        <input type="submit" name="" class="btn btn-danger" value="Download">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="panel-body">
+                                            <div class="table-responsive table-bordered">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Item Code</th>
+                                                            <th>Serial No.</th>
+                                                            <th>Item Name</th>
+                                                            <th>Size</th>
+                                                            <th>Tonality</th>
+                                                            <th>Date Received</th>
+                                                            <th>On-hand</th>
+                                                            <th>For Delivery</th>
+                                                            <th>For Pick-up</th>
+                                                            <th></th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>AK6004C</td>
+                                                            <td>1233122</td>
+                                                            <td>Superblack 3060 </td>
+                                                            <td>30x60</td>
+                                                            <td>1709111</td>
+                                                            <td>12/15/2017</td>
+                                                            <td>150</td>
+                                                            <td>100</td>
+                                                            <td>20</td>
+                                                            <td>
+                                                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#detail_modal">Detail</button>
+                                                            </td>
+                                                            <td>
+                                                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#history_modal">Stock History</button>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>AK6004</td>
+                                                            <td>2152345</td>
+                                                            <td>Superblack 4 </td>
+                                                            <td>60x60</td>
+                                                            <td>1709212</td>
+                                                            <td>12/16/2017</td>
+                                                            <td>50</td>
+                                                            <td></td>
+                                                            <td>20</td>
+                                                            <td>
+                                                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#detail_modal">Detail</button>
+                                                            </td>
+                                                            <td>
+                                                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#history_modal">Stock History</button>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>ABA6200C</td>
+                                                            <td>2432435</td>
+                                                            <td>Aspen Shine 33 Light </td>
+                                                            <td>30x30</td>
+                                                            <td>1239111</td>
+                                                            <td>12/17/2017</td>
+                                                            <td>100</td>
+                                                            <td></td>
+                                                            <td>20</td>
+                                                            <td>
+                                                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#detail_modal">Detail</button>
+                                                            </td>
+                                                            <td>
+                                                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#history_modal">Stock History</button>
+                                                            </td>
+                                                        </tr>
+                                                         <tr>
+                                                            <td>AC-010C</td>
+                                                            <td>2345435</td>
+                                                            <td>SPECIAL ORDER</td>
+                                                            <td>30X60</td>
+                                                            <td>170009</td>
+                                                            <td>12/18/2017</td>
+                                                            <td>75</td>
+                                                            <td></td>
+                                                            <td>20</td>
+                                                            <td>
+                                                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#detail_modal">Detail</button>
+                                                            </td>
+                                                            <td>
+                                                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#history_modal">Stock History</button>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="text-center">
+                                <ul class="pagination">
+                                    <li class="paginate_button active">
+                                        <a href="#">1</a>
+                                    </li>
+                                    <li class="paginate_button">
+                                        <a href="#">2</a>
+                                    </li>
+                                    <li class="paginate_button">
+                                    <a href="#">3</a>
+                                    </li>
+                                    <li class="paginate_button " >
+                                        <a href="#">4</a>
+                                    </li>
+                                    <li class="paginate_button ">
+                                    <a href="#">5</a>
+                                    </li>
+                                    <li class="paginate_button ">
+                                        <a href="#">6</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-12 btn-con">
+                                    <input type="submit" name="" class="btn btn-danger" value="Download">
+                                </div>
+                            </div>
+                            <!--Detail modal-->
+                            <app-inventory-list-details></app-inventory-list-details>
+                            <!--Detail modal-->
+
+                            <!-- history modal -->
+                            <app-inventory-history></app-inventory-history>
+                                   <!-- history modal end -->
+
+                        </form>
+
+                    </div>
+                </div>
+
+
+
+
+</div>

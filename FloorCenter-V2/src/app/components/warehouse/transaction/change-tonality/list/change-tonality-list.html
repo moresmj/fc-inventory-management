@@ -1,0 +1,109 @@
+<div class="container-fluid">
+    <!-- breadcrumbs -->
+    <div class="row">
+        <div class="col-lg-12">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="Warehouse/release_list">Transactions</a>
+                </li>
+                <li class="breadcrumb-item active">Change Tonality</li>
+            </ol>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+
+    <div class="row">
+        <div class="col-lg-12">
+            <h2 class="fw-b m-title">Change Tonality</h2> 
+        </div>
+    </div>
+
+         <div class="alert alert-success" style="text-align: center" *ngIf="statusMessage">
+        
+        {{statusMessage}}
+    </div>
+            
+    <form>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p class="search_status"><b> {{totalRecordMessage}} </b> {{pageRecordMessage}} </p>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="text-right">
+                                    <button type="button" class="btn btn-outline btn-danger" data-toggle="modal" data-target="#advanceSearch">Advanced Search</button>
+                                    <input type="button" name="" class="btn btn-danger"  *ngIf="recordList.length != 0" value="Download List" (click)="downloadRecords()">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive table-bordered">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Transaction No.</th>
+                                        <th>Order Type</th>
+                                        <th>DR No.</th>
+                                        <th>WHDR No.</th>
+                                        <th>Delivery Date</th>
+                                        <th>Plate No.</th>
+                                        <th>Ordered By</th>
+                                        <th>Ordered To</th>
+                                        <th>Delivery Mode</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let rel_items of recordList">
+                                        <td>{{rel_items.details.transactionNo}}</td>
+                                        <td>{{rel_items.details.orderTypeStr}}</td>
+                                        <td>{{rel_items.details.deliveryType == '3' && rel_items.details.orderType == '2' ? "" :  rel_items.drNumber}}</td>
+                                        <td>{{rel_items.details.whdrNumber}}</td>
+                                        <td>{{rel_items.approvedDeliveryDate | date : medium}}</td>
+                                        <td>{{rel_items.plateNumber}}</td>
+                                        <td>{{rel_items.details.store?.name}}</td>
+                                        <td>{{rel_items.details.warehouse?.name}}</td>
+                                        <td>{{rel_items.details.deliveryTypeStr}}</td>
+                                        <td>
+                                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#details_modal" (click)="onBtnReleaseClick(rel_items)">Modify</button>
+                                        </td>
+                                    </tr>
+                                   
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- advance search modal -->
+             <app-change-tonality-advance-search   (aSearch)="filterRecordWithParam($event)" [filter]="Keyword"></app-change-tonality-advance-search>
+
+                <!-- delivery detail modal -->
+                       <app-change-tonality-details [itemList]="filteredItemList" [releaseItemDetails]="releaseItemDetails" [updateForm]="updateForm" [forReleasingItems]="forReleasingItems" [forReleasingItems2]="forReleasingItems2" [items]="items" (updatePage)="reloadRecord($event)" (statusMessage)="statusMessage($event)"></app-change-tonality-details>
+      
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <app-pagernew [module]="module" [Keyword]="Keyword"  (displayPageList)="loadAllForChangeTonality($event)" ></app-pagernew>
+                <div class="btn-con"> 
+                    <input type="button" name="" class="btn btn-danger" *ngIf="recordList.length != 0" value="Download List" (click)="downloadRecords()">
+                </div>
+            </div>
+        </div>
+
+
+    </form>
+
+        
+    <ng4-loading-spinner [template]="template"> </ng4-loading-spinner>
+
+</div>
+<!-- /.container-fluid -->

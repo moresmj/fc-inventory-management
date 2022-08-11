@@ -1,0 +1,190 @@
+                   
+                   <div class="modal fade" id="details_modal"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" *ngIf="updateForm" style="display: none;">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                    <h4 class="modal-title" id="myModalLabel">Modification for Transaction No: {{ details.transactionTobeModified }} </h4>
+                                </div>
+                                <div class="alert alert-success" style="text-align: center" *ngIf="successMessage">
+                                    <p>  {{ successMessage }} </p>
+                                </div>
+                                <div class="alert alert-danger" style="text-align: center" *ngIf="errorMessage">
+                                    <p *ngFor="let err of errorMessage"> {{ err }} </p>
+                                </div>
+                                <form [formGroup]="updateForm" (ngSubmit)="onSubmit()" id="updateForm">                                    
+                                    <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="row">
+                                                <label for="" class="col-sm-4 col-form-label sa-input">AO No.:</label>
+                                                <div class="col-sm-6">
+                                                    <p class="sa-input"> {{ details.aoNumber }} </p>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <label for="" class="col-sm-4 col-form-label sa-input">SI No.:</label>
+                                                <div class="col-sm-6">
+                                                    <p class="sa-input"> {{ details.siNumber }} </p>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <label for="" class="col-sm-4 col-form-label sa-input">Customer Name:</label>
+                                                <div class="col-sm-6">
+                                                    <p class="sa-input"> {{ details.clientName }} </p>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <label for="" class="col-sm-4 col-form-label sa-input">Sales Agent:</label>
+                                                <div class="col-sm-6">
+                                                    <p class="sa-input"> {{ details.salesAgent }} </p>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                    <label for="" class="col-sm-4 col-form-label sa-input">Approval Status:</label>
+                                                    <div class="col-sm-6">
+                                                        <p class="sa-input"> {{ details.requestStatusStr }} </p>
+                                      
+                                                    </div>
+                                                </div>
+                                            
+                                        </div>
+                                        <div class="col-md-6">
+                                          
+                                            <div class="row">
+                                                <label for="" class="col-sm-4 col-form-label sa-input">AO Date:</label>
+                                                <div class="col-sm-6">
+                                                    <p class="sa-input"> {{ details.dateCreated | date : "mediumDate" }} </p>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                    <label for="" class="col-sm-4 col-form-label sa-input">Requested To:</label>
+                                                    <div class="col-sm-6">
+                                                        <p class="sa-input"> {{ details.orderedTo  }} </p>
+                                                    </div>
+                                            </div>
+
+                                            <div *ngIf="!showSaveBtn" class="row">
+                                                    <label for="" class="col-sm-4 col-form-label sa-input">AO Status:</label>
+                                                    <div class="col-sm-6">
+                                                        <p class="sa-input"> {{ details.orderStatusStr  }} </p>
+                                                    </div>
+                                            </div>
+
+                        
+                                            <div *ngIf="assignment == 2 && showSaveBtn" class="form-group row">
+                                                <label for="" class="col-sm-3 col-form-label sa-input">AO Status</label>
+                                                <div class="col-sm-6">
+                                                    <select formControlName="orderStatus" (change)="onSelectStatus($event.currentTarget.value)" class="form-control" id="s-select">
+                                                        <option></option>
+                                                        <option *ngFor="let opt of orderStatus" [value]="opt.value"> {{opt.name}} </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="form-group row" *ngIf="isChange">
+                                                <label for="" class="col-sm-3 col-form-label sa-input">Change Status Reason:<span class="ic-red" >*</span> </label>
+                                                <div class="col-sm-6">
+                                                    <input  formControlName="changeStatusReason" id = "changeStatusReason" class="form-control" type="text"  />
+                                                    <show-errors [control]="updateForm.controls.changeStatusReason"></show-errors>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <label for="" class="col-sm-4 col-form-label sa-input">Remarks:</label>
+                                                <div class="col-sm-6">
+                                                    <p class="sa-input"> {{ details.remarks }} </p>
+                                              
+                                                </div>
+                                            </div>
+                                        </div>
+  
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="table-responsive table-bordered table_modal">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Serial No.</th>
+                                                            <th>Item Code</th>
+                                                            <th>Item Name</th>
+                                                            <th>Size</th>
+                                                            <th>Tonality</th>
+                                                            <th>Requested Quantity</th>
+                                                            <th>Approved Qty</th>
+                                                            <th>Remaining Qty for Allocation</th>
+                                                            <th>Remarks</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody formArrayName="advanceOrderDetails">
+                                                         <tr *ngFor="let item of advanceOrderDetails.controls; let i=index" [formGroupName]="i">
+                                                       
+                                                            <td> {{ details.advanceOrderDetails[i].serialNumber }} </td>
+                                                            <td> {{ details.advanceOrderDetails[i].itemCode }} </td>
+                                                            <td> {{ details.advanceOrderDetails[i].itemName }} </td>
+                                                            <td> {{ details.advanceOrderDetails[i].sizeName }}</td>            
+                                                            <td> {{ details.advanceOrderDetails[i].tonality }} </td>
+                                                            <td> {{ details.advanceOrderDetails[i].quantity }} </td>
+                                                            <td> {{ details.advanceOrderDetails[i].approvedQuantity }} </td>
+                                                            <td> {{ details.advanceOrderDetails[i].remainingForAllocationQty }} </td>
+                                                            <td> {{ details.advanceOrderDetails[i].remarks }} </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <!-- <input id="btnCancel" [disabled]="!updateForm.valid" *ngIf="showSaveBtn" type="button" name="" class="btn btn-danger" value="Save" data-target="#saveModal" (click)="onCancel()"> -->
+                                    <!-- <input id="btnSave" [disabled]="!updateForm.valid" *ngIf="showSaveBtn" type="submit" name="" class="btn btn-danger" value="Approve"> -->
+                                    <input type="button" name="" class="btn btn-danger" *ngIf="showSaveBtn && aoStatus == 3" value="Save" data-toggle="modal" id="saveBtn" data-target="#saveModal">
+
+                                    <input type="submit" (click)="onCancel()"  *ngIf="showSaveBtn && aoStatus == 1"   [disabled]="!updateForm.valid" class="btn btn-danger" value="Save">
+                                    <button type="button" class="btn btn-default"  id="closeBtn" data-dismiss="modal">Close</button>
+                                </div>        
+                                
+                                
+                               
+                                </form>
+                                
+                            </div>
+                            <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                    </div>
+
+
+                    <div *ngIf="details" class="modal fade stick-up" id="saveModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content" style="top: 90px;">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                    <!-- <h4 class="modal-title" id="myModalLabel">Save</h4> -->
+            
+                                </div>
+                                <div class="modal-body">
+           
+                                            <h5 class="modal-text">Are you sure you want to modify AO No. {{details.aoNumber}}?</h5>
+                                            <p class="modal-text"> Cancellation of orders cannot be undone.</p>
+                          
+                         
+                                </div>
+                                <div class="modal-footer">
+                                    <input type="submit" (click)="onCancel()"  [disabled]="!updateForm.valid" class="btn btn-danger" value="Cancel anyway">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Back</button>
+                                </div>
+                            </div>
+                            <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                    </div>

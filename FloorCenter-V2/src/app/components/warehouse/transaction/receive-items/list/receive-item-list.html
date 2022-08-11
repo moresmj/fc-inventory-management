@@ -1,0 +1,176 @@
+   <div class="container-fluid">
+                <!-- breadcrumbs -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                               Transactions
+                            </li>
+                            <li class="breadcrumb-item active">
+                            <a href="Warehouse/receive_list">Receive Items
+                            </a> 
+                        </li>
+                        </ol>
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <!-- /.row -->
+                
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h2 class="fw-b m-title m-title2">Receive Items</h2>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="btn-con7">
+
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
+                                  <i class="fa fa-plus fa-fw"></i> Receive Items
+                                  <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a routerLink="ri_fo_registration" class=""><i class="fa fa-list-alt fa-fw"></i> From Orders</a>
+                                    </li>
+                                    <li>
+                                        <a  routerLink="/Warehouse/receive_return_list" class=""><i class="fa fa-sign-in fa-fw"></i> From Returns</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <button type="button" class="btn btn-outline btn-danger g-fr" data-toggle="modal" data-target="#advanceSearch"><i class="fa fa-search fa-fw"></i> Advanced Search</button>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="errorMessage">
+                    <ul *ngFor="let err of errorMessage"> 
+                                        <div class="alert alert-danger">
+                                            {{err}}
+                                        </div>
+                              </ul>
+                </div>
+                               
+                <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
+                    <div class="line">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="form-group row">
+                                  <label for="" class="col-sm-4 col-form-label sa-input">PO No.:</label>
+                                    <div class="col-sm-7">
+                                        <input class="form-control" type="text" formControlName="poNumber">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4">
+                                <div class="form-group row">
+                                  <label for="" class="col-sm-4 col-form-label sa-input" >DR No.:</label>
+                                    <div class="col-sm-7">
+                                        <input class="form-control" type="text"  formControlName="drNumber">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4">
+                                <div class="form-group row">
+                                    <label for="example-text-input" class="col-sm-3 col-form-label sa-input">PO Date<span class="ic-red"></span>:</label>
+                                    <div class="input-group date col-sm-7" id="datetimepicker">
+                                        <input type="date" class="form-control" formControlName="poDateFrom">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="example-text-input" class="col-sm-3 col-form-label sa-input">To<span class="ic-red"></span>:</label>
+                                    <div class="input-group date col-sm-7" id="datetimepicker">
+                                        <input type="date" class="form-control" formControlName="poDateTo">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group row btn-con7">
+                                    <input type="submit" name="" class="btn btn-danger" value="Search">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>   
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <p class="search_status"><b> {{totalRecordMessage}} </b> {{pageRecordMessage}} </p>
+                                        </div>
+                                        
+                                        <div class="col-md-6">
+                                            <div class="text-right">
+                                                <button type="button" (click)="clearMessage()" class="btn btn-outline btn-danger" data-toggle="modal" data-target="#advanceSearch">Advanced Search</button>
+                                                <input type="button" name="" class="btn btn-danger" *ngIf="receivedItemsList.length != 0" value="Download List" (click)="downloadRecords()">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="table-responsive table-bordered">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Transaction No.</th>
+                                                    <th>PO No.</th>
+                                                    <th>DR No.</th>
+                                                    <th>Received Date</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let rec_items of receivedItemsList">
+                                                    <td>{{rec_items.transactionNo}}</td>
+                                                    <td>{{rec_items.poNumber}}</td>
+                                                    <td>{{rec_items.drNumber}}</td>
+                                                    <td>{{rec_items.receivedDate  | date: 'mediumDate' }}</td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#details_modal" (click)="onBtnViewDetailClick(rec_items)">Details</button>
+                                                    </td>
+                                                </tr>
+                                              
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <app-pagernew [module]="module" [Keyword]="Keyword" (displayPageList)="loadAllReceiveItems($event)"></app-pagernew>
+                            <div class="btn-con">
+                                <input type="button" name="" class="btn btn-danger" (click)="downloadRecords()"  *ngIf="receivedItemsList.length != 0" value="Download List">
+                            </div>
+                        </div>
+                    </div>
+
+               
+                    <app-receive-item-advance-search (aSearch)="filterRecordWithParam($event)" [recordCount]="totalRecordMessage" [successSearch]="searchSuccess"></app-receive-item-advance-search>
+                    <app-receive-item-details [id]="selectedInventoryid" [inventoryItem]="selectedInventory" [updateInventoryForm]="updateForm"></app-receive-item-details>
+                
+
+             
+
+
+            </div>
+            <!-- /.container-fluid -->

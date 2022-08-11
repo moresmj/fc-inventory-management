@@ -1,0 +1,73 @@
+    <div class="container-fluid">
+                <!-- breadcrumbs -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                              Inventory Management
+                            </li>
+                            <li class="breadcrumb-item active">Physical Count List</li>
+                        </ol>
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <!-- /.row -->
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h2 class="fw-b m-title">Physical Count List</h2> 
+                        
+                        <form [formGroup]="newForm" (ngSubmit)="onSubmit()">
+
+                            <div class="line">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h4>Please make sure your CSV files follows the format <br>
+                                        Rows having incorrect data will be skipped.</h4>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="alert alert-danger" style="text-align: center" *ngIf="errorMessage">
+                                            <p *ngFor="let err of errorMessage"> {{ err }} </p>
+                                    </div>
+
+                                    <div class="alert alert-success" style="text-align: center" *ngIf="successMessage">
+                                            <p>  {{ successMessage }} </p>
+                                    </div>
+                                    <div class="alert alert-danger" style="text-align: center" *ngIf="imageErrorMessage">
+                                            <p>  {{ imageErrorMessage }} </p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <label class="input-group-btn">
+                                                    <span class="btn btn-default">
+                                                        Select files<input type="file" #fileInput (change)="onFileChange($event)" style="display: none;" multiple="">
+                                                    </span>
+                                                </label>
+                                                 <input class="form-control" type="text" formControlName="ImageName" readonly>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <input type="submit" name="" class="btn btn-danger" value="Upload">
+                                        </div>
+                                    </div>
+                                </div>
+                                    
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+
+
+            </div>
+            <!-- /.container-fluid -->

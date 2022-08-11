@@ -1,0 +1,1272 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using AutoMapper;
+using FC.Api.DTOs.Store;
+using FC.Api.DTOs.Warehouse;
+using FC.Api.Helpers;
+using FC.Api.Services.Warehouses;
+using FC.Core.Domain.Common;
+using FC.Core.Domain.Stores;
+using FC.Core.Domain.Warehouses;
+using Microsoft.EntityFrameworkCore;
+
+namespace FC.Api.Services.Stores
+{
+    public class STDeliveryService : ISTDeliveryService
+    {
+
+
+        private DataContext _context;
+
+        public STDeliveryService(DataContext context)
+        {
+            _context = context;
+        }
+
+        /// <summary>
+        /// Insert delivery
+        /// </summary>
+        /// <param name="stdelivery">STDelivery</param>
+        public void InsertDeliveryToShowroom(STDelivery stdelivery)
+        {
+            var order = _context.STOrders.Where(p => p.Id == stdelivery.Id).FirstOrDefault();
+            var warehouse = _context.Warehouses.Where(p => p.Id == order.WarehouseId).FirstOrDefault();
+
+            if (order != null)
+            {
+
+                stdelivery.STOrderId = stdelivery.Id;
+                stdelivery.Id = 0;
+                stdelivery.DateCreated = DateTime.Now;
+
+                if (order.OrderType == OrderTypeEnum.InterbranchOrIntercompanyOrder)
+                {
+                    stdelivery.StoreId = order.StoreId;
+                    stdelivery.DeliveryFromStoreId = order.OrderToStoreId;
+
+                    var sales = _context.STSales.Where(p => p.STOrderId == order.Id).FirstOrDefault();
+                    if (sales != null)
+                    {
+                        stdelivery.STSalesId = sales.Id;
+                    }
+                }
+
+                var isVendor = false;
+                if (warehouse != null)
+                {
+                    if (warehouse.Vendor == true)
+                    {
+                        isVendor = true;
+                    }
+
+                }
+
+                foreach (var delivery in stdelivery.ShowroomDeliveries)
+                {
+
+                    //  Check if request deliver quantity is 0
+                    if (delivery.Quantity == 0)
+                    {
+                        //  Skip record
+                        continue;
+                    }
+
+                    delivery.Id = 0;
+                    delivery.DateCreated = DateTime.Now;
+                    delivery.DeliveryStatus = DeliveryStatusEnum.Pending;
+                    delivery.ReleaseStatus = ReleaseStatusEnum.Pending;
+
+                    if (isVendor)
+                    {
+                        delivery.DeliveryStatus = DeliveryStatusEnum.Waiting;
+                        delivery.ReleaseStatus = ReleaseStatusEnum.Released;
+                    }
+                    _context.STShowroomDeliveries.Add(delivery);
+                    _context.SaveChanges();
+                }
+
+                //  Filter only record with request deliver quantity more than 0
+                stdelivery.ShowroomDeliveries = stdelivery.ShowroomDeliveries.Where(p => p.Quantity > 0).ToList();
+
+                _context.STDeliveries.Add(stdelivery);
+                _context.SaveChanges();
+
+               
+
+                if (!isVendor)
+                {
+                    if (order.OrderType == OrderTypeEnum.ShowroomStockOrder ||
+                        (order.OrderType == OrderTypeEnum.ClientOrder && order.DeliveryType == DeliveryTypeEnum.ShowroomPickup))
+                    {
+                        var whStockService = new WHStockService(_context);
+
+                        foreach (var delivery in stdelivery.ShowroomDeliveries)
+                        {
+                            var whstock = new WHStock
+                            {
+                                WarehouseId = order.WarehouseId,
+                                STShowroomDeliveryId = delivery.Id,
+                                ItemId = delivery.ItemId,
+                                OnHand = -delivery.Quantity,
+                                TransactionType = TransactionTypeEnum.PO,
+                                DeliveryStatus = DeliveryStatusEnum.Pending,
+                                ReleaseStatus = ReleaseStatusEnum.Pending
+                            };
+
+                            whStockService.InsertStock(whstock);
+                        }
+                    }
+                    else if (order.OrderType == OrderTypeEnum.InterbranchOrIntercompanyOrder && order.DeliveryType == DeliveryTypeEnum.ShowroomPickup)
+                    {
+                        var stStockService = new STStockService(_context);
+
+                        foreach (var delivery in stdelivery.ShowroomDeliveries)
+                        {
+                            var ststock = new STStock
+                            {
+                                StoreId = order.OrderToStoreId,
+                                STShowroomDeliveryId = delivery.Id,
+                                ItemId = delivery.ItemId,
+                                OnHand = -delivery.Quantity,
+                                DeliveryStatus = DeliveryStatusEnum.Pending,
+                                ReleaseStatus = ReleaseStatusEnum.Pending
+                            };
+
+                            stStockService.InsertSTStock(ststock);
+                        }
+                    }
+                }
+            }
+
+        }
+
+
+
+        /// <summary>
+        /// Update delivery
+        /// </summary>
+        /// <param name="param">STDelivery</param>
+        public void UpdateDelivery(STDelivery param)
+        {
+            var delivery = _context.STDeliveries
+                                .Include(p => p.ShowroomDeliveries)
+                                .Include(p => p.ClientDeliveries)
+                                .Where(x => x.Id == param.Id)
+                            .SingleOrDefault();
+
+            delivery.ApprovedDeliveryDate = param.ApprovedDeliveryDate;
+            delivery.DriverName = param.DriverName;
+            delivery.PlateNumber = param.PlateNumber;
+            delivery.DateUpdated = DateTime.Now;
+
+            var order = _context.STOrders.Where(p => p.Id == delivery.STOrderId).FirstOrDefault();
+
+            if (delivery.ShowroomDeliveries != null && delivery.ShowroomDeliveries.Count > 0)
+            {
+                foreach (var showroom in delivery.ShowroomDeliveries)
+                {
+                    showroom.DateUpdated = DateTime.Now;
+                    //  Change from Pending to Waiting
+                    showroom.DeliveryStatus = DeliveryStatusEnum.Waiting;
+                    showroom.ReleaseStatus = ReleaseStatusEnum.Waiting;
+
+                    _context.STShowroomDeliveries.Update(showroom);
+                    _context.SaveChanges();
+
+                    if (order != null)
+                    {
+                        if (order.OrderType == OrderTypeEnum.InterbranchOrIntercompanyOrder)
+                        {
+                            this.UpdateSTStock(showroom.Id);
+                        }
+                        else
+                        {
+                            this.UpdateWHStock(showroom.Id);
+                        }
+                    }
+                    else
+                    {
+                        this.UpdateWHStock(showroom.Id);
+                    }
+                }
+            }
+            else if (delivery.ClientDeliveries != null && delivery.ClientDeliveries.Count > 0)
+            {
+                foreach (var client in delivery.ClientDeliveries)
+                {
+                    client.DateUpdated = DateTime.Now;
+                    //  Change from Pending to Waiting
+                    client.DeliveryStatus = DeliveryStatusEnum.Waiting;
+                    client.ReleaseStatus = ReleaseStatusEnum.Waiting;
+
+                    _context.STClientDeliveries.Update(client);
+                    _context.SaveChanges();
+
+                    if (order != null)
+                    {
+                        if (order.OrderType == OrderTypeEnum.InterbranchOrIntercompanyOrder)
+                        {
+                            this.UpdateSTStock(client.Id, false);
+                        }
+                        else
+                        {
+                            this.UpdateWHStock(client.Id, false);
+                        }
+                    }
+                    else
+                    {
+                        this.UpdateWHStock(client.Id, false);
+                    }
+                }
+            }
+
+
+            _context.STDeliveries.Update(delivery);
+            _context.SaveChanges();
+        }
+
+        public void UpdateDeliveryStatus(STDelivery param)
+        {
+            var delivery = _context.STDeliveries
+                                .Where(x => x.Id == param.Id)
+                            .SingleOrDefault();
+
+            delivery.Delivered = DeliveryStatusEnum.Delivered;
+            delivery.DateUpdated = DateTime.Now;
+
+            _context.STDeliveries.Update(delivery);
+            _context.SaveChanges();
+        }
+
+
+
+        private void UpdateWHStock(int? id, bool isShowroomDelivery = true)
+        {
+            WHStock whstock = null;
+            if (isShowroomDelivery)
+            {
+                whstock = _context.WHStocks.Where(p => p.STShowroomDeliveryId == id).FirstOrDefault();
+            }
+            else
+            {
+                whstock = _context.WHStocks.Where(p => p.STClientDeliveryId == id).FirstOrDefault();
+            }
+
+            if (whstock != null)
+            {
+                //  Change from Pending to Waiting
+                whstock.DeliveryStatus = DeliveryStatusEnum.Waiting;
+
+                //  Set ReleaseStatus to Waiting
+                whstock.ReleaseStatus = ReleaseStatusEnum.Waiting;
+                whstock.DateUpdated = DateTime.Now;
+
+                _context.WHStocks.Update(whstock);
+                _context.SaveChanges();
+            }
+        }
+
+        private void UpdateSTStock(int? id, bool isShowroomDelivery = true)
+        {
+            STStock ststock = null;
+            if (isShowroomDelivery)
+            {
+                ststock = _context.STStocks.Where(p => p.STShowroomDeliveryId == id).FirstOrDefault();
+            }
+            else
+            {
+                ststock = _context.STStocks.Where(p => p.STClientDeliveryId == id).FirstOrDefault();
+            }
+
+            if (ststock != null)
+            {
+                //  Change from Pending to Waiting
+                ststock.DeliveryStatus = DeliveryStatusEnum.Waiting;
+
+                //  Set ReleaseStatus to Waiting
+                ststock.ReleaseStatus = ReleaseStatusEnum.Waiting;
+                ststock.DateUpdated = DateTime.Now;
+
+                _context.STStocks.Update(ststock);
+                _context.SaveChanges();
+            }
+        }
+
+        public void InsertToSTStock(SaveReceiveItem param, ISTStockService service)
+        {
+
+            var STOrderId = param.ShowroomDeliveries.Select(p => p.STOrderId).FirstOrDefault();
+
+            var objOrder = _context.STOrders
+                                   .Include(p => p.OrderedItems).Where(p => p.Id == STOrderId).FirstOrDefault();
+
+            foreach (var item in param.ShowroomDeliveries)
+            {
+                //  Get record from STShowroomDeliveries
+                var showroom = _context.STShowroomDeliveries.Where(p => p.Id == item.Id && p.ItemId == item.ItemId && p.STDeliveryId == item.STDeliveryId && p.STOrderDetailId == item.STOrderDetailId).FirstOrDefault();
+
+                //  Get record from WHStocks
+                var whStock = _context.WHStocks.Where(p => p.STShowroomDeliveryId == item.Id && p.ItemId == item.ItemId).FirstOrDefault();
+
+                var stStock = _context.STStocks
+                                      .Where(p => p.StoreId == objOrder.OrderToStoreId
+                                                  && p.STShowroomDeliveryId == item.Id
+                                                  && p.ItemId == item.ItemId).FirstOrDefault();
+
+                //  Get record from STOrderDetails
+                var orderDetail = _context.STOrderDetails.Where(p => p.Id == item.STOrderDetailId && p.ItemId == item.ItemId).FirstOrDefault();
+                var isVendor = false;
+                if(objOrder.Warehouse != null)
+                {
+                     isVendor = objOrder.Warehouse.Vendor;
+
+                }
+
+                //if (showroom != null && orderDetail != null && ((!objOrder.Warehouse.Vendor && (whStock != null || stStock != null)) || (objOrder.Warehouse.Vendor)))
+                if (showroom != null && orderDetail != null && ((!isVendor && (whStock != null || stStock != null)) || (isVendor)))
+                {
+                    if (item.DeliveredQuantity == 0)
+                    {
+                        showroom.DeliveryStatus = DeliveryStatusEnum.NotDelivered;
+                        if (!objOrder.Warehouse.Vendor)
+                        {
+                            //only applies for Tile orders
+                            if (objOrder.OrderType != OrderTypeEnum.InterbranchOrIntercompanyOrder)
+                            {
+                                whStock.DeliveryStatus = DeliveryStatusEnum.NotDelivered;
+                                whStock.DateUpdated = DateTime.Now;
+                                _context.WHStocks.Update(whStock);
+                            }
+                            else
+                            {
+                                stStock.DeliveryStatus = DeliveryStatusEnum.NotDelivered;
+                                stStock.DateUpdated = DateTime.Now;
+                                _context.STStocks.Update(stStock);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        showroom.DeliveryStatus = DeliveryStatusEnum.Delivered;
+                        if (!isVendor)
+                        {
+                            if (objOrder.OrderType != OrderTypeEnum.InterbranchOrIntercompanyOrder)
+                            {
+                                //  Mark record as delivered (WHStock)
+                                whStock.DeliveryStatus = DeliveryStatusEnum.Delivered;
+                                whStock.DateUpdated = DateTime.Now;
+                                _context.WHStocks.Update(whStock);
+                            }
+                            else
+                            {
+                                //  Mark record as delivered (STStock)
+                                stStock.DeliveryStatus = DeliveryStatusEnum.Delivered;
+                                stStock.DateUpdated = DateTime.Now;
+                                _context.STStocks.Update(stStock);
+                            }
+                        }
+                    }
+
+                    showroom.DeliveredQuantity = item.DeliveredQuantity;
+                    showroom.Remarks = item.Remarks;
+
+                    showroom.DateUpdated = DateTime.Now;
+
+                    _context.STShowroomDeliveries.Update(showroom);
+                    _context.SaveChanges();
+
+
+                    //  Get all total delivered item in STShowroomDelivery by STOrderDetail.Id
+                    var totalDelivered = Convert.ToInt32(
+                                            _context.STShowroomDeliveries
+                                            .Where(p => p.STOrderDetailId == item.STOrderDetailId
+                                                    && p.DeliveryStatus == DeliveryStatusEnum.Delivered)
+                                            .Sum(p => p.DeliveredQuantity)
+                                        );
+
+                    //  Check if approved quantity in STOrderDetail is equal to totalDelivered
+                    if (orderDetail.ApprovedQuantity == totalDelivered)
+                    {
+
+
+                        //  Mark record as delivered (STOrderDetail)
+                        orderDetail.DeliveryStatus = DeliveryStatusEnum.Delivered;
+                        orderDetail.ReleaseStatus = ReleaseStatusEnum.Released;
+                        orderDetail.DateReleased = DateTime.Now;
+                        orderDetail.DateUpdated = DateTime.Now;
+                        _context.STOrderDetails.Update(orderDetail);
+
+                        _context.SaveChanges();
+                    }
+
+                    //  If delivered quantity is more than 0
+                    //  Save recordto STSTocks
+                    if (item.DeliveredQuantity > 0)
+                    {
+                        var objSTStock = new STStock
+                        {
+                            StoreId = objOrder.StoreId,
+                            STShowroomDeliveryId = item.Id,
+                            ItemId = item.ItemId,
+                            OnHand = item.DeliveredQuantity,
+                            DeliveryStatus = DeliveryStatusEnum.Delivered
+                        };
+
+                        service.InsertSTStock(objSTStock);
+                    }
+
+                }
+
+            }
+
+
+            if (objOrder != null)
+            {
+                //  Check if order is for client and the delivery type is showroom pickup
+                if ((objOrder.OrderType == OrderTypeEnum.ClientOrder || objOrder.OrderType == OrderTypeEnum.InterbranchOrIntercompanyOrder) && objOrder.DeliveryType == DeliveryTypeEnum.ShowroomPickup)
+                {
+
+                    var sales = new STSales
+                    {
+                        STOrderId = objOrder.Id,
+                        StoreId = objOrder.StoreId,
+                        ClientName = objOrder.ClientName,
+                        ContactNumber = objOrder.ContactNumber,
+                        Address1 = objOrder.Address1,
+                        Address2 = objOrder.Address2,
+                        Address3 = objOrder.Address3,
+                        SoldItems = new List<STSalesDetail>(),
+                        DeliveryType = objOrder.DeliveryType,
+                        ReleaseDate = DateTime.Now
+                    };
+
+                    if (objOrder.OrderType == OrderTypeEnum.ClientOrder)
+                    {
+                        sales.SalesType = SalesTypeEnum.ClientOrder;
+                    }
+                    else
+                    {
+                        sales.SalesType = new STSalesService(_context).GetSalesType(objOrder);
+                    }
+
+
+                    foreach (var delivery in param.ShowroomDeliveries)
+                    {
+                        var showroom = _context.STShowroomDeliveries.Where(p => p.Id == delivery.Id && p.ItemId == delivery.ItemId && p.STDeliveryId == delivery.STDeliveryId && p.STOrderDetailId == delivery.STOrderDetailId).FirstOrDefault();
+                        if (showroom != null)
+                        {
+                            var salesDetail = new STSalesDetail
+                            {
+                                ItemId = delivery.ItemId,
+                                Quantity = delivery.DeliveredQuantity,
+                                DeliveryStatus = DeliveryStatusEnum.Waiting
+                            };
+
+                            sales.SoldItems.Add(salesDetail);
+                        }
+                    }
+
+                    if (sales.SoldItems.Count > 0)
+                    {
+                        new STSalesService(_context).InsertSales(sales);
+                    }
+
+
+                    foreach (var item in sales.SoldItems)
+                    {
+                        //  Deduct item from store's inventory
+                        var stStock = new STStock
+                        {
+                            STSalesDetailId = item.Id,
+                            StoreId = objOrder.StoreId,
+                            ItemId = item.ItemId,
+                            OnHand = -item.Quantity,
+                            DeliveryStatus = DeliveryStatusEnum.Waiting,
+
+                            // #116297
+                            //ReleaseStatus = ReleaseStatusEnum.Waiting
+                        };
+
+                        service.InsertSTStock(stStock);
+                    }
+                }
+            }
+
+            var objSTOrder = _context.STOrders
+                                     .Include(p => p.OrderedItems)
+                                     .Where(p => p.Id == objOrder.Id)
+                                     .FirstOrDefault();
+
+            if (objSTOrder.OrderedItems != null && objSTOrder.OrderedItems.Count > 0)
+            {
+                //  Check if all ordered items are delivered and released
+                if (objSTOrder.OrderedItems.Where(p => p.DeliveryStatus != DeliveryStatusEnum.Delivered
+                                                    && p.ReleaseStatus != ReleaseStatusEnum.Released)
+                                        .Count() == 0)
+                {
+                    objSTOrder.ReleaseDate = DateTime.Now;
+                    objSTOrder.DateUpdated = DateTime.Now;
+
+                    _context.STOrders.Update(objSTOrder);
+                    _context.SaveChanges();
+                }
+
+            }
+
+        }
+
+        public void InsertDeliveryForClient(STDelivery stdelivery)
+        {
+            var order = _context.STOrders.Where(p => p.Id == stdelivery.Id).FirstOrDefault();
+            if (order != null)
+            {
+                stdelivery.STOrderId = stdelivery.Id;
+                stdelivery.Id = 0;
+                stdelivery.DateCreated = DateTime.Now;
+
+                if (order.OrderType == OrderTypeEnum.InterbranchOrIntercompanyOrder)
+                {
+                    stdelivery.StoreId = order.StoreId;
+                    stdelivery.DeliveryFromStoreId = order.OrderToStoreId;
+                }
+
+                if (order.OrderType == OrderTypeEnum.InterbranchOrIntercompanyOrder)
+                {
+                    var sales = _context.STSales.Where(p => p.STOrderId == order.Id).FirstOrDefault();
+                    if (sales != null)
+                    {
+                        stdelivery.STSalesId = sales.Id;
+                    }
+                }
+
+                foreach (var delivery in stdelivery.ClientDeliveries)
+                {
+
+                    //  Check if request deliver quantity is 0
+                    if (delivery.Quantity == 0)
+                    {
+                        //  Skip record
+                        continue;
+                    }
+
+                    delivery.Id = 0;
+                    delivery.DateCreated = DateTime.Now;
+                    delivery.DeliveryStatus = DeliveryStatusEnum.Pending;
+                    delivery.ReleaseStatus = ReleaseStatusEnum.Pending;
+                    _context.STClientDeliveries.Add(delivery);
+                    _context.SaveChanges();
+                }
+
+                //  Filter only record with request deliver quantity more than 0
+                stdelivery.ClientDeliveries = stdelivery.ClientDeliveries.Where(p => p.Quantity > 0).ToList();
+
+                if (order.DeliveryType == DeliveryTypeEnum.Delivery)
+                {
+                    stdelivery.Delivered = DeliveryStatusEnum.Pending;
+                }
+
+                _context.STDeliveries.Add(stdelivery);
+                _context.SaveChanges();
+            }
+
+
+            if (order.OrderType == OrderTypeEnum.InterbranchOrIntercompanyOrder)
+            {
+                var stStockService = new STStockService(_context);
+
+                foreach (var delivery in stdelivery.ClientDeliveries)
+                {
+                    var ststock = new STStock
+                    {
+                        StoreId = order.OrderToStoreId,
+                        STClientDeliveryId = delivery.Id,
+                        ItemId = delivery.ItemId,
+                        OnHand = -delivery.Quantity,
+                        DeliveryStatus = DeliveryStatusEnum.Pending,
+                        ReleaseStatus = ReleaseStatusEnum.Pending
+                    };
+
+                    stStockService.InsertSTStock(ststock);
+                }
+            }
+            else
+            {
+                var whStockService = new WHStockService(_context);
+
+                foreach (var delivery in stdelivery.ClientDeliveries)
+                {
+                    var whstock = new WHStock
+                    {
+                        WarehouseId = order.WarehouseId,
+                        STClientDeliveryId = delivery.Id,
+                        ItemId = delivery.ItemId,
+                        OnHand = -delivery.Quantity,
+                        TransactionType = TransactionTypeEnum.PO,
+                        DeliveryStatus = DeliveryStatusEnum.Pending,
+                        ReleaseStatus = ReleaseStatusEnum.Pending
+                    };
+
+                    whStockService.InsertStock(whstock);
+
+                    if (order.DeliveryType == DeliveryTypeEnum.Pickup && order.OrderType == OrderTypeEnum.ClientOrder)
+                    {
+                        var del = new STDelivery();
+                        del.Id = (int)delivery.STDeliveryId;
+                        del.DriverName = "";
+                        del.PlateNumber = "";
+                        del.ApprovedDeliveryDate = stdelivery.DeliveryDate;
+
+                        UpdateDelivery(del);
+                    }
+                }
+            }
+        }
+
+        public IEnumerable<object> GetAllForDeliveries(SearchDeliveries search, IMapper mapper)
+        {
+            IQueryable<STDelivery> list = _context.STDeliveries
+                                            .Include(p => p.ShowroomDeliveries)
+                                                .ThenInclude(p => p.Item)
+                                                    .ThenInclude(p => p.Size)
+                                            .Include(p => p.ClientDeliveries)
+                                                .ThenInclude(p => p.Item)
+                                                    .ThenInclude(p => p.Size)
+                                            .Where(p => p.STOrderId.HasValue);
+
+
+            var deliveries = new List<STDeliveryDTO>();
+
+            foreach (var del in list)
+            {
+                var mappedDelivery = mapper.Map<STDeliveryDTO>(del);
+
+                var order = _context.STOrders.Where(p => p.Id == del.STOrderId).FirstOrDefault();
+                if (order != null)
+                {
+                    var mappedOrder = mapper.Map<STOrderDTO>(order);
+                    mappedDelivery.Order = mappedOrder;
+
+
+                    var warehouse = _context.Warehouses.Where(p => p.Id == order.WarehouseId).FirstOrDefault();
+                    if (warehouse != null)
+                    {
+                        var mappedWarehouse = mapper.Map<WarehouseDTO>(warehouse);
+                        mappedDelivery.Order.Warehouse = mappedWarehouse;
+                    }
+
+                    var store = _context.Stores.Where(p => p.Id == del.StoreId).FirstOrDefault();
+                    if (store != null)
+                    {
+                        var mappedStore = mapper.Map<StoreDTO>(store);
+                        mappedDelivery.Order.Store = mappedStore;
+                    }
+
+                    if ((warehouse != null && warehouse.Vendor == false) || warehouse == null)
+                    {
+                        deliveries.Add(mappedDelivery);
+                    }
+                }
+                else
+                {
+                    var store = _context.Stores.Where(p => p.Id == del.StoreId).FirstOrDefault();
+                    if (store != null)
+                    {
+                        var mappedStore = mapper.Map<StoreDTO>(store);
+                        mappedDelivery.Store = mappedStore;
+                    }
+                    deliveries.Add(mappedDelivery);
+                }
+
+            }
+
+            var query = deliveries.AsEnumerable();
+
+            if (!string.IsNullOrWhiteSpace(search.DRNumber))
+            {
+                //  Searched by DRNumber
+                query = query.Where(y => y.DRNumber.ToLower() == search.DRNumber.ToLower());
+            }
+
+            //  Check if DeliveryDateFrom search criteria has value
+            if (search.DeliveryDateFrom.HasValue)
+            {
+                //  Searched by DeliveryDateFrom <= DeliveryDate
+                query = query.Where(y => search.DeliveryDateFrom <= y.DeliveryDate);
+            }
+
+            //  Check if DeliveryDateTo search criteria has value
+            if (search.DeliveryDateTo.HasValue)
+            {
+                //  Searched by DeliveryDateTo >= DeliveryDate
+                query = query.Where(y => search.DeliveryDateTo >= y.DeliveryDate);
+            }
+
+            //  Searched by PONumber
+            if (!string.IsNullOrWhiteSpace(search.PONumber))
+            {
+                query = query.Where(p => p.Order.PONumber.ToLower() == search.PONumber.ToLower());
+            }
+
+            var rec = query.OrderByDescending(p => p.Id).ToList();
+            var retList = new List<object>();
+
+            var stores = _context.Stores.AsNoTracking().ToList();
+
+<<<<<<< Updated upstream
+            for (int i = 0; i < rec.Count(); i++)
+            {
+                var IsInterBranch = false;
+                var IsTransferShowroomPickup = false;
+                var TransferHeader = "";
+
+                var order = rec[i].Order;
+                if (order != null)
+                {
+                    if (order.OrderType == OrderTypeEnum.InterbranchOrIntercompanyOrder)
+                    {
+                        var storeCompany = stores.Where(p => p.Id == order.StoreId).Select(p => p.CompanyId).FirstOrDefault();
+                        var orderToStoreCompany = stores.Where(p => p.Id == order.OrderToStoreId).Select(p => p.CompanyId).FirstOrDefault();
+
+                        // Returns true or false
+                        IsInterBranch = (storeCompany == orderToStoreCompany);
+
+                        // Use this header if OrderType = InterBrancOrInterCompany and DeliveryType = ShowroomPickup
+                        TransferHeader = (IsInterBranch) ? "TOR No.:" : "Branch DR No.:";
+                        IsTransferShowroomPickup = (order.DeliveryType == DeliveryTypeEnum.ShowroomPickup);
+                    }
+                }
+
+                // Delivery Status
+                DeliveryStatusEnum? DeliveryStatus;
+
+                // Is Custom Delivery [Addition process is added. Ex: Confirming mark as delivered first]
+                if ((rec[i].Delivered != null))
+                {
+                    DeliveryStatus = rec[i].Delivered;
+                }
+                else
+                {
+                    DeliveryStatus = (rec[i].ShowroomDeliveries != null && rec[i].ShowroomDeliveries.Count() > 0)
+                                                        ? rec[i].ShowroomDeliveries.Where(p => p.STDeliveryId == rec[i].Id).Select(p => p.DeliveryStatus).FirstOrDefault()
+                                                        : (rec[i].ClientDeliveries != null && rec[i].ClientDeliveries.Count() > 0)
+                                                            ? rec[i].ClientDeliveries.Where(p => p.STDeliveryId == rec[i].Id).Select(p => p.DeliveryStatus).FirstOrDefault()
+                                                    : null;
+                }
+                var DeliveryStatusStr = (DeliveryStatus != null) ? EnumExtensions.SplitName(Enum.GetName(typeof(DeliveryStatusEnum), DeliveryStatus)) : null;
+
+                // Filter by Delivery Status
+                if (!search.DeliveryStatus.Contains(DeliveryStatus))
+                {
+                    continue;
+                }
+
+                var obj = new
+                {
+                    rec[i].Id,
+                    rec[i].STOrderId,
+                    TransactionNo = (rec[i].Order != null) ? rec[i].Order.TransactionNo : _context.STSales.Where(p => p.Id == rec[i].STSalesId).Select(p => p.TransactionNo).FirstOrDefault(),
+                    TransactionType = (rec[i].Order != null) ? rec[i].Order.TransactionType : null,
+                    TransactionTypeStr = (rec[i].Order != null) ? EnumExtensions.SplitName(Enum.GetName(typeof(TransactionTypeEnum), rec[i].Order.TransactionType)) : null,
+                    OrderType = (rec[i].Order != null) ? rec[i].Order.OrderType : null,
+                    OrderTypeStr = (rec[i].Order != null) ? EnumExtensions.SplitName(Enum.GetName(typeof(OrderTypeEnum), rec[i].Order.OrderType)) : null,
+                    rec[i].DRNumber,
+                    rec[i].DeliveryDate,
+                    ORNumber = (rec[i].Order != null) ? rec[i].Order.ORNumber : null,
+                    WhDrNumber = (rec[i].Order != null) ? rec[i].Order.WHDRNumber : null,
+                    OrderedBy = (rec[i].Order != null)
+                                            ? (
+                                                rec[i].Order.OrderType == OrderTypeEnum.InterbranchOrIntercompanyOrder
+                                                ? _context.Stores.Where(y => y.Id == rec[i].Order.StoreId).Select(z => z.Name).FirstOrDefault()
+                                                : rec[i].Order.Store.Name
+                                            )
+                                            : null,
+                    OrderedByAddress = (rec[i].Order != null) ? rec[i].Order.Store.Address : null,
+                    OrderedByContact = (rec[i].Order != null) ? rec[i].Order.Store.ContactNumber : null,
+                    OrderedTo = (rec[i].Order != null)
+=======
+            var records = from x in query
+                          select new
+                          {
+                              x.Id,
+                              x.STOrderId,
+                              TransactionNo = (x.Order != null) ? x.Order.TransactionNo : _context.STSales.Where(p => p.Id == x.STSalesId).Select(p => p.TransactionNo).FirstOrDefault(),
+                              TransactionType = (x.Order != null) ? x.Order.TransactionType : null,
+                              TransactionTypeStr = (x.Order != null) ? EnumExtensions.SplitName(Enum.GetName(typeof(TransactionTypeEnum), x.Order.TransactionType)) : null,
+                              OrderType = (x.Order != null) ? x.Order.OrderType : null,
+                              OrderTypeStr = (x.Order != null) ? EnumExtensions.SplitName(Enum.GetName(typeof(OrderTypeEnum), x.Order.OrderType)) : null,
+                              x.DRNumber,
+                              x.DeliveryDate,
+                              WhDrNumber = (x.Order != null) ? x.Order.WHDRNumber : null,
+                              OrderedByStore = (x.Order != null)
+                                            ? (
+                                                x.Order.OrderType == OrderTypeEnum.InterbranchOrIntercompanyOrder
+                                                ?  _context.Stores.Where(y => y.Id == x.Order.StoreId).Select(z => z.Name).FirstOrDefault()
+                                                : x.Order.Store.Name
+                                            )
+                                            : null,
+                              OrderedBy = (x.Order != null)
+                                            ? (
+                                                x.Order.OrderType == OrderTypeEnum.InterbranchOrIntercompanyOrder
+                                                ? (x.Order.DeliveryType == DeliveryTypeEnum.Delivery ? x.ClientName 
+                                                :  _context.Stores.Where(y => y.Id == x.Order.StoreId).Select(z => z.Name).FirstOrDefault())
+                                                : x.Order.Store.Name
+                                            )
+                                            : null,
+                              OrderedByAddress = (x.Order != null) ? (x.Order.DeliveryType == DeliveryTypeEnum.Delivery && x.Order.OrderType == OrderTypeEnum.InterbranchOrIntercompanyOrder 
+                              ? x.Address1+ " " + x.Address2 + " " + x.Address3 
+                              : x.Order.Store.Address) : null,
+                              OrderedByContact = (x.Order != null) ? (x.Order.DeliveryType == DeliveryTypeEnum.Delivery && x.Order.OrderType == OrderTypeEnum.InterbranchOrIntercompanyOrder ? x.ContactNumber 
+                                                                    : x.Order.Store.ContactNumber) 
+                                                                    : null,
+                              OrderedTo = (x.Order != null)
+>>>>>>> Stashed changes
+                                            ? (
+                                                    (rec[i].Order.Warehouse != null)
+                                                    ? rec[i].Order.Warehouse.Name
+                                                    :
+                                                        (rec[i].Order.OrderType == OrderTypeEnum.InterbranchOrIntercompanyOrder)
+                                                        ? _context.Stores.Where(y => y.Id == rec[i].Order.OrderToStoreId).Select(z => z.Name).FirstOrDefault()
+                                                        : null
+                                               )
+                                            : rec[i].Store.Name,
+                    DeliveryType = (rec[i].Order != null) ? rec[i].Order.DeliveryType : DeliveryTypeEnum.Delivery,
+                    DeliveryTypeStr = (rec[i].Order != null) ? rec[i].Order.DeliveryTypeStr : EnumExtensions.SplitName(Enum.GetName(typeof(DeliveryTypeEnum), DeliveryTypeEnum.Delivery)),
+                    rec[i].ApprovedDeliveryDate,
+                    DeliveryQty = (rec[i].ShowroomDeliveries != null && rec[i].ShowroomDeliveries.Count() > 0)
+                                                ? rec[i].ShowroomDeliveries.Sum(p => p.Quantity)
+                                                : rec[i].ClientDeliveries.Sum(p => p.Quantity),
+                    PODate = (rec[i].Order != null) ? rec[i].Order.PODate : null,
+                    PONumber = (rec[i].Order != null) ? rec[i].Order.PONumber : null,
+
+                    RequestStatus = (rec[i].Order != null) ? rec[i].Order.RequestStatus : null,
+                    RequestStatusStr = (rec[i].Order != null) ? EnumExtensions.SplitName(Enum.GetName(typeof(RequestStatusEnum), rec[i].Order.RequestStatus)) : null,
+                    rec[i].ClientName,
+                    rec[i].Address1,
+                    rec[i].Address2,
+                    rec[i].Address3,
+                    rec[i].ContactNumber,
+                    rec[i].DriverName,
+                    rec[i].PlateNumber,
+                    Remarks = (rec[i].Order != null) ? rec[i].Order.Remarks : null,
+                    Deliveries = (rec[i].ShowroomDeliveries != null && rec[i].ShowroomDeliveries.Count() > 0)
+                                                ? rec[i].ShowroomDeliveries.Select(p => new
+                                                {
+                                                    p.Item.SerialNumber,
+                                                    p.Item.Code,
+                                                    ItemName = p.Item.Name,
+                                                    SizeName = p.Item.Size.Name,
+                                                    p.Item.Tonality,
+                                                    p.Quantity
+                                                })
+                                                : rec[i].ClientDeliveries.Select(p => new
+                                                {
+                                                    p.Item.SerialNumber,
+                                                    p.Item.Code,
+                                                    ItemName = p.Item.Name,
+                                                    SizeName = p.Item.Size.Name,
+                                                    p.Item.Tonality,
+                                                    p.Quantity
+                                                }),
+                    DeliveryStatus,
+                    DeliveryStatusStr,
+                    rec[i].Delivered,
+                    DeliveredStr = (rec[i].Delivered != null) ? this.GetDeliveryStatusStr(rec[i].Delivered) : null,
+                    IsCustomDelivery = (rec[i].Delivered != null) ? true : false,
+                    IsUpdatable = (rec[i].Delivered == null) ? false : (rec[i].Delivered == DeliveryStatusEnum.Waiting) ? true : false,
+                    ShowDeliveredButton = (rec[i].Order != null)
+                                            ? (((rec[i].Order.OrderType == OrderTypeEnum.ClientOrder || rec[i].Order.OrderType == OrderTypeEnum.InterbranchOrIntercompanyOrder) && (rec[i].Delivered == DeliveryStatusEnum.Waiting || rec[i].Delivered == DeliveryStatusEnum.Delivered))
+                                                    && rec[i].Order.DeliveryType == DeliveryTypeEnum.Delivery)
+                                                ? true : false
+                                            : false,
+                    IsClient = (rec[i].Order != null)
+                                            ? (rec[i].Order.OrderType == OrderTypeEnum.ClientOrder && rec[i].Order.DeliveryType == DeliveryTypeEnum.Delivery)
+                                                ? true : false
+                                            : false,
+                    IsClientPickup = (rec[i].Order != null)
+                                            ? (rec[i].Order.OrderType == OrderTypeEnum.ClientOrder && rec[i].Order.DeliveryType == DeliveryTypeEnum.Pickup)
+                                                ? true : false
+                                            : false,
+                    IsInterBranch,
+                    TransferHeader,
+                    IsTransferShowroomPickup
+                };
+
+                retList.Add(obj);
+            }
+
+            return retList;
+
+
+        }
+
+        public IEnumerable<object> GetAllDeliveriesForSales(SearchDeliveries search, IMapper mapper)
+        {
+            IQueryable<STDelivery> list = _context.STDeliveries
+                                            .Include(p => p.ClientDeliveries)
+                                                .ThenInclude(p => p.Item)
+                                                    .ThenInclude(p => p.Size)
+                                            .Where(p => p.STSalesId != null);
+
+
+            var deliveries = new List<STDeliveryDTO>();
+
+            foreach (var del in list)
+            {
+                var mappedDelivery = mapper.Map<STDeliveryDTO>(del);
+
+                var order = _context.STSales.Where(p => p.Id == del.STSalesId).FirstOrDefault();
+                if (order != null)
+                {
+                    var mappedOrder = mapper.Map<STSalesDTO>(order);
+                    mappedDelivery.Sales = mappedOrder;
+
+
+                    var store = _context.Stores.Where(p => p.Id == del.StoreId).FirstOrDefault();
+                    if (store != null)
+                    {
+                        var mappedStore = mapper.Map<StoreDTO>(store);
+                        mappedDelivery.Sales.Store = mappedStore;
+                    }
+
+                }
+
+                deliveries.Add(mappedDelivery);
+            }
+
+            var query = deliveries.AsEnumerable();
+
+            // Display delivery type only
+            query = query.Where(p => p.Sales.DeliveryType != DeliveryTypeEnum.Pickup);
+
+
+            if (!string.IsNullOrWhiteSpace(search.DRNumber))
+            {
+                //  Searched by DRNumber
+                query = query.Where(y => y.DRNumber.ToLower() == search.DRNumber.ToLower());
+            }
+
+            //  Check if DeliveryDateFrom search criteria has value
+            if (search.DeliveryDateFrom.HasValue)
+            {
+                //  Searched by DeliveryDateFrom <= DeliveryDate
+                query = query.Where(y => search.DeliveryDateFrom <= y.DeliveryDate);
+            }
+
+            //  Check if DeliveryDateTo search criteria has value
+            if (search.DeliveryDateTo.HasValue)
+            {
+                //  Searched by DeliveryDateTo >= DeliveryDate
+                query = query.Where(y => search.DeliveryDateTo >= y.DeliveryDate);
+            }
+
+            //  Searched by PONumber
+            if (!string.IsNullOrWhiteSpace(search.TransactionNo))
+            {
+                query = query.Where(p => p.Sales.TransactionNo.ToLower() == search.TransactionNo.ToLower());
+            }
+
+            var records = from x in query
+                          select new
+                          {
+                              x.Id,
+                              x.SINumber,
+                              x.ORNumber,
+                              x.DRNumber,
+                              TransactionNo = x.Sales.TransactionNo,
+                              RequestedDeliveryDate = x.DeliveryDate,
+                              SalesType = x.Sales.SalesType,
+                              SalesTypeStr = x.Sales.SalesTypeStr,
+                              OrderedBy = _context.Stores.Where(p => p.Id == x.StoreId).Select(p => p.Name).FirstOrDefault(),
+                              DeliveryType = x.Sales.DeliveryType,
+                              DeliveryTypeStr = x.Sales.DeliveryTypeStr,
+                              DeliveryStatus = x.ClientDeliveries.Where(p => p.STDeliveryId == x.Id).Select(p => p.DeliveryStatus).FirstOrDefault(),
+                              DeliveryStatusStr = this.GetDeliveryStatusStr(x.ClientDeliveries.Where(p => p.STDeliveryId == x.Id).Select(p => p.DeliveryStatus).FirstOrDefault()),
+                              OrderedDate = x.Sales.SalesDate,
+                              x.Remarks,
+                              AgentName = x.Sales.SalesAgent,
+                              x.ClientName,
+                              x.ContactNumber,
+                              x.Address1,
+                              x.Address2,
+                              x.Address3,
+                              x.ApprovedDeliveryDate,
+                              x.DriverName,
+                              x.PlateNumber,
+                              x.Delivered,
+                              DeliveredStr = (x.Delivered != null) ? this.GetDeliveryStatusStr(x.Delivered) : null,
+                              IsCustomDelivery = (x.Delivered != null) ? true : false,
+                              IsUpdatable = (x.Delivered == null) ? false : (x.Delivered == DeliveryStatusEnum.Waiting) ? true : false,
+                              ShowDeliveredButton = (x.Sales != null)
+                                            ? ((x.Delivered == DeliveryStatusEnum.Waiting || x.Delivered == DeliveryStatusEnum.Delivered) && x.Sales.DeliveryType == DeliveryTypeEnum.Delivery)
+                                                ? true : false
+                                            : false,
+                              DeliveryQty = x.ClientDeliveries.Sum(p => p.Quantity),
+                              Deliveries = (x.ShowroomDeliveries != null && x.ShowroomDeliveries.Count() > 0)
+                                                ? x.ShowroomDeliveries.Select(p => new
+                                                {
+                                                    p.Item.SerialNumber,
+                                                    p.Item.Code,
+                                                    ItemName = p.Item.Name,
+                                                    SizeName = p.Item.Size.Name,
+                                                    p.Item.Tonality,
+                                                    p.Quantity
+                                                })
+                                                : x.ClientDeliveries.Select(p => new
+                                                {
+                                                    p.Item.SerialNumber,
+                                                    p.Item.Code,
+                                                    ItemName = p.Item.Name,
+                                                    SizeName = p.Item.Size.Name,
+                                                    p.Item.Tonality,
+                                                    p.Quantity
+                                                })
+                          };
+
+            if (search.DeliveryStatus != null)
+            {
+                records = records.Where(p => p.IsCustomDelivery
+                                ? search.DeliveryStatus.Contains(p.Delivered) : search.DeliveryStatus.Contains(p.DeliveryStatus));
+
+            }
+
+
+            return records.OrderByDescending(p => p.Id);
+
+
+        }
+
+        //private string GetOrderedBy(STDeliveryDTO model)
+        //{
+        //    model.STSalesId
+        //}
+
+        /// <summary>
+        /// Get sales order deliveries records
+        /// </summary>
+        /// <param name="id">STSales.Id</param>
+        /// <param name="storeId">Store.Id</param>
+        /// <returns></returns>
+        public object GetSalesOrderDeliveriesBySalesId(int? id, int? storeId)
+        {
+            var record = _context.STSales
+                                 .Include(p => p.SoldItems)
+                                    .ThenInclude(p => p.Item)
+                                        .ThenInclude(p => p.Size)
+                                 .Include(p => p.Deliveries)
+                                    .ThenInclude(p => p.ClientDeliveries)
+                                        .ThenInclude(p => p.Item)
+                                            .ThenInclude(p => p.Size)
+                                 .Where(p => p.StoreId == storeId
+                                             && p.Id == id)
+                                 .FirstOrDefault();
+
+            var salesDeliveries = new
+            {
+                record.Id,
+                record.SINumber,
+                record.ORNumber,
+                record.DRNumber,
+                record.TransactionNo,
+                record.SalesDate,
+                record.DeliveryType,
+                record.ClientName,
+                record.Address1,
+                record.Address2,
+                record.Address3,
+                record.ContactNumber,
+                record.Remarks,
+                SoldItems = record.SoldItems.Select(p => new
+                {
+                    p.STSalesId,
+                    p.Id,
+                    itemId = p.Item.Id,
+                    p.Item.Code,
+                    ItemName = p.Item.Name,
+                    SizeName = p.Item.Size.Name,
+                    p.Item.Tonality,
+                    p.Quantity
+                }),
+
+                Deliveries = record.Deliveries.Select(p => new
+                {
+                    p.SINumber,
+                    p.ORNumber,
+                    p.DRNumber,
+                    p.DeliveryDate,
+                    p.ApprovedDeliveryDate,
+                    p.PreferredTime,
+                    p.ClientName,
+                    p.Address1,
+                    p.Address2,
+                    p.Address3,
+                    p.ContactNumber,
+                    p.Remarks,
+                    ReleaseStatus = p.ClientDeliveries.Select(x => x.ReleaseStatus).FirstOrDefault(),
+                    ReleaseStatusStr = EnumExtensions.SplitName(Enum.GetName(typeof(ReleaseStatusEnum), p.ClientDeliveries.Select(x => x.ReleaseStatus).FirstOrDefault())),
+                    Items = p.ClientDeliveries.Select(q => new
+                    {
+                        q.Item.Id,
+                        q.Item.Code,
+                        ItemName = q.Item.Name,
+                        SizeName = q.Item.Size.Name,
+                        q.Item.Tonality,
+                        q.Quantity,
+                        q.ReleaseStatus
+                    })
+                }),
+
+                RemainingForDelivery = GetRemainingForDelivery(record)
+            };
+
+
+
+            return salesDeliveries;
+        }
+
+        private int GetRemainingForDelivery(STSales record)
+        {
+
+            var soldQty = Convert.ToInt32(record.SoldItems.Sum(p => p.Quantity));
+
+
+            int total = 0;
+            foreach (var del in record.Deliveries)
+            {
+                total += Convert.ToInt32(del.ClientDeliveries.Sum(p => p.Quantity));
+            }
+            return soldQty - total;
+        }
+
+        public void InsertSalesOrderDelivery(STDelivery delivery)
+        {
+            var deliveryType = _context.STSales.Where(p => p.Id == delivery.Id).Select(p => p.DeliveryType).FirstOrDefault();
+
+            delivery.STSalesId = delivery.Id;
+            delivery.Id = 0;
+
+            if (deliveryType == DeliveryTypeEnum.Pickup)
+            {
+                delivery.ApprovedDeliveryDate = delivery.DeliveryDate;
+            }
+            delivery.Delivered = DeliveryStatusEnum.Pending;
+            delivery.DateCreated = DateTime.Now;
+
+            foreach (var deliveredItem in delivery.ClientDeliveries)
+            {
+
+                //  Check if request deliver quantity is 0
+                if (deliveredItem.Quantity == 0)
+                {
+                    //  Skip record
+                    continue;
+                }
+
+                deliveredItem.Id = 0;
+                deliveredItem.DateCreated = DateTime.Now;
+
+                if (deliveryType == DeliveryTypeEnum.Pickup)
+                {
+                    deliveredItem.DeliveryStatus = DeliveryStatusEnum.Waiting;
+                    deliveredItem.ReleaseStatus = ReleaseStatusEnum.Waiting;
+                }
+                else
+                {
+                    deliveredItem.DeliveryStatus = DeliveryStatusEnum.Pending;
+                    deliveredItem.ReleaseStatus = ReleaseStatusEnum.Pending;
+                }
+
+                _context.STClientDeliveries.Add(deliveredItem);
+                _context.SaveChanges();
+            }
+
+            //  Filter only record with request deliver quantity more than 0
+            delivery.ClientDeliveries = delivery.ClientDeliveries.Where(p => p.Quantity > 0).ToList();
+
+            _context.STDeliveries.Add(delivery);
+            _context.SaveChanges();
+        }
+
+        public STDelivery GetSalesDeliveryForReleasingByIdAndStoreId(int id, int? storeId)
+        {
+            var record = _context.STDeliveries.Include(p => p.ClientDeliveries).Where(p => p.StoreId == storeId
+                                                          && p.Id == id
+                                                          && p.ApprovedDeliveryDate.HasValue)
+                                              .FirstOrDefault();
+
+            if (record != null)
+            {
+                var totalNotDelivered = record.ClientDeliveries.Where(p => p.DeliveryStatus != DeliveryStatusEnum.Delivered
+                                                                           && p.ReleaseStatus != ReleaseStatusEnum.Released)
+                                                               .Count();
+
+                if (totalNotDelivered == 0)
+                {
+                    return null;
+                }
+            }
+
+            return record;
+
+        }
+
+        public void UpdateSalesDeliveryForReleasing(ISTDeliveryService deliveryService, ISTStockService stockService, STDelivery param)
+        {
+            param.DateUpdated = DateTime.Now;
+
+            foreach (var delivery in param.ClientDeliveries)
+            {
+                delivery.DateUpdated = DateTime.Now;
+                delivery.DeliveryStatus = DeliveryStatusEnum.Delivered;
+                delivery.ReleaseStatus = ReleaseStatusEnum.Released;
+
+                var stStock = new STStock
+                {
+                    StoreId = param.StoreId,
+                    STClientDeliveryId = delivery.Id,
+                    DeliveryStatus = DeliveryStatusEnum.Delivered,
+                    ReleaseStatus = ReleaseStatusEnum.Released,
+                    ItemId = delivery.ItemId,
+                    OnHand = -delivery.Quantity
+                };
+
+                stockService.InsertSTStock(stStock);
+
+            }
+
+            _context.STDeliveries.Update(param);
+            _context.SaveChanges();
+
+
+            var sales = _context.STSales.Include(p => p.SoldItems).Where(p => p.Id == param.STSalesId && p.StoreId == param.StoreId).FirstOrDefault();
+            if (sales != null)
+            {
+                foreach (var detail in sales.SoldItems)
+                {
+                    var totalDeliveredQty = Convert.ToInt32(
+                                                _context.STClientDeliveries
+                                                    .Where(p => p.STSalesDetailId == detail.Id
+                                                               && p.ItemId == detail.ItemId
+                                                               && p.DeliveryStatus == DeliveryStatusEnum.Delivered
+                                                               && p.ReleaseStatus == ReleaseStatusEnum.Released)
+                                                    .Sum(p => p.Quantity)
+                                            );
+
+                    if (detail.Quantity == totalDeliveredQty)
+                    {
+                        sales.ReleaseDate = DateTime.Now;
+
+                        _context.STSales.Update(sales);
+                        _context.SaveChanges();
+                    }
+                }
+            }
+
+        }
+
+        private string GetDeliveryStatusStr(DeliveryStatusEnum? deliveryStatus)
+        {
+            return EnumExtensions.SplitName(Enum.GetName(typeof(DeliveryStatusEnum), deliveryStatus));
+        }
+    }
+}

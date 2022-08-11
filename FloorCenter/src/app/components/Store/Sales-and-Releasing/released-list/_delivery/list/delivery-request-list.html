@@ -1,0 +1,198 @@
+           <div class="container-fluid">
+                <!-- breadcrumbs -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                              <a href="#">Sales Volume Management</a>
+                            </li>
+                            <li class="breadcrumb-item active">Set Delivery Request</li>
+                        </ol>
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <!-- /.row -->
+                
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h2 class="fw-b m-title m-title2">Set Delivery Request</h2>
+                    </div>
+                </div>
+                <form>
+
+                    <div class="line2">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="btn-con5">
+                                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#add_store_modal">Add Store Delivery</button>
+                                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#add_warehouse_modal">Add Warehouse Delivery</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group row">
+                              <label for="" class="col-sm-4 col-form-label sa-input">SI/PO Number:</label>
+                                <div class="col-sm-7">
+                                    <p class="sa-input">SP00001</p>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                              <label for="" class="col-sm-4 col-form-label sa-input">Customer Name:</label>
+                                <div class="col-sm-7">
+                                    <p class="sa-input">John Dela Cruz</p>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                              <label for="" class="col-sm-4 col-form-label sa-input">Delivery Address:</label>
+                                <div class="col-sm-7">
+                                    <p class="sa-input">8th Floor Octagon Tower Pasig City</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <div class="form-group row">
+                                <label for="example-text-input" class="col-sm-4 col-form-label sa-input">SI/PO Date:</label>
+                                <div class="col-sm-7">
+                                    <p class="sa-input">12/15/2017</p>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                              <label for="" class="col-sm-4 col-form-label sa-input">Contact Numbers:</label>
+                                <div class="col-sm-7">
+                                    <p class="sa-input">7645532, 09189124567</p>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="example-text-input" class="col-sm-4 col-form-label sa-input">Sales Agent:</label>
+                                <div class="col-sm-7">
+                                    <p class="sa-input">Juan Cruz</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <div class="form-group row">
+                                <label for="example-text-input" class="col-sm-4 col-form-label sa-input">Remarks:</label>
+                                <div class="col-sm-7">
+                                    <p class="sa-input">Lorem ipsum dolot sit</p>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                              <label for="" class="col-sm-4 col-form-label sa-input">Payment Mode:</label>
+                                <div class="col-sm-7">
+                                    <p class="sa-input">Cash on Delivery</p>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                              <label for="" class="col-sm-4 col-form-label sa-input">Delivery Option:</label>
+                                <div class="col-sm-7">
+                                    <p class="sa-input">Delivery</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    
+                                </div>
+                                <div class="panel-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Item Code</th>
+                                                    <th>Serial</th>
+                                                    <th>Item Name / Size / Tonality</th>
+                                                    <th>Qty</th>
+                                                    <th>Delivery Source</th>
+                                                    <th>Delivery Date</th>
+                                                    <th>Pending</th>
+                                                    <th></th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>122234</td>
+                                                    <td>1100234</td>
+                                                    <td>Ceramic Blue / 30x60 / 172394</td>
+                                                    <td>50</td>
+                                                    <td>Warehouse</td>
+                                                    <td>
+                                                        <div class="">
+                                                            <label class="sa-input2">12/13/2017</label>
+                                                        </div>
+                                                    </td>
+                                                    <td>5 Items</td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#ewarehouse_modal">
+                                                                <i class="fa fa-pencil-square-o"></i> Update
+                                                        </button>
+                                                    </td>
+                                                    <td>
+                                                        <a href="" target="_blank" type="button" class="btn btn-danger">
+                                                            <i class="fa fa-print ic-btn"></i>Print DR
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>134564</td>
+                                                    <td>1234987</td>
+                                                    <td>Granite Ceramic / 30x60 / 123497</td>
+                                                    <td>25</td>
+                                                    <td>Store</td>
+                                                    <td>
+                                                        <div class="">
+                                                            <label class="sa-input2">12/13/2017</label>
+                                                        </div>
+                                                    </td>
+                                                    <td>5 Items</td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#stored_modal">
+                                                                <i class="fa fa-pencil-square-o"></i> Update
+                                                        </button>
+                                                    </td>
+                                                    <td>
+                                                        <a href="" target="_blank" type="button" class="btn btn-danger">
+                                                            <i class="fa fa-print ic-btn"></i>Print DR
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Add Store Delivery modal -->
+                    <app-dr-store-delivery-add></app-dr-store-delivery-add>
+                    <!-- end Add Store Delivery modal -->
+
+                    <!-- Edit Store Delivery modal -->
+                    <app-dr-update-store></app-dr-update-store>
+                    <!-- end Edit Store Delivery modal -->
+
+                    <!-- Add Warehouse Delivery modal -->
+                    <app-dr-warehouse-delivery-add></app-dr-warehouse-delivery-add>
+                    <!-- end Add Warehouse Delivery modal -->
+
+                    <!-- Edit Warehouse Delivery modal -->
+                    <app-dr-update-warehouse></app-dr-update-warehouse>
+                    <!-- end Edit Warehouse Delivery modal -->
+
+                    
+                </form>
+
+
+            </div>
+            <!-- /.container-fluid -->

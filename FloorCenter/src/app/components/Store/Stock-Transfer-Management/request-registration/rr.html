@@ -1,0 +1,171 @@
+            <div class="container-fluid">
+                <!-- breadcrumbs -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                              <a href="#">Stock Transfer Management</a>
+                            </li>
+                            <li class="breadcrumb-item active">Request Registration</li>
+                        </ol>
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <!-- /.row -->
+                
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h2 class="fw-b m-title m-title2">Request Registration</h2>
+                    </div>
+                </div>
+                <form [formGroup]="registrationForm" (ngSubmit)="onSubmit(registrationForm)" (keydown.enter)="$event.preventDefault()">
+                    <div class="line2">
+                        <div class="row">
+                            <div class="alert alert-danger" style="text-align: center" *ngIf="errorMessage">
+                                <p *ngFor="let err of errorMessage"> {{ err }} </p>
+                            </div>
+                            <div class="alert alert-success" style="text-align: center" *ngIf="successMessage">
+                                <p>  {{ successMessage }} </p>
+                            </div>
+                            <br/>
+                            <div class="col-lg-12">
+                                <div class="btn-con6">
+                                    <input type="submit" name="" class="btn btn-danger" value="Save">
+                                    <a href="sales_list.html" class="btn btn-danger btn-r">Cancel</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group row">
+                              <label for="" class="col-sm-4 col-form-label sa-input">Origin<span class="ic-red">*</span>:</label>
+                                <div class="col-sm-7">
+                                    <select class="form-control" formControlName="WarehouseId">
+                                        <option></option>
+                                        <option *ngFor="let opt of warehouseList" [value]="opt.id"> {{opt.name}} </option>
+                                    </select>
+                                    <show-errors [control]="registrationForm.controls.WarehouseId"></show-errors>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                              <label for="" class="col-sm-4 col-form-label sa-input">PO Number :<span class="ic-red">*</span>:</label>
+                                <div class="col-sm-7">
+                                    <input class="form-control"  formControlName="PONumber">
+                                    <show-errors [control]="registrationForm.controls.PONumber"></show-errors>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <div class="form-group row">
+                                <label for="example-text-input" class="col-sm-4 col-form-label sa-input">Delivery Date<span class="ic-red">*</span>:</label>
+                                <div class="input-group date col-sm-7" id="datetimepicker">
+                                    <input type="date" class="form-control" formControlName="PODate">
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
+                                <show-errors [control]="registrationForm.controls.PODate"></show-errors>
+                            </div>
+                            <div class="form-group row">
+                              <label for="" class="col-sm-4 col-form-label sa-input">Delivery Option:</label>
+                                <div class="col-sm-7 text-group1">
+                                    <select class="form-control" formControlName="TransactionType" (change)="delivOptCondition($event.currentTarget.value)">
+                                        <option></option>
+                                        <option *ngFor="let opt of transactionTypesList" [value]="opt.value"> {{opt.name}} </option>
+                                    </select>
+                                    <show-errors [control]="registrationForm.controls.TransactionType"></show-errors>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <div class="form-group row">
+                                <label for="example-text-input" class="col-sm-4 col-form-label sa-input">Remarks:</label>
+                                <div class="col-sm-7">
+                                    <textarea class="form-control" rows="4" formControlName="Remarks"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <br/>
+                        <input class="form-control" (keyup.enter)="getItemDetails()" [(ngModel)]="code" [ngModelOptions]="{standalone: true}"> 
+                        <p class="alert alert-danger" *ngIf="codeMessage">  {{ codeMessage }} </p>
+                        <br/>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    Item List
+                                </div>
+                                <div class="panel-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Item Code</th>
+                                                    <th>Serial</th>
+                                                    <th>Item Name</th>
+                                                    <th>Size</th>
+                                                    <th>Tonality</th>
+                                                    <th>Qty</th>
+                                                    <th>Status</th>
+                                                    <th>Remarks</th>
+                                                    <th>Remove</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody  formArrayName="RequestedItems">
+                                                <tr *ngFor="let item of RequestedItems.controls; let i=index"  [formGroupName]="i">
+                                                    <td>
+                                                        <input type="hidden" formControlName="ItemId">
+                                                        <input class="form-control" (keyup.enter)="getItemDetails()" [value]="itemDetail[i].code">
+                                                    </td>
+                                                    <td>
+                                                        <input class="form-control" [value]="itemDetail[i].serialNumber">
+                                                    </td>
+                                                    <td> {{ itemDetail[i].name }} </td>
+                                                    <td> {{ itemDetail[i].sizeId }} </td>
+                                                    <td> {{ itemDetail[i].tonality }} </td>
+                                                    <td>
+                                                        <input class="qty-input form-control"  formControlName="RequestedQuantity">
+                                                        <show-errors [control]="item.controls.RequestedQuantity"></show-errors>
+                                                    </td>
+                                                    <td>On-Stock</td>
+                                                    <td>
+                                                         <input class="form-control" formControlName="RequestedRemarks">
+                                                    </td>
+                                                    <td class="td-actions text-center">
+                                                        <button type="button" class="btn btn-danger btn-simple btn-xs" (click)="deleteRow(i)">
+                                                            <i class="fa fa-times"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="line2">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="btn-con6">
+                                    <input type="submit" name="" class="btn btn-danger" value="Save">
+                                    <a href="sales_list.html" class="btn btn-danger btn-r">Cancel</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    
+                </form>
+
+
+            </div>
+            <!-- /.container-fluid -->

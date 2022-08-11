@@ -1,0 +1,337 @@
+ <div class="container-fluid">
+                <!-- breadcrumbs -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                              Audit Trail
+                            </li>
+                            <li class="breadcrumb-item active">Main Office</li>
+                        </ol>
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <!-- /.row -->
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h2 class="fw-b m-title">Main Office</h2> 
+                        
+                    </div>
+                </div>       
+  <form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="reports-con">
+                    
+
+                            <div class="row">
+
+                                <div class="col-lg-5">
+                                    <div class="form-group row">
+                                      <label for="" class="col-sm-4 col-form-label sa-input">Username<span class="ic-red">*</span>:</label>
+                                        <div class="col-sm-8
+                                        pd_l0">
+                                           <select class="form-control" formControlName="userID">
+                                                                           <option></option>
+                                                                        <option *ngFor="let opt of userList" value="{{opt.id}}">{{opt.userName}}</option>
+                                                                     
+                                        </select>
+                                         <show-errors [control]="searchForm.controls.userID"></show-errors>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-5">
+                                    <div class="form-group row">
+                                        <label for="example-text-input" class="col-sm-4 col-form-label sa-input">Date Range<span class="ic-red">*</span>:</label>
+                                        <div class="input-group date col-sm-7" id="datetimepicker">
+                                            <input type="date" class="form-control" formControlName="dateFrom">
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-5">
+                                    <div class="form-group row">
+                                        <label for="example-text-input" class="col-sm-2 col-form-label sa-input">To<span class="ic-red">*</span>:</label>
+                                        <div class="input-group date col-sm-7" id="datetimepicker">
+                                            <input type="date" class="form-control" formControlName="dateTo">
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="btn-con5">
+                                        <input type="submit" name="" class="btn btn-danger" value="Generate" id="generate">
+                                        <!-- <button type="button" class="btn btn-danger btn-r" id="cancel">Cancel</button> -->
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                        
+                  
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <p class="search_status"> <b> {{totalRecordMessage}} </b> {{pageRecordMessage}} </p>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="text-right">
+                                                    <!-- <button type="button" class="btn btn-outline btn-danger" data-toggle="modal" data-target="#advanceSearch"><i class="fa fa-search fa-fw"></i> Advanced Search</button> -->
+                                                    <input type="button" *ngIf="auditTrailList.length != 0" (click)="downloadList()" name="" class="btn btn-danger" value="Download">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="panel-body">
+                                        <div class="table-responsive table-bordered">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>ID</th>
+                                                        <th>Date</th>
+                                                        <th>Username</th>
+                                                        <th>Action</th>
+                                                        <th>Transaction</th>
+                                                        <th>Detail</th>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngFor="let audit of auditTrailList">
+                                                        <td>{{audit.id}}</td>
+                                                        <td>{{audit.dateCreated | date : 'medium' }}</td>
+                                                        <td>{{audit.userName}}</td>
+                                                        <td>{{audit.action}}</td>
+                                                        <td>{{audit.transaction}}</td>
+                                                        <td>{{audit.detail}}</td>
+                                                    </tr>
+                                                    
+                                                </tbody>
+                                            </table>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                         <app-pagernew [module]="module" (displayPageList)="getAuditList($event)" [Keyword] = "Keyword"></app-pagernew>
+                        <div class="row">
+                            <div class="col-md-12 btn-con">
+                                <input type="button" *ngIf="auditTrailList.length != 0" (click)="downloadList()" name="" class="btn btn-danger" value="Download">
+                            </div>
+                        </div>
+
+                        <!-- modal -->
+                        <!-- advanced search -->
+             
+
+                        <!-- detail modal -->
+                        <div class="modal fade" id="detail_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                        <h4 class="modal-title" id="myModalLabel">Item Details</h4>
+
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="row">
+                                                  <label for="" class="col-sm-5 col-form-label sa-input">Serial No.:</label>
+                                                    <div class="col-sm-7">
+                                                        <p class="sa-input">1233122</p>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                  <label for="" class="col-sm-5 col-form-label sa-input">Item Code:</label>
+                                                    <div class="col-sm-7">
+                                                        <p class="sa-input">AK6004C</p>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                  <label for="" class="col-sm-5 col-form-label sa-input">Name:</label>
+                                                    <div class="col-sm-7">
+                                                        <p class="sa-input">Superblack 3060</p>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                  <label for="" class="col-sm-5 col-form-label sa-input">Description:</label>
+                                                    <div class="col-sm-7">
+                                                        <p class="sa-input">Ceramic Tiles</p>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                  <label for="" class="col-sm-5 col-form-label sa-input">Specification:</label>
+                                                    <div class="col-sm-7">
+                                                        <p class="sa-input">600*600MM</p>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                  <label for="" class="col-sm-5 col-form-label sa-input">Stock-on-hand:</label>
+                                                    <div class="col-sm-7">
+                                                        <p class="sa-input">50</p>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                  <label for="" class="col-sm-5 col-form-label sa-input">Update Reason:</label>
+                                                    <div class="col-sm-7">
+                                                        <p class="sa-input">Lorem ipsum dolot sit</p>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                  <label for="" class="col-sm-5 col-form-label sa-input">Incoming:</label>
+                                                    <div class="col-sm-7">
+                                                        <p class="sa-input">300</p>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                  <label for="" class="col-sm-5 col-form-label sa-input">For Return:</label>
+                                                    <div class="col-sm-7">
+                                                        <p class="sa-input">30</p>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                  <label for="" class="col-sm-5 col-form-label sa-input">Available:</label>
+                                                    <div class="col-sm-7">
+                                                        <p class="sa-input">50</p>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                  <label for="" class="col-sm-5 col-form-label sa-input">Last Date Counted:</label>
+                                                    <div class="col-sm-7">
+                                                        <p class="sa-input">11/17/2017</p>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                  <label for="" class="col-sm-5 col-form-label sa-input">Location:</label>
+                                                    <div class="col-sm-7">
+                                                        <p class="sa-input">Manila, Ortigas</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group row">
+                                                    <div class="mpic_con3">
+                                                        <!-- //image file here -->
+                                                        <img src="../images/sample1.jpg">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <!-- <button type="button" class="btn btn-danger">Save</button> -->
+                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                                <!-- /.modal-content -->
+                            </div>
+                            <!-- /.modal-dialog -->
+                        </div>
+
+                        <!-- history modal -->
+                        <div class="modal fade" id="history_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                            <div class="modal-dialog modal-xlg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                        <h4 class="modal-title" id="myModalLabel">Stock History</h4>
+
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="table-responsive table-bordered">
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Transaction No.</th>
+                                                                <th>SI/PO No.</th>
+                                                                <th>DR No.</th>
+                                                                <th>Transaction</th>
+                                                                <th>Origin</th>
+                                                                <th>Destination</th>
+                                                                <th>Date</th>
+                                                                <th>Stock</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr class="incoming">
+                                                                <td>A00001</td>
+                                                                <td>156273</td>
+                                                                <td>12367890</td>
+                                                                <td>Received WH</td>
+                                                                <td>WH-MNL</td>
+                                                                <td>BR-ORT Ortigas Home Depot</td>
+                                                                <td>11/01/2017</td>
+                                                                <td>2000</td>
+                                                            </tr>
+                                                            <tr class="outgoing">
+                                                                <td>A00002</td>
+                                                                <td>172654</td>
+                                                                <td>67236453</td>
+                                                                <td>Sales #9201029</td>
+                                                                <td>WH-MNL</td>
+                                                                <td>BR-ORT Makati</td>
+                                                                <td>11/01/2017</td>
+                                                                <td>-100</td>
+                                                            </tr>
+                                                            <tr class="outgoing">
+                                                                <td>A00052</td>
+                                                                <td>908765</td>
+                                                                <td>10298543</td>
+                                                                <td>IB Transfer</td>
+                                                                <td>WH-CEB</td>
+                                                                <td>BR-ORT Mandaluyong</td>
+                                                                <td>11/08/2017</td>
+                                                                <td>-200</td>
+                                                            </tr>
+                                                            <tr class="correction">
+                                                                <td>A0089d</td>
+                                                                <td>918743</td>
+                                                                <td>18204467</td>
+                                                                <td>Stock Correction</td>
+                                                                <td>WH-DAV</td>
+                                                                <td>BR-ORT Manila</td>
+                                                                <td>11/20/2017</td>
+                                                                <td>-200</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-danger">Download List</button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                                <!-- /.modal-content -->
+                            </div>
+                            <!-- /.modal-dialog -->
+                        </div>
+
+
+
+                    </form>
+
+            </div>

@@ -1,0 +1,80 @@
+                        <div class="modal fade" id="product_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                            <div class="modal-dialog" *ngIf="warehouseUpdateForm" >
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                        <h4 class="modal-title" id="myModalLabel">Warehouse Update</h4>
+
+                                    </div>
+                                <div class="col-md-12">
+                                            <div *ngIf="statusMessage" class="alert alert-success">
+                                               {{statusMessage}}
+                                            </div >
+                                              <ul *ngFor="let err of errorMessage"> 
+                                        <div class="alert alert-danger">
+                                            {{err}}
+                                        </div>
+                                    </ul>
+                                </div>
+                                   
+                                   
+                                       
+
+                             
+
+
+                                    
+                            
+
+
+                        <form [formGroup]="warehouseUpdateForm" (ngSubmit)="updateEmp()">
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                  <label for="" class="col-sm-4 col-form-label sa-input">Warehouse Code:</label>
+                                                    <div class="col-sm-8">
+                                                        <p class="sa-input"></p>
+                                                       <input type="text" formControlName="id"  formControlName="code" maxlength="50" class="form-control sv-input" disabled>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                  <label for="" class="col-sm-4 col-form-label sa-input">Warehouse Name <span class="ic-red">*</span>:</label>
+                                                    <div class="col-sm-8">
+                                                        <input class="form-control sv-input" type="text" maxlength="50" formControlName="name" >
+                                                         <show-errors [control]="warehouseUpdateForm.controls.name"></show-errors>
+
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                  <label for="" class="col-sm-4 col-form-label sa-input">Address:</label>
+                                                    <div class="col-sm-8">
+                                                        <input class="form-control sv-input" maxlength="50" type="text" formControlName="address">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                  <label for="" class="col-sm-4 col-form-label sa-input">Contact No.<span class="ic-red">*</span>:</label>
+                                                    <div class="col-sm-8 modal-icon2">
+                                                        <input class="form-control sv-input" type="text" maxlength="10" formControlName="contactNumber" contact >
+                                                        <show-errors [control]="warehouseUpdateForm.controls.contactNumber"></show-errors>
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            
+                                        </div>
+                                   
+
+                                    </div>
+                                    <div class="modal-footer">
+                                         <input type="submit" *ngIf="userType == 1" value="Save" class="btn btn-danger" [disabled]="!warehouseUpdateForm.valid" />
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    </div>
+
+                                     </form>
+                                </div>
+                                <!-- /.modal-content -->
+                            </div>
+                            <!-- /.modal-dialog -->
+                        </div>

@@ -1,0 +1,128 @@
+    <div class="container-fluid">
+                <!-- breadcrumbs -->
+        <div class="row">
+            <div class="col-lg-12">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                      Dashboard
+                    </li>
+                    <li class="breadcrumb-item active">My Dashboard</li>
+                </ol>
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <!-- /.row -->
+        
+        <!-- items / cards -->
+
+        <div class="row" *ngIf="details">
+            <div class="col-lg-6">
+                <div class="panel panel-warning">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <i class="fa fa-clock-o fa-5x dh-icon"></i>
+                                <button type="button" class="btn btn-danger btn-circle"> {{ details.pendingOrderDeliveriesTotal }} 
+                                </button>
+                            </div>
+                            <div class="dh-title2"><a routerLink="/Logistics/deliveries/orders">Pending Delivery Requests (Orders)</a></div>
+                            <div class="col-xs-4 text-center">
+                                <div>
+                                    <p class="huge d-quantity"> {{ details.pendingOrderDeliveriesTotal }} </p>
+                                    <p class="sub-text2">order(s)</p>
+                                </div>
+                            </div>
+                            <div class="col-xs-4 text-center">
+                                <div>
+                                    <p class="huge d-quantity"> {{ details.pendingOrderDeliveriesTotalItem }} </p>
+                                    <p class="sub-text2">pcs</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6" *ngIf="details">
+                <div class="panel panel-danger">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <i class="fa fa-truck fa-5x dh-icon"></i>
+                                <button type="button" class="btn btn-danger btn-circle"> {{ details.pendingSalesDeliveryTotal }}
+                                </button>
+                            </div>
+                            <div class="dh-title2"><a routerLink="/Logistics/deliveries/sales">Pending Delivery Requests (Sales)</a></div>
+                            <div class="col-xs-4 text-center">
+                                <div>
+                                    <p class="huge d-quantity"> {{ details.pendingSalesDeliveryTotal }} </p>
+                                    <p class="sub-text2">order(s)</p>
+                                </div>
+                            </div>
+                            <div class="col-xs-4 text-center">
+                                <div>
+                                    <p class="huge d-quantity"> {{ details.pendingSalesDeliveryTotalItem }} </p>
+                                    <p class="sub-text2">pcs</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" *ngIf="details">
+            <div class="col-lg-6">
+                <div class="panel panel-warning">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <i class="fa fa-clock-o fa-5x dh-icon"></i>
+                                <button type="button" class="btn btn-danger btn-circle"> {{ details.pendingPickUpClientReturnsTotal }} 
+                                </button>
+                            </div>
+                            <div class="dh-title2"><a routerLink="/Logistics/return_client_delivery_list">Pending Pick-up Requests (Client Returns)</a></div>
+                            <div class="col-xs-4 text-center">
+                                <div>
+                                    <p class="huge d-quantity"> {{ details.pendingPickUpClientReturnsTotal }} </p>
+                                    <p class="sub-text2">order(s)</p>
+                                </div>
+                            </div>
+                            <div class="col-xs-4 text-center">
+                                <div>
+                                    <p class="huge d-quantity"> {{ details.pendingPickUpClientReturnsTotalItem }} </p>
+                                    <p class="sub-text2">pcs</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6" *ngIf="details">
+                <div class="panel panel-danger">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <i class="fa fa-truck fa-5x dh-icon"></i>
+                                <button type="button" class="btn btn-danger btn-circle"> {{ details.pendingPickUpRTVTotal }}
+                                </button>
+                            </div>
+                            <div class="dh-title2"><a routerLink="/Logistics/return_delivery_list">Pending Pick-up Requests (RTV)</a></div>
+                            <div class="col-xs-4 text-center">
+                                <div>
+                                    <p class="huge d-quantity"> {{ details.pendingPickUpRTVTotal }} </p>
+                                    <p class="sub-text2">order(s)</p>
+                                </div>
+                            </div>
+                            <div class="col-xs-4 text-center">
+                                <div>
+                                    <p class="huge d-quantity"> {{ details.pendingPickUpRTVTotalItem }} </p>
+                                    <p class="sub-text2">pcs</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+            <!-- /.container-fluid -->

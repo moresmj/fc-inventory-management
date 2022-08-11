@@ -1,0 +1,325 @@
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-lg-12">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="Store/dashboard">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active">My Dashboard</li>
+                </ol>
+            </div>
+        </div>
+
+
+        <div class="row" *ngIf="ss">
+            <div class="col-lg-3 col-md-6">
+                <div class="panel panel-red">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fa fa-table fa-fw fa-5x dh-icon"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="dh-title">Current Stocks</div>
+                                <div>
+                                    <p class="huge"> {{ss.currentStocks}} </p>
+                                    <p class="sub-text">pcs</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <a routerLink="/Store/inventory_list">
+                        <div class="panel-footer">
+                            <a routerLink="/Store/inventory_list">
+                                <span class="pull-left">View Details</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </a>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fa fa-cart-plus fa-5x dh-icon"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="dh-title">Available Stocks</div>
+                                <div>
+                                    <p class="huge"> {{ss.availableStocks}} </p>
+                                    <p class="sub-text">pcs</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <a routerLink="/Store/inventory_list" (click)="onSearch('OnlyAvailableStocks')">
+                        <div class="panel-footer">
+                            <a routerLink="/Store/inventory_list" (click)="onSearch('OnlyAvailableStocks')">
+                                <span class="pull-left">View Details</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </a>
+
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="panel panel-yellow">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fa fa-warning fa-5x dh-icon"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="dh-title">Out of Stocks</div>
+                                <div>
+                                    <p class="huge"> {{ss.outOfStockItems}} </p>
+                                    <p class="sub-text">items</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <a routerLink="/Store/inventory_list" (click)="onSearch('IsOutOfStocks')">
+                        <div class="panel-footer">
+                            <a routerLink="/Store/inventory_list" (click)="onSearch('IsOutOfStocks')">
+                                <span class="pull-left">View Details</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </a>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="panel panel-green">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fa fa-ban fa-5x dh-icon"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="dh-title">Damaged Stocks</div><div>
+                                    <p class="huge"> {{ss.brokenItems}} </p>
+                                    <p class="sub-text">pcs</p>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <a routerLink="/Store/inventory_list" (click)="onSearch('HasBroken')">
+                        <div class="panel-footer">
+                            <a routerLink="/Store/inventory_list" (click)="onSearch('HasBroken')">
+                                <span class="pull-left">View Details</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </a>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6" *ngIf="details">
+                <div class="panel panel-warning">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <i class="fa fa-clock-o fa-5x dh-icon"></i>
+                                <button type="button" class="btn btn-danger btn-circle"> {{ details.pendingOrdersTotal }} </button>
+                            </div>
+                            <div class="dh-title2">Pending Orders</div>
+                            <div class="col-xs-4 text-center">
+                                <div>
+                                    <p class="huge d-quantity"> {{ details.pendingOrdersTotal }} </p>
+                                    <p class="sub-text2">order(s)</p>
+                                </div>
+                            </div>
+                            <div class="col-xs-4 text-center">
+                                <div>
+                                    <p class="huge d-quantity"> {{ details.pendingOrdersTotalItem }} </p>
+                                    <p class="sub-text2">pcs</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="panel panel-success" *ngIf="details">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <i class="fa fa-calendar fa-5x dh-icon"></i>
+                                <button type="button" class="btn btn-danger btn-circle">{{ details.pendingDeliveriesTotal }} </button>
+                            </div>
+                            <div class="dh-title2">Pending Delivery Schedule</div>
+                            <div class="col-xs-4 text-center">
+                                <div>
+                                    <p class="huge d-quantity"> {{ details.pendingDeliveriesTotal }} </p>
+                                    <p class="sub-text2">order(s)</p>
+                                </div>
+                            </div>
+                            <div class="col-xs-4 text-center">
+                                <div>
+                                    <p class="huge d-quantity"> {{ details.pendingDeliveriesTotalItem }} </p>
+                                    <p class="sub-text2">pcs</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6" *ngIf="details">
+                <div class="panel panel-danger">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <i class="fa fa-truck fa-5x dh-icon"></i>
+                                <button type="button" class="btn btn-danger btn-circle"> {{ details.waitingDeliveriesTotal }} </button>
+                            </div>
+                            <div class="dh-title2">Waiting Delivery</div>
+                            <div class="col-xs-4 text-center">
+                                <div>
+                                    <p class="huge d-quantity"> {{ details.waitingDeliveriesTotal }} </p>
+                                    <p class="sub-text2">order(s)</p>
+                                </div>
+                            </div>
+                            <div class="col-xs-4 text-center">
+                                <div>
+                                    <p class="huge d-quantity"> {{ details.waitingDeliveriesTotalItem }} </p>
+                                    <p class="sub-text2">pcs</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6" *ngIf="details">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <i class="fa fa-truck fa-5x dh-icon"></i>
+                                <button type="button" class="btn btn-danger btn-circle"> {{ details.waitingForPickUpTotal }} </button>
+                            </div>
+                            <div class="dh-title2">Waiting for Pick up</div>
+                            <div class="col-xs-4 text-center">
+                                <div>
+                                    <p class="huge d-quantity"> {{ details.waitingForPickUpTotal }} </p>
+                                    <p class="sub-text2">order(s)</p>
+                                </div>
+                            </div>
+                            <div class="col-xs-4 text-center">
+                                <div>
+                                    <p class="huge d-quantity"> {{ details.waitingForPickUpTotalItem }} </p>
+                                    <p class="sub-text2">pcs</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6" *ngIf="details">
+                <div class="panel panel-warning">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <i class="fa fa-edit fa-5x dh-icon"></i>
+                                <button type="button" class="btn btn-danger btn-circle">
+                                    {{ details.pendingSalesTotal }}
+                                </button>
+                            </div>
+                            <div class="dh-title2">Pending Sales Registration</div>
+                            <div class="col-xs-4 text-center">
+                                <div>
+                                    <p class="huge d-quantity">{{ details.pendingSalesTotal }}</p>
+                                    <p class="sub-text2">order(s)</p>
+                                </div>
+                            </div>
+                            <div class="col-xs-4 text-center">
+                                <div>
+                                    <p class="huge d-quantity">{{ details.pendingSalesTotalItem }}</p>
+                                    <p class="sub-text2">pcs</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6" *ngIf="details">
+                <div class="panel panel-warning">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <i class="fa fa-edit fa-5x dh-icon"></i>
+                                <button type="button" class="btn btn-danger btn-circle"> {{ details.pendingToReceiveReturnsTotal }} </button>
+                            </div>
+                            <div class="dh-title2"> Returns </div>
+                            <div class="col-xs-4 text-center">
+                                <div>
+                                    <p class="huge d-quantity"> {{ details.pendingToReceiveReturnsTotal }} </p>
+                                    <p class="sub-text2">order(s)</p>
+                                </div>
+                            </div>
+                            <div class="col-xs-4 text-center">
+                                <div>
+                                    <p class="huge d-quantity"> {{ details.pendingToReceiveReturnsTotalItems }} </p>
+                                    <p class="sub-text2">pcs</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading fw-b">
+                        Stock Alerts
+                    </div>
+                    <div class="panel-body">
+                        <div class="tab-content">
+                            <div class="tab-pane fade in active" id="week2">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Rank</th>
+                                                <th>Item Code</th>
+                                                <th>Item Name</th>
+                                                <th>Size</th>
+                                                <th>Tonality</th>
+                                                <th>Sales (PCS)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor='let item of ssa; let i=index'>
+                                                <td> {{ i + 1 }} </td>
+                                                <td> {{ item.code }} </td>
+                                                <td> {{ item.itemName }} </td>
+                                                <td> {{ item.sizeName }} </td>
+                                                <td> {{ item.tonality }} </td>
+                                                <td> {{ item.available }} </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>

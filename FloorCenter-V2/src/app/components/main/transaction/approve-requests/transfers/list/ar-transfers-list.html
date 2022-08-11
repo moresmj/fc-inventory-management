@@ -1,0 +1,106 @@
+           <div class="container-fluid">
+                <!-- breadcrumbs -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"> Transaction </li>
+                            <li class="breadcrumb-item">Approve Requests</li>
+                            <li class="breadcrumb-item active"> Transfers </li>
+                        </ol>
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <!-- /.row -->
+                
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h2 class="fw-b m-title m-title2">Approve Requests - Transfers</h2>
+                    </div>
+                </div>
+
+     
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p class="search_status"><b> {{totalRecordMessage}} </b> {{pageRecordMessage}}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="text-right">
+                                        <button type="button" class="btn btn-outline btn-danger" data-toggle="modal" data-target="#advanceSearch"> Advanced Search</button>
+                                    <input type="button" name="" class="btn btn-danger" value="Download List" *ngIf="branchOrdersList.length != 0" (click)="downloadList()">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-ar-transfersdy">
+                        <div class="table-responsive table-ar-transfersrdered">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Transaction No.</th>
+                                        <th>PO. No.</th>
+                                        <th>Ordered By</th>
+                                        <th>Ordered To</th>
+                                        <th>Payment Mode</th>
+                                        <th>Company Relation</th>
+                                        <th>Client Name</th>
+                                        <th>Delivery Mode</th>
+                                        <th>Ordered Date</th>
+                                        <th>Status</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let order of branchOrdersList">
+                                        <td> {{ order.transactionNo }} </td>
+                                        <td> {{ order.poNumber }} </td>
+                                        <td> {{ order.orderedBy }} </td> 
+                                        <td> {{ order.orderedTo }} </td> 
+                                        <td> {{ order.paymentModeStr }} </td> 
+                                        <td> {{ order.storeCompanyRelationStr }} </td>                  
+                                        <td> {{ order.clientName }} </td>
+                                        <td> {{ order.deliveryTypeStr }} </td>  
+                                        <td> {{ order.poDate | date : "mediumDate" }} </td>
+                                        <td> {{ order.requestStatusStr }} </td>
+                                        <td>
+                                            <button type="button" [ngClass]="(order.requestStatus != 2)  ? 'btn btn-danger btn-r' : 'btn btn-danger'" data-toggle="modal" data-target="#details_modal" (click)="onBtnUpdateClick(order)" > {{ order.requestStatus != 2 ? "Details" : "Approve" }}</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-12">
+
+                <app-pagernew [module]="module" [Keyword]="filterParam" [defaultFilter]="defaultFilter" [isDefaultFiltereredLoading]="isDefaultLoad" (displayPageList)="getBranchOrders($event)"></app-pagernew>
+
+                <div class="row">
+                    <div class="col-md-12 btn-con6">
+                        <input type="button" name="" *ngIf="branchOrdersList.length != 0" class="btn btn-danger" value="Download List" (click)="downloadList()">
+                    </div>
+                </div>
+
+            </div> <!-- col-md-12 -->
+
+        </div>
+
+        <!-- Advanced Search-->
+        <app-ar-transfers-advanced-search (updatePage)="filterRecordWithParam($event)"></app-ar-transfers-advanced-search>
+
+        <!--Update -->
+        <app-ar-transfers-details [updateForm]="updateForm" [details]="details" (updatePage)="filterRecordWithParam($event)"> </app-ar-transfers-details>
+
+
+    </div>
+    <!-- /.container-fluid -->

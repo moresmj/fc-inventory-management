@@ -1,0 +1,392 @@
+  <div class="container-fluid">
+                <!-- breadcrumbs -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                    Transactions
+                            </li>
+                            <li class="breadcrumb-item">
+                              <a routerLink="/Store/returns">Returns</a>
+                            </li>
+                            <li class="breadcrumb-item active">Client Return</li>
+                        </ol>
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <!-- /.row -->
+                
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h2 class="fw-b m-title m-title2">Client Return</h2>
+                    </div>
+                </div>
+                <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
+                    <div class="line">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div style="display: none;" class="form-group row">
+                                  <label for="" class="col-sm-4 col-form-label sa-input">Transaction No.:</label>
+                                    <div class="col-sm-7">
+                                        <input class="form-control" type="text" >
+                                    </div>
+                                </div>
+                              <div class="form-group row">
+                                  <label for="" class="col-sm-4 col-form-label sa-input">Client Name:</label>
+                                    <div class="col-sm-7">
+                                        <input class="form-control" type="text" formControlName="ClientName">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4">
+                                <div class="form-group row">
+                                  <label for="" class="col-sm-4 col-form-label sa-input">SI No.:</label>
+                                    <div class="col-sm-7">
+                                        <input class="form-control" type="text" formControlName="SINumber">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                  <label for="" class="col-sm-4 col-form-label sa-input">OR No.:</label>
+                                    <div class="col-sm-7">
+                                        <input class="form-control" type="text" formControlName="ORNumber">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="display: none;"  class="col-lg-4">
+                                <div class="form-group row">
+                                    <label for="example-text-input" class="col-sm-4 col-form-label sa-input">Sales Date<span class="ic-red"></span>:</label>
+                                    <div class="input-group date col-sm-7" id="datetimepicker">
+                                        <input type="text" class="form-control" id="rDate">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="example-text-input" class="col-sm-4 col-form-label sa-input"></label>
+                                    <div class="input-group date col-sm-7" id="datetimepicker">
+                                        <input type="text" class="form-control" id="rDate2">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group row btn-con7">
+                                    <input type="submit" name="" class="btn btn-danger" value="Search">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <form>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                             <p class="search_status"><b> {{totalRecordMessage}} </b> {{pageRecordMessage}}</p>
+                                        </div>
+                                        
+                                        <div class="col-md-6">
+                                            <div class="text-right">
+                                                <input (click)="downloadList()" type="button" name="" class="btn btn-danger" value="Download List">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="table-responsive table-bordered">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Transaction No.</th>
+                                                    <th>Transaction</th>
+                                                    <th>SI No.</th>
+                                                    <th>OR No.</th>
+                                                    <th>Release Date</th>
+                                                    <th>Customer Name</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let sales of returnList">
+                                                    <td>{{sales.transactionNo}}</td>
+                                                    <td>{{sales.salesTypeStr}}</td>
+                                                    <td>{{sales.siNumber}}</td>
+                                                    <td>{{sales.orNumber}}</td>
+                                                    <td>{{sales.releaseDate | date : mediumDate}}</td>
+                                                    <td>{{sales.clientName}}</td>
+                                                    <!-- <td>
+                                                        <a href="delivery_request.html" class="btn btn-danger btn-r">Delivery</a>
+                                                    </td> -->
+                                                    <td>
+                                                        <a routerLink="/Store/returns/client_return_list/client_return_detail/{{sales.id}}" class="btn btn-danger">Return</a>
+                                                        <!-- <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#details_modal">Delivery</button> -->
+                                                    </td>
+                                                </tr>
+                                          
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+
+                    <div class="row">
+                      <app-pagernew [module]="module" [Keyword]="Keyword" (displayPageList)="getReturns($event)"></app-pagernew>
+                        <div class="col-lg-12">
+                            <div class="btn-con">
+                                <input type="button" (click)="downloadList()"  name="" class="btn btn-danger" value="Download List">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- modal -->
+                    <!-- advance search -->
+                    <div class="modal fade" id="advanceSearch" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                    <h4 class="modal-title" id="myModalLabel">Releasing Advanced Search</h4>
+
+                                </div>
+                                <div class="modal-body">
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group row">
+                                              <label for="" class="col-sm-3 col-form-label sa-input">SI/PO Number:</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" class="form-control" name="">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                              <label for="" class="col-sm-3 col-form-label sa-input">SI/PO Period:</label>
+                                                <div class="col-sm-6">
+                                                    <div class="input-group date" id="datetimepicker">
+                                                        <input type="text" class="form-control" id="poDate">
+                                                        <span class="input-group-addon">
+                                                            <span class="glyphicon glyphicon-calendar"></span>
+                                                        </span>
+                                                    </div>
+                                                    <label for="" class="col-form-label sa-input">To</label>
+                                                    <div class="input-group date" id="datetimepicker">
+                                                        <input type="text" class="form-control" id="poDate2">
+                                                        <span class="input-group-addon">
+                                                            <span class="glyphicon glyphicon-calendar"></span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                              <label for="" class="col-sm-3 col-form-label sa-input">Customer Name:</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" class="form-control" name="">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                              <label for="" class="col-sm-3 col-form-label sa-input">Item Code:</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" class="form-control" name="">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                            <label for="example-text-input" class="col-sm-3 col-form-label sa-input">Delivery Status:</label>
+                                            <div class="date col-sm-6" id="datetimepicker">
+                                                <div class="checkbox s-check">
+                                                    <input id="checkbox2" type="checkbox">
+                                                    <label for="checkbox2">Pending</label><br>
+                                                    <input id="checkbox3" type="checkbox">
+                                                    <label for="checkbox3">For Delivery</label><br>
+                                                    <input id="checkbox4" type="checkbox">
+                                                    <label for="checkbox4">Delivered</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        </div>
+                                    </div>
+
+                                </div>
+ 
+                                <div class="modal-footer">
+                                    <input type="submit" name="" class="btn btn-danger" value="Search">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                </div>
+                            </div>
+                            <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                    </div>
+                    
+                    <!-- details search -->
+                    <div class="modal fade" id="details_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                        <div class="modal-dialog modal-lg modal-xlg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                    <h4 class="modal-title" id="myModalLabel">Sales Detail Trans No. 100001<!-- [Transaction No.] --></h4>
+
+                                </div>
+                                <div class="modal-body">
+                                    
+                                    <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group row">
+                                                  <label for="" class="col-sm-4 col-form-label sa-input">Delivery Date<span class="ic-red">*</span>:</label>
+                                                    <div class="col-sm-6">
+                                                        <div class="input-group date" id="datetimepicker">
+                                                        <input type="text" class="form-control" id="wadeliveryDate">
+                                                            <span class="input-group-addon">
+                                                                <span class="glyphicon glyphicon-calendar"></span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                  <label for="" class="col-sm-4 col-form-label sa-input">SI No.<span class="ic-red">*</span>:</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="text" class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                  <label for="" class="col-sm-4 col-form-label sa-input">OR No.<span class="ic-red">*</span>:</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="text" class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                  <label for="" class="col-sm-4 col-form-label sa-input">DR No.<span class="ic-red">*</span>:</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="text" class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                  <label for="" class="col-sm-4 col-form-label sa-input">Remarks:</label>
+                                                    <div class="col-sm-6">
+                                                        <textarea class="form-control" rows="4"></textarea>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group row">
+                                                  <label for="" class="col-sm-4 col-form-label sa-input">Client's Name:</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="text" class="form-control" value="Juan Cruz">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                  <label for="" class="col-sm-4 col-form-label sa-input">Address:</label>
+                                                    <div class="col-sm-6">
+                                                        <input class="form-control address" placeholder="" name="" type="text" value="Blk 14 13th Avenue">
+                                                        <input class="form-control address" placeholder="" name="" type="text" value="West Rembo">
+                                                        <input class="form-control " placeholder="" name="" type="text" value="Makati City">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                  <label for="" class="col-sm-4 col-form-label sa-input">Contact Details:</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="text" class="form-control" value="7586721">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="table-responsive table-bordered">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Item Code</th>
+                                                            <th>Item Name</th>
+                                                            <th>Size</th>
+                                                            <th>Tonality</th>
+                                                            <th>Qty</th>
+                                                            <th>Released Amount</th>
+                                                            <th>Release Summary</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>AK6004C</td>
+                                                            <td>Superblack 3060</td>
+                                                            <td>20x60</td>
+                                                            <td>1709111</td>
+                                                            <td>100</td>
+                                                            <td>
+                                                                <input type="text" class="form-control qty-input2" value="">
+                                                            </td>
+                                                            <td>
+                                                                12/16/2017 50
+                                                                <!-- <div class="pending-status">
+                                                                    <p>
+                                                                        
+                                                                    </p>
+                                                                </div> -->
+                                                            </td>
+                                                            
+                                                        </tr>
+                                                        <tr>
+                                                            <td>AK6004</td>
+                                                            <td>Superblack 4</td>
+                                                            <td>20x60</td>
+                                                            <td>1709212</td>
+                                                            <td>100</td>
+                                                            <td>
+                                                                <input type="text" class="form-control qty-input2" value="">
+                                                            </td>
+                                                            <td>
+                                                                12/21/2017 15 
+                                                                <!-- <div class="pending-status">
+                                                                    <p>
+                                                                       
+                                                                    </p>
+                                                                </div> -->
+                                                            </td>
+                                                            
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <!-- <input type="submit" name="" class="btn btn-danger" value="Save"> -->
+                                    <button type="submit" class="btn btn-danger">Save
+                                    </button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                </div>
+                            </div>
+                            <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                    </div>
+
+
+                </form>
+
+            </div>
+            <!-- /.container-fluid -->

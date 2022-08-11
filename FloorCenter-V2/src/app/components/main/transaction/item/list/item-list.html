@@ -1,0 +1,132 @@
+            <div class="container-fluid">
+                <!-- breadcrumbs -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                              Transaction
+                            </li>
+                            <li class="breadcrumb-item active">Add Item</li>
+                        </ol>
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <!-- /.row -->
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h2 class="fw-b m-title m-title2">Add Item</h2> 
+                    </div>
+                </div>
+                        
+                    <div class="row">
+                        <div class="col-lg-12 sv-buttons">
+                            <div class="input-group">
+                              <input class="form-control search-input" type="text" placeholder="Search" (keyup)="onSearch()" [(ngModel)]="search" (keyup.enter)="filterRecord()">
+                              <span class="input-group-btn">
+                                <button class="btn btn-danger btn-sr" type="button"  (click)="filterRecord()">
+                                  <i class="fa fa-search"></i>
+                                </button>
+                              </span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row" *ngIf="userType == 1">
+                        <div class="col-lg-12 sv-buttons">
+                            <button type="button" class="btn btn-danger addNew"  (click)="addPanelShow()">Add New Items</button>
+                            <app-item-add *ngIf="showAddPanel"  (hidePanelAdd)="addPanelShow()"  (updatePage)="reloadRecord($event)"></app-item-add>
+                        </div>
+                       
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <p class="search_status"><b> {{totalRecordMessage}} </b> {{pageRecordMessage}}</p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="text-right">
+                                                <input type="button" name="" class="btn btn-danger" value="Download List" *ngIf="itemList.length != 0" (click)="downloadList()">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="panel-body">
+                                    <div class="table-responsive table-bordered">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Serial No.</th>
+                                                    <th>Item Code</th>
+                                                    <th>Item Name</th>
+                                                    <th>Description</th>
+                                                    <th>Size</th>
+                                                    <th>SRP</th>
+                                                    <th>Cost</th>
+                                                    <th>Tonality</th>
+                                                    <th>Qty/Box</th>
+                                                    <th>Qty/Pallet</th>
+                                                    <th>Date Added</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let item of itemList">
+                                                    <td> {{ item.serialNumber }} </td>
+                                                    <td> {{ item.code }} </td>
+                                                    <td> {{ item.name }} </td>
+                                                    <td> {{ item.description }} </td>
+                                                    <td> {{ item.size?.name }} </td>
+                                                    <td> {{ item.srp }} </td>
+                                                    <td> {{ item.cost }} </td>
+                                                    <td> {{ item.tonality }} </td>
+                                                    <td> {{ item.qtyPerBox }} </td>
+                                                    <td> {{ item.boxPerPallet }} </td>
+                                                    <td> {{ item.dateCreated | date: 'medium'  }} </td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-danger" (click)="onBtnUpdateClick(item)" data-toggle="modal" data-target="#product_modal">Update</button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        
+                        <div class="col-md-12">
+
+                            <app-pagernew [module]="module" (displayPageList)="getItems($event)" [Keyword] = "Keyword"></app-pagernew>
+
+                            <div class="row">
+                                <div class="col-md-12 btn-con6">
+                                    <input type="button" name="" *ngIf="itemList.length != 0" class="btn btn-danger" value="Download List" (click)="downloadList()">
+                                </div>
+                            </div>
+
+                        </div> <!-- col-md-12 -->
+
+                    </div>
+
+                    <!-- modal -->
+                    <div class="row">
+                        <!-- advance search modal -->
+
+                        <!-- details update -->
+                        <app-item-update [id]="selectedId" [itemStatus]="itemStatus" [details]="details"  [updateForm]="updateForm" (updatePage)="reloadRecord($event)"></app-item-update>
+
+                    </div>
+
+
+
+            </div>
+            <!-- /.container-fluid -->

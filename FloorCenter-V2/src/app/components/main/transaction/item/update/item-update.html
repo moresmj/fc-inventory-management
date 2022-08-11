@@ -1,0 +1,184 @@
+<div class="modal fade" id="product_modal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;" *ngIf="updateForm">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel">Item Details</h4>
+
+            </div>
+            <form [formGroup]="updateForm" (ngSubmit)="onSubmit()">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="alert alert-danger" style="text-align: center" *ngIf="errorMessage">
+                                <p *ngFor="let err of errorMessage"> {{ err }} </p>
+                            </div>
+                            <div class="alert alert-success" style="text-align: center" *ngIf="successMessage">
+                                <p>  {{ successMessage }} </p>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-3 col-form-label sa-input">Serial No.<span class="ic-red">*</span>:</label>
+                                <div class="col-sm-9">
+                                    <input onlyNumber class="form-control sv-input" type="text" maxlength="9" formControlName="SerialNumber" readonly="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-3 col-form-label sa-input">Item Code<span class="ic-red">*</span>:</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control sv-input" type="text" formControlName="Code">
+                                    <show-errors [control]="updateForm.controls.Code"></show-errors>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-3 col-form-label sa-input">Item Name<span class="ic-red">*</span>:</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control sv-input" type="text" formControlName="Name">
+                                    <show-errors [control]="updateForm.controls.Name"></show-errors>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-3 col-form-label sa-input">Description:</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control sv-input" type="text" formControlName="Description">
+                                    <show-errors [control]="updateForm.controls.Description"></show-errors>
+                                </div>
+                            </div>
+
+                            
+
+                            <div class="form-group">
+                                <label for="" class="col-sm-3 col-form-label sa-input">Size<span class="ic-red">*</span>:</label>
+                                <div class="col-sm-9 modal-icon">
+                                    <select class="form-control" formControlName="SizeId">
+                                        <option> </option>
+                                        <option *ngFor="let opt of sizeList" [value]="opt.id"> {{ opt.name }} </option>
+                                    </select>
+                                    <show-errors [control]="updateForm.controls.SizeId"></show-errors>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="" class="col-sm-3 col-form-label sa-input">SRP<span class="ic-red">*</span>:</label>
+                                <div class="col-sm-9 modal-icon">
+                                    <input price class="form-control sv-input" type="text" formControlName="SRP" maxlength="16">
+                                    <show-errors [control]="updateForm.controls.SRP"></show-errors>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="" class="col-sm-3 col-form-label sa-input">Cost<span class="ic-red">*</span>:</label>
+                                <div class="col-sm-9 modal-icon">
+                                    <input price class="form-control sv-input" type="text" formControlName="Cost" maxlength="16">
+                                    <show-errors [control]="updateForm.controls.Cost"></show-errors>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="" class="col-sm-3 col-form-label sa-input">Tonality<span class="ic-red">*</span>:</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control sv-input" type="text" formControlName="Tonality" maxlength="50">
+                                    <show-errors [control]="updateForm.controls.Tonality"></show-errors>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                              <label for="" class="col-sm-3 col-form-label sa-input">Qty. Per Box<span class="ic-red">*</span>:</label>
+                              <div class="col-sm-9">
+                                <input onlyNumber class="form-control sv-input" type="text" min="1" formControlName="QtyPerBox">
+                                <show-errors [control]="updateForm.controls.QtyPerBox"></show-errors>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label for="" class="col-sm-3 col-form-label sa-input">Box Per Pallet<span class="ic-red">*</span>:</label>
+                              <div class="col-sm-9">
+                                <input onlyNumber class="form-control sv-input" type="text" min="1" formControlName="BoxPerPallet">
+                                <show-errors [control]="updateForm.controls.BoxPerPallet"></show-errors>
+                              </div>
+                            </div>
+
+                            <div class="form-group">
+                                    <label for="" class="col-sm-3 col-form-label sa-input">Status:</label>
+                                    <div class="col-sm-9 modal-icon">
+                                        <select class="form-control" formControlName="IsActive" (change)="onSelectStatus($event.currentTarget.value)">
+                                            <option value=true> Active </option>
+                                            <option value=false> Inactive </option>
+                                        </select>
+                                    </div>
+                            </div>
+
+                           
+
+                            <div class="form-group">
+                                <label for="" class="col-sm-3 col-form-label sa-input">Image</label>
+                                <div class="col-sm-9">
+                                    <div class="input-group">
+                                        <label class="input-group-btn">
+                                            <span class="btn btn-default">
+                                                Select files<input type="file" #fileInput (change)="onFileChange($event)" style="display: none;" multiple="">
+                                            </span>
+                                        </label>
+                                        <input class="form-control" type="text" formControlName="ImageName" readonly>
+                                    </div>
+                                    <p class="alert alert-danger" *ngIf="imageErrorMessage">  {{ imageErrorMessage }} </p>
+                                    <div class="image-con" *ngIf="updateForm.controls.ImageName.value">
+                                        <div class="mpic_con4">
+                                            <!-- //image file here -->
+                                            <img *ngIf="!isImageChanged" [src]='imagePath + updateForm.controls.ImageName.value + date'>
+                                        
+                                            <img *ngIf="isImageChanged" [src]='imagePath'>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <ng-container *ngIf="(itemStatus == false || itemStatus == 'false') && details.hasStock">
+                            <input type="button" *ngIf="userType == 1" name="" class="btn btn-danger" value="Save" data-toggle="modal" id="saveBtn" data-target="#saveModal">
+
+                    </ng-container>
+                    <ng-container *ngIf="(itemStatus == true || itemStatus == 'true') || !details.hasStock">
+                            <input type="submit" *ngIf="userType == 1" [disabled]="updateForm.status == 'INVALID'  || isUploading" class="btn btn-danger" value="Save">
+
+                    </ng-container>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+
+            
+           
+            </form>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<div *ngIf="details" class="modal fade stick-up" id="saveModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="top: 50px;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <!-- <h4 class="modal-title" id="myModalLabel">Save</h4> -->
+
+            </div>
+            <div class="modal-body">
+
+                        <h5 class="modal-text">The item you are about to set as Inactive currently has quantity in the system.</h5>
+                        <p class="modal-text"> Set anyway?</p>
+      
+     
+            </div>
+            <div class="modal-footer">
+                <input type="submit" (click)="onSubmit()" class="btn btn-danger" value="Proceed">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

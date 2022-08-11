@@ -1,0 +1,120 @@
+            <div class="container-fluid">
+                <!-- breadcrumbs -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                              Transaction
+                            </li>
+                            <li class="breadcrumb-item active">Add Company</li>
+                        </ol>
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <!-- /.row -->
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h2 class="fw-b m-title m-title2">Add Company</h2> 
+                    </div>
+                </div>
+                <div class="alert alert-danger" style="text-align: center" *ngIf="errorMessage">
+                    <p> {{ errorMessage }} </p>
+                </div>
+                    <div class="row">
+                        <div class="col-lg-12 sv-buttons">
+                            <div class="input-group">
+                              <input class="form-control search-input" type="text" placeholder="Search" (keyup)="onSearch()"  (input)="onChange($event.target.value)" [(ngModel)]="search" (keyup.enter)="filterRecord()">
+                              <span class="input-group-btn">
+                                <button class="btn btn-danger btn-sr" type="button"  (click)="filterRecord()">
+                                  <i class="fa fa-search"></i>
+                                </button>
+                              </span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row" *ngIf="userType == 1">
+                        <div class="col-lg-12 sv-buttons">
+                            <button type="button" class="btn btn-danger addNew"  (click)="addPanelShow()">Add New Company</button>
+                            <app-company-add *ngIf="showAddPanel"  (hidePanelAdd)="addPanelShow()"  (updatePage)="reloadRecord($event)"></app-company-add>
+                        </div>
+                       
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <p class="search_status"><b> {{totalRecordMessage}} </b> {{pageRecordMessage}}</p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="text-right">
+                                                <input type="button" name="" class="btn btn-danger" value="Download List" *ngIf="companyList.length != 0" (click)="downloadList()">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="panel-body">
+                                    <div class="table-responsive table-bordered">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Company ID.</th>
+                                                    <th>Company Code</th>
+                                                    <th>Company Name</th>
+                                        
+                                                    <th>Date Added</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let item of companyList">
+                                                    <td> {{ item.id }} </td>
+                                                    <td> {{ item.code }} </td>
+                                                    <td> {{ item.name }} </td>
+                                                    <td> {{ item.dateCreated | date: 'medium'  }} </td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-danger" (click)="onBtnUpdateClick(item)" data-toggle="modal" data-target="#product_modal">Update</button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        
+                        <div class="col-md-12">
+
+                            <app-pager [module]="module" (displayPageList)="getItems($event)"></app-pager>
+
+                            <div class="row">
+                                <div class="col-md-12 btn-con6">
+                                    <input type="button" name="" *ngIf="companyList.length != 0" class="btn btn-danger" value="Download List" (click)="downloadList()">
+                                </div>
+                            </div>
+
+                        </div> <!-- col-md-12 -->
+
+                    </div>
+
+                    <!-- modal -->
+                    <div class="row">
+                        <!-- advance search modal -->
+
+                        <!-- details update -->
+                        <app-company-update [id]="selectedId" [details]="details" [updateForm]="updateForm" (updatePage)="reloadRecord($event)"></app-company-update>
+
+                    </div>
+
+
+
+            </div>
+            <!-- /.container-fluid -->

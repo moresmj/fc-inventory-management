@@ -1,0 +1,115 @@
+    <div class="container-fluid">
+                <!-- breadcrumbs -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                              <a href="return_list.html">Transactions</a>
+                            </li>
+                            <li class="breadcrumb-item active">Backload</li>
+                        </ol>
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <!-- /.row -->
+                
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h2 class="fw-b m-title m-title2">Backload</h2>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-lg-12">
+                        <p class="btn-con7">
+                            <button type="button" class="btn btn-outline btn-danger g-fr address" data-toggle="modal" data-target="#advanceSearch"><i class="fa fa-search fa-fw"></i> Advanced Search</button>
+                        </p>
+                    </div>
+                </div>
+
+                <form>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <p class="search_status">2 Records Found</p>
+                                        </div>
+                                        
+                                        <div class="col-md-6">
+                                            <div class="text-right">
+                                                <input type="button" name="" class="btn btn-danger" value="Download List">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="table-responsive table-bordered">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Transaction No.</th>
+                                                    <th>Transaction</th>
+                                                    <th>SI/PO. No.</th>
+                                                    <th>Released Date</th>
+                                                    <th>DR No.</th>
+                                                    <th>Customer Name</th>
+                                                    <th>Delivery Status</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>A000001</td>
+                                                    <td>Sales</td>
+                                                    <td>1000001</td>
+                                                    <td>03/21/1018</td>
+                                                    <td>1203456</td>
+                                                    <td>Juan Cruz</td>
+                                                    <td>Waiting</td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#details_modal">Update</button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>A000002</td>
+                                                    <td>Sales</td>
+                                                    <td>1000002</td>
+                                                    <td>03/21/1018</td>
+                                                    <td>1102341</td>
+                                                    <td>Kim Lee</td>
+                                                    <td>Waiting</td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#details_modal">Update</button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="btn-con">
+                                <input type="button" name="" class="btn btn-danger" value="Download List">
+                            </div>
+                        </div>
+                    </div>
+
+<app-re-backload-update></app-re-backload-update>
+                 
+
+<app-re-backload-advanced-search></app-re-backload-advanced-search>
+                  
+
+                </form>
+
+
+            </div>
+            <!-- /.container-fluid -->

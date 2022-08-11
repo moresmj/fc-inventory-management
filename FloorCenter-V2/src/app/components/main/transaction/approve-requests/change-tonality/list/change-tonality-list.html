@@ -1,0 +1,100 @@
+           <div class="container-fluid">
+                <!-- breadcrumbs -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"> Transaction </li>
+                            <li class="breadcrumb-item">Approve Requests</li>
+                            <li class="breadcrumb-item active"> Change Tonality </li>
+                        </ol>
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <!-- /.row -->
+                
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h2 class="fw-b m-title m-title2">Approve Requests - Change Tonality</h2>
+                    </div>
+                </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <p class="search_status"> <b> {{totalRecordMessage}} </b> {{pageRecordMessage}} </p>
+                                        </div>
+                                        
+                                        <div class="col-md-6">
+                                            <div class="text-right">
+                                                <button type="button" class="btn btn-outline btn-danger" data-toggle="modal" data-target="#advanceSearch">Advanced Search</button>
+                                                <input type="button" name="" class="btn btn-danger" *ngIf="approveRequestList.length != 0" (click)="downloadUserList()" value="Download List">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="table-responsive table-bordered">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Transaction No.</th>
+                                                    <th>PO No.</th>
+                                                    <th>Date Approved</th>
+                                                    <th>Warehouse</th>
+                                                    <th>Status</th>
+                                                    <th>Request Date</th>
+                                                    <!-- <th>Delivery Option</th> -->
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let ar of approveRequestList">
+                                                    <td>{{ ar.transactionTobeModified  }} </td>
+                                                    <td>{{ ar.poNumber  }}</td>
+                                                    <td> {{ ar.dateApproved | date : "mediumDate" }}</td>
+                                                    <td>{{ ar.warehouse.name }}  </td>
+                                                    <td>{{ar.requestStatusStr}} </td>
+                                                    <td> {{ ar.dateCreated | date : "mediumDate" }}</td>
+                                                    
+                                                    <!-- <td> {{ ar.deliveryOption }}</td> -->
+                                                    <td>
+                                                        <button type="button" [ngClass]="(ar.requestStatus == 1 || ar.requestStatus == 3)  ? 'btn btn-danger btn-r' : 'btn btn-danger'" data-toggle="modal" data-target="#details_modal" (click)="onBtnUpdateClick(ar)" > {{ ar.requestStatus == 1 || ar.requestStatus == 3 ? "Details" : "Approve" }}</button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-12">
+
+                            <app-pagernew [module]="module" [Keyword]="filterParam" [isDefaultFiltereredLoading]="isDefaultFiltereredLoading" (displayPageList)="getApproveRequest($event)"></app-pagernew>
+
+                            <div class="row">
+                                <div class="col-md-12 btn-con6">
+                                    <input type="submit" name="" class="btn btn-danger" value="Download List" *ngIf="approveRequestList.length != 0" (click)="downloadUserList()">
+                                </div>
+                            </div>
+
+                        </div> <!-- col-md-12 -->
+
+                    </div>
+
+                    <!-- advanceSearch -->
+                    <app-change-tonality-advanced-search (updatePage)="filterRecordWithParam($event)"></app-change-tonality-advanced-search>
+
+                    <!-- details -->
+                    <app-change-tonality-details [details]="details" [updateForm]="updateForm" [showSaveBtn]="showSaveBtn" (updatePage)="filterRecordWithParam($event)"></app-change-tonality-details>
+
+
+            </div>
+            <!-- /.container-fluid -->

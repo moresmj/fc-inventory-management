@@ -1,0 +1,149 @@
+     <div class="container-fluid">
+                <!-- breadcrumbs -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                              Transaction
+                            </li>
+                            <li class="breadcrumb-item">Releasing</li>
+                            <li class="breadcrumb-item active">Same Day Sales</li>
+                        </ol>
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <!-- /.row -->
+                
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h2 class="fw-b m-title m-title2">Same Day Sales Releasing</h2>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="btn-con7">
+                           
+                            <div class="btn-group">
+                                <a routerLink="sales_registration" class="btn btn-danger"><i class="fa fa-plus fa-fw"></i>  Release Item </a>
+                                <!-- <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
+                                  <i class="fa fa-plus fa-fw"></i> 
+                                </button> -->
+                                <!-- <ul class="dropdown-menu">
+                                    <li>
+                                        <a routerLink="sales_registration" class=""><i class="fa fa-money fa-fw"></i> Sales</a>
+                                    </li>
+                                    <li style="display: none">
+                                        <a routerLink="interbranch_registration" class=""><i class="fa fa-code-fork fa-fw"></i> Interbranch</a>
+                                    </li>
+                                </ul> -->
+                            </div>
+
+                            <div class="alert alert-success" style="text-align: center" *ngIf="statusMessage">
+                    
+                                {{statusMessage}}
+                            </div>
+                            <button type="button" class="btn btn-outline btn-danger g-fr" data-toggle="modal" data-target="#advanceSearch"><i class="fa fa-search fa-fw"></i> Advanced Search</button>
+                        </div>
+                    </div>
+                </div>
+
+                <form>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <p class="search_status"><b> {{totalRecordMessage}} </b> {{pageRecordMessage}}</p>
+                                        </div>
+                                        
+                                        <div class="col-md-6">
+                                            <div class="text-right">
+                                                <input type="button" name="" class="btn btn-danger" *ngIf="releasingList.length != 0"  value="Download List" (click)="downloadRecords()">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="table-responsive table-bordered">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Transaction No.</th>
+                                                    <!--<th>Transaction</th>-->
+                                                    <th>SI No.</th>
+                                                    <th>OR No.</th>
+                                                    <th>Release Date</th>
+                                                    <th>Customer Name</th>
+                                                    <!-- <th>Status</th>
+                                                    <th></th> -->
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let release of releasingList">
+                                                    <td>{{release.transactionNo}}</td>
+                                                    <!--<td>{{release.order?.transactionTypeStr}}</td>-->
+                                                    <td>{{release.siNumber}}</td>
+                                                    <td>{{release.orNumber}}</td>
+                                                    <td>
+                                                    <p *ngIf="release.salesType == 3">{{release.releaseDate | date: mediumDate }}</p>
+                                                   <p *ngIf="release.salesType != 3">
+                                                    {{release.releaseDate | date: mediumDate }}
+                                                    </p>
+                                                    </td>
+                                                    <td>{{release.clientName}}</td>
+                                                   <!-- <td>{{release.order.poNumber}}</td>
+                                                     <td>
+                                                        <a href="delivery_request.html" class="btn btn-danger btn-r">Delivery</a>
+                                                    </td> -->
+                                                    <td>
+                                                          <div *ngIf="release.salesType == 3">
+                                                              <button type="button" class="btn btn-danger btn_list_width" data-toggle="modal" data-target="#details_modal" (click)="onBtnUpdateClick(release)"> 
+                                                        
+                                                                {{ release.dateUpdated != null ? "Details" : "Update" }}
+                                                       </button>
+                                                        </div>
+                                                        
+                                                    </td>
+                                                </tr>
+                                           
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12">
+
+                              <app-pagernew [module]="module" [Keyword]="Keyword" (displayPageList)="getReleasingList($event)"></app-pagernew>
+                            <div class="btn-con">
+                                <input type="button" name="" class="btn btn-danger" *ngIf="releasingList.length != 0"  value="Download List" (click)="downloadRecords()">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- modal -->
+                    <!-- advance search -->
+                    <app-sds-releasing-advanced-search (aSearch)="filterRecordWithParam($event)"></app-sds-releasing-advanced-search>
+
+                    <!-- details search -->
+
+                    <app-sds-releasing-update [updateForm]="updateForm" [releasingDetails]="releasingDetails" [deliveryItems]="deliveryItems" (updatePage)="reloadRecord($event)" (statusMessage)="statusMessage($event)"></app-sds-releasing-update>
+              
+                
+                 
+
+
+                </form>
+
+
+            </div>
+            <!-- /.container-fluid -->

@@ -1,0 +1,269 @@
+  <div class="container-fluid" *ngIf="orderStockDetails && showRoomDeliveryList">
+                <!-- breadcrumbs -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                              Transactions
+                            </li>
+                            <li class="breadcrumb-item">
+                              <a routerLink="/Store/orders">Orders</a>
+                            </li>
+                            <li class="breadcrumb-item active"  *ngIf="showRoomDeliveryList?.remainingForDelivery > 0">Add Delivery</li>
+                            <li class="breadcrumb-item active"  *ngIf="showRoomDeliveryList?.remainingForDelivery == 0">Delivery Details</li>
+                        </ol>
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <!-- /.row -->
+                
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h2 class="fw-b m-title m-title2" *ngIf="showRoomDeliveryList?.remainingForDelivery > 0"> Add Delivery</h2>
+                        <h2 class="fw-b m-title m-title2" *ngIf="showRoomDeliveryList?.remainingForDelivery == 0">Delivery Details</h2>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="btn-con7">
+                            <div *ngIf="(orderStockDetails.orderType == 2 || orderStockDetails.orderType == 3)&& orderStockDetails.deliveryType == 2" class="btn-group">
+                                 <button *ngIf="showRoomDeliveryList?.remainingForDelivery > 0" type="button" class="btn btn-danger" data-toggle="modal" data-target="#add_client_modal" (click)="onBtnAddClick(orderStockDetails)"><i class="fa fa-plus fa-fw"  ></i> Add Client Delivery</button>
+                            </div>
+                            <div *ngIf="(orderStockDetails.orderType == 2 || orderStockDetails.orderType == 3)&& orderStockDetails.deliveryType == 1" class="btn-group">
+                                 <button *ngIf="showRoomDeliveryList?.remainingForDelivery > 0" type="button" class="btn btn-danger" data-toggle="modal" data-target="#add_client_modal" (click)="onBtnAddClick(orderStockDetails)"><i class="fa fa-plus fa-fw"  ></i> Add Pickup Date</button>
+                            </div>
+                            <div *ngIf="orderStockDetails.orderType == 1 || orderStockDetails.deliveryType == 3" class="btn-group">
+                                 <button *ngIf="showRoomDeliveryList?.remainingForDelivery > 0" type="button" class="btn btn-danger" data-toggle="modal" data-target="#add_showroom_modal" (click)="onBtnAddClick(orderStockDetails)"><i class="fa fa-plus fa-fw"></i> Add Showroom Delivery</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <form>
+
+                    <div class="line">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="form-group row">
+                                  <label for="" class="col-sm-4 col-form-label sa-input">Transaction:</label>
+                                    <div class="col-sm-7">
+                                        <p class="sa-input">{{orderStockDetails.transactionTypeStr}}</p>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                  <label for="" class="col-sm-4 col-form-label sa-input">Deliver From:</label>
+                                    <div class="col-sm-7">
+                                       <p class="sa-input">{{orderStockDetails.warehouse?.name}}</p>
+                                         <p class="sa-input" *ngIf="orderStockDetails.orderType != 2">{{showRoomDeliveryList?.orderedTo}}</p>
+                                         <p class="sa-input">{{showRoomDeliveryList?.deliverFrom}}</p>
+                                         
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4">
+                                <div class="form-group row">
+                                    <label for="example-text-input" class="col-sm-4 col-form-label sa-input">PO Date:</label>
+                                    <div class="col-sm-7">
+                                        <p class="sa-input">{{orderStockDetails.poDate  | date : "mediumDate"}}</p>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="example-text-input" class="col-sm-4 col-form-label sa-input">Remarks:</label>
+                                    <div class="col-sm-7">
+                                        <p class="sa-input">{{orderStockDetails.remarks}}</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    
+                                </div>
+                                <div class="panel-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <!--<th>DR No.</th>-->
+                                                    <th *ngIf="orderStockDetails?.orderType != 3"> WHDR No. </th>
+                                                    <th> TOR / DR No. </th>
+                                                    <!-- For Future Purposes -->
+                                                    <!--<th *ngIf="orderStockDetails?.orderType == 3"> {{ orderStockDetails?.tableHeader }} </th>-->
+    
+                                                    
+                                                    <th *ngIf="orderStockDetails?.deliveryType == 1">
+                                                        
+                                                    </th>
+
+                                                    <th *ngIf="orderStockDetails?.deliveryType != 1">Requested Delivery Date</th>
+                                                    <th *ngIf="orderStockDetails?.deliveryType != 1">Approved Delivery Date</th>
+                                                    <th *ngIf="orderStockDetails?.deliveryType == 1">
+                                                        Pickup Date
+                                                    </th>
+                                                    <th>Status</th>
+                                                    <th></th>
+                                                    <!-- <th></th> -->
+                                                </tr>
+                                            </thead>
+
+                                            <tbody *ngIf="showRoomDeliveryList">
+                                                <tr *ngFor="let delivery of showRoomDeliveryList.deliveries">
+                                                    <!-- <td>{{delivery.drNumber}}</td>-->
+                                                
+                                                    <ng-container *ngIf="delivery.isRemainingForReceivingDelivery == false">  
+                                                    <td *ngIf="orderStockDetails?.orderType != 3"> {{ orderStockDetails?.whdrNumber }} </td>
+                                                    <td *ngIf="orderStockDetails?.orderType == 3"> {{ showRoomDeliveryList?.tableBodyValue }} </td>
+                                                    <td  *ngIf="orderStockDetails?.orderType != 3" ></td>
+                                                    
+                                                    <td>
+                                                        <div class="" *ngIf="orderStockDetails?.deliveryType != 1">
+                                                            <label class="sa-input2">{{delivery.deliveryDate | date : "mediumDate"}}</label>
+                                                        </div>
+                                                    </td>
+                                                    <td><label>{{delivery?.approvedDeliveryDate | date : "mediumDate"}}</label></td>
+                                                    <td>{{delivery?.status}}</td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-danger btn-r" data-toggle="modal" data-target="#uclient_modal"(click)="onBtnViewDetailClick(orderStockDetails.deliveryType,orderStockDetails.orderType,delivery)">
+
+                                                                <i class="fa fa-pencil-square-o"></i> Details
+                                                        </button>
+                                                    </td>
+                                                </ng-container>
+                                             
+                                                    <!-- <td>
+                                                        <a href="" target="_blank" type="button" class="btn btn-danger">
+                                                            <i class="fa fa-print ic-btn"></i>Print DR
+                                                        </a>
+                                                    </td> -->
+                                                </tr>
+                                                
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Add Client modal -->
+                      <app-os-dr-sr-add [stockItemDetails]="orderStockDetails" [showRoomForm]="showRoomAddForm" (updateList)="getDeliveryRequestShowRoom()" [drLabel]="drLabel"></app-os-dr-sr-add>
+                    <!-- end Add Client modal -->
+
+                    <!-- Add Showroom modal -->
+               
+
+                       <app-os-dr-cr-add [stockItemDetails]="orderStockDetails" [clientDetails]="clientDetails" [clientForm]="clientAddForm" (updateList)="getDeliveryRequestShowRoom()" [orisRequired]="orisRequired"></app-os-dr-cr-add>
+                    <!-- end Add Showroom modal -->
+
+                    <!-- Edit Client modal -->
+                    <app-os-dr-details [showRoomDeliveryItems]="showRoomDeliveryItems"></app-os-dr-details>
+              
+                    <!-- end Edit Client modal -->
+
+                     <!-- Edit Client modal -->
+                    <div class="modal fade" id="ushowroom_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                        <div class="modal-dialog modal-lg modal-xlg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                    <h4 class="modal-title" id="myModalLabel">Update Showroom Delivery</h4>
+
+                                </div>
+                                <form method="post">
+                                    <div class="modal-body">
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group row">
+                                                  <label for="" class="col-sm-4 col-form-label sa-input">DR No.:</label>
+                                                    <div class="col-sm-6">
+                                                        <p class="sa-input">DR100102</p>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group row">
+                                                  <label for="" class="col-sm-3 col-form-label sa-input">Delivery Date:</label>
+                                                    <div class="col-sm-6">
+                                                        <div class="input-group date" id="datetimepicker">
+                                                            <input type="text" class="form-control" id="poDate2">
+                                                            <span class="input-group-addon">
+                                                                <span class="glyphicon glyphicon-calendar"></span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <p class="sa-input fb">Item Summary</p>
+                                                <div class="table-responsive table-bordered">
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Item Code</th>
+                                                                <th>Item Name / Size / Tonality</th>
+                                                                <th>Qty</th>
+                                                                <th>Delivery Qty</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>122234</td>
+                                                                <td>Ceramic Blue / 30x60 / 172394</td>
+                                                                <td>50</td>
+                                                                <td>
+                                                                    <input class="qty-input form-control" type="number" value="1">
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>134564</td>
+                                                                <td>Granite Ceramic / 30x60 / 123497    </td>
+                                                                <td>30</td>
+                                                                <td>
+                                                                    <input class="qty-input form-control" type="number" value="1">
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>  
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                
+                                    <div class="modal-footer">
+                                        <input type="submit" name="" class="btn btn-danger" value="Save">
+                                        <input type="button" name="" class="btn btn-warning" value="Delete">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                    </div>
+
+                                </form>
+
+                                
+                            </div>
+                            <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                    </div>
+                    <!-- end Edit Client modal -->
+
+                    
+                </form>
+
+
+            </div>
+            <!-- /.container-fluid -->

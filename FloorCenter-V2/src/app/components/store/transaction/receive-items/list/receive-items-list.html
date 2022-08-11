@@ -1,0 +1,116 @@
+<div class="container-fluid">
+    <!-- breadcrumbs -->
+    <div class="row">
+        <div class="col-lg-12">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    Transactions
+                </li>
+                <li class="breadcrumb-item">
+                                    
+                                    Receive
+                </li>
+                <li class="breadcrumb-item active">Orders</li>
+            </ol>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+
+    <div class="row">
+        <div class="col-lg-12">
+            <h2 class="fw-b m-title m-title2">Receive Items</h2>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <p class="btn-con7">
+                <button type="button" class="btn btn-outline btn-danger g-fr address" data-toggle="modal" data-target="#advanceSearch"><i class="fa fa-search fa-fw"></i> Advanced Search</button>
+            </p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p class="search_status"><b> {{totalRecordMessage}} </b> {{pageRecordMessage}}</p>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="text-right">
+                                <input type="button" name="" class="btn btn-danger" value="Download List"  *ngIf="receiveList.length != 0" (click)="downloadList()">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive table-bordered">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Transaction No.</th>
+                                    <th>Transaction</th>
+                                    <th>TOR / DR No.</th>
+                                    <th>WHDR No.</th>
+                                    <th>Ordered Date</th>
+                                    <th>Ordered By</th>
+                                    <th>Delivered Date</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of receiveList">
+                                    <td> {{ item.transactionNo }} </td>
+                                    <td> {{ item.transactionTypeStr }} </td>
+                                <!--TOR / DR No. will display nothing if  Client PO - Showroom Pickup-->
+                                    <td *ngIf="!item.isTransfer"> {{ (item.orderType != 2 && item.deliveryType != 3) ? 
+                                        (item.deliveryType == 3 && (item.orderType == 3 && item.orderToStoreId == item.storeId) 
+                                        ? item.orNumber 
+                                        : item.deliveries[0].drNumber)
+                                    : ""
+                                    }} 
+                                    </td>
+                                    <td  *ngIf="item.isTransfer">{{ item.isInterBranch ? item.orNumber : item.deliveries[0].drNumber  }} </td>
+                                    <td>{{ item.transactionType == 6 ? "" : item.whdrNumber }}</td>
+                                    <td> {{ item.deliveries[0].deliveryDate | date : "mediumDate" }} </td>
+                                    <td> {{ item.store?.name }} </td>
+                                    <td> {{ item.deliveries[0].approvedDeliveryDate | date : "mediumDate" }} </td>
+                                    <td>
+                                      <a routerLink="details/{{item.deliveries[0].id}}" class="btn btn-danger">Receive</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <app-receive-items-advanced-search (updatePage)="filterRecordWithParam($event)"> </app-receive-items-advanced-search>
+
+    <div class="row">
+        
+        <div class="col-md-12">
+
+            <app-pager [module]="module" (displayPageList)="getReceiveItems($event)"></app-pager>
+
+            <div class="row">
+                <div class="col-md-12 btn-con6">
+                    <input type="button" name="" *ngIf="receiveList.length != 0" class="btn btn-danger" value="Download List" (click)="downloadList()">
+                </div>
+            </div>
+
+        </div> <!-- col-md-12 -->
+    </div>
+
+
+
+
+</div>
+<!-- /.container-fluid -->

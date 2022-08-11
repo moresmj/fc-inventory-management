@@ -1,0 +1,175 @@
+       <div class="modal fade" id="add_client_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                        <div class="modal-dialog modal-lg modal-xlg">
+                            <div *ngIf="clientForm" class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                    <h4 class="modal-title" id="myModalLabel">Add Client Delivery</h4>
+
+                                </div>
+
+                            <div>
+                                <div class="alert alert-danger" style="text-align: center" *ngIf="errorMessage">
+                                                <p *ngFor="let err of errorMessage"> {{ err }} </p>
+                                </div>
+                                
+                                <div class="alert alert-success" style="text-align: center" *ngIf="successMessage">
+                                                    <p>  {{ successMessage }} </p>
+                                </div>
+                            </div>
+                                <form [formGroup]="clientForm" (ngSubmit)="onSubmit()">
+                        
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group row">
+                                                  <label *ngIf="clientDetails.deliveryType != 1" for="" class="col-sm-4 col-form-label sa-input"> Requested Delivery Date<span class="ic-red">*</span>:</label>
+                                                  <label *ngIf="clientDetails.deliveryType == 1" for="" class="col-sm-4 col-form-label sa-input"> Pickup Date<span class="ic-red">*</span>:</label>
+                                                    <div class="col-sm-6">
+                                                        <div class="input-group date" id="datetimepicker">
+                                                        <input type="date" class="form-control" id="" formControlName="DeliveryDate" (input)="onChange($event.target.value)" >
+                                                            <span class="input-group-addon">
+                                                                <span class="glyphicon glyphicon-calendar"></span>
+                                                            </span>
+                                                        </div>
+                                                             <show-errors [control]="clientForm.controls.DeliveryDate"></show-errors>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                  <label for="" class="col-sm-4 col-form-label sa-input">SI No.<span class="ic-red">*</span>:</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="text" class="form-control" formControlName="SINumber" maxlength="50"  (input)="onChange($event.target.value)">
+                                                          <show-errors [control]="clientForm.controls.SINumber"></show-errors>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                  <label for="" class="col-sm-4 col-form-label sa-input">OR No.<span *ngIf="orisRequired == false" class="ic-red"></span>:</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="text" class="form-control" formControlName="ORNumber" maxlength="50"  (input)="onChange($event.target.value)">
+                                                        <!-- <show-errors [control]="clientForm.controls.ORNumber"></show-errors> -->
+                                                    </div>
+                                                     
+                                                </div>
+                                                <div class="form-group row">
+                                                  <label for="" class="col-sm-4 col-form-label sa-input">DR No.<span class="ic-red">*</span>:</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="text" class="form-control" formControlName="DRNumber" maxlength="50" (input)="onChange($event.target.value)">
+                                                            <show-errors [control]="clientForm.controls.DRNumber"></show-errors>
+                                                    </div>
+                                                  
+                                                </div>
+                                                <div class="form-group row">
+                                                  <label for="" class="col-sm-4 col-form-label sa-input">Preferred Time: <span class="ic-red">*</span></label>
+                                                
+                                                    <div class="col-sm-6">
+                                                        <div class="radio" *ngFor="let opt of preferredTimeList; let i=index">
+                                                            <label>
+                                                                <input type="radio" (click)="chkEvent($event)" name="radio" id="preferredtime{{i}}" (input)="onChange($event.target.value)" value="" [value]="false" [value]="opt.value">{{ opt.name }}
+                                                            </label>
+                                                    </div>
+                                                     
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group row">
+                                                  <label for="" class="col-sm-4 col-form-label sa-input">Client's Name:</label>
+                                                    <div class="col-sm-6">
+                                                           {{clientDetails.clientName}}
+                                                    </div>
+                                                     
+
+                                                </div>
+                                                <div *ngIf="clientDetails" class="form-group row">
+                                                  <label for="" class="col-sm-4 col-form-label sa-input">Address:</label>
+                                                    <div class="col-sm-6">
+                                                        {{clientDetails.address1}}
+                                                      
+                                                         {{clientDetails.address2}}
+                                                     
+                                                         {{clientDetails.address3}}
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                  <label for="" class="col-sm-4 col-form-label sa-input">Contact Details:</label>
+                                                    <div class="col-sm-6">
+                                                    {{clientDetails.contactNumber}}
+
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row">
+                                                  <label for="" class="col-sm-4 col-form-label sa-input">Payment Mode:</label>
+                                                    <div class="col-sm-6">
+                                                    {{clientDetails.paymentModeStr}}
+
+
+                                                    </div>
+                                                </div>
+                                               
+                                                
+                                                <div class="form-group row">
+                                                  <label for="" class="col-sm-4 col-form-label sa-input">Remarks:</label>
+                                                    <div class="col-sm-6">
+                                                        <textarea class="form-control" rows="4" formControlName="Remarks" (input)="onChange($event.target.value)"></textarea>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <p class="sa-input fb">Item Summary</p>
+                                                <div class="table-responsive table-bordered">
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Item Code</th>
+                                                                <th>Item Name / Size / Tonality</th>
+                                                                <th>Qty</th>
+                                                                <th>Delivery Qty<span class="ic-red">*</span></th>
+                                                            </tr>
+                                                        </thead>
+                                                             <tbody formArrayName="ClientDeliveries">
+
+                                                            <ng-container *ngFor="let oi of ClientDeliveries.controls; let i=index"  [formGroupName]="i">
+                                                                <tr *ngIf="stockItemDetails.orderedItems[i].approvedQuantity != 0">
+                                                                    <td>{{stockItemDetails.orderedItems[i].item.code}}</td>
+                                                                    <td>{{stockItemDetails.orderedItems[i].item.name}} / {{stockItemDetails.orderedItems[i].item.size.name}} / {{stockItemDetails.orderedItems[i].isTonalityAny == true ? "ANY - "+ stockItemDetails.orderedItems[i].item.tonality : stockItemDetails.orderedItems[i].item.tonality}}</td>
+                                                                    <td>{{stockItemDetails.orderedItems[i].approvedQuantity}}</td>
+                                                                    <td>
+                                                                        <input class="qty-input form-control" type="number" formControlName="Quantity" onlyNumber min="0" value="1" (input)="onChange($event.target.value)">
+                                                                       
+                                                                    </td>
+                                                                    <td>
+                                                                           <show-errors [control]="oi.controls.Quantity"></show-errors>
+                                                                    </td>
+                                                                 
+
+
+                                                                </tr>
+                                                            </ng-container>
+                                                    
+                                                        </tbody>
+                                                    </table>  
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                        
+                                        <div class="modal-footer">
+                                            <input type="submit" name="" class="btn btn-danger" id="submit" value="Save" [disabled]="prefTimeisChecked == false || !clientForm.valid">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div>
+     
+
+                                </form>
+
+
+                            </div>
+                            <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                    </div>

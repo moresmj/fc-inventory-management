@@ -1,0 +1,218 @@
+<div class="container-fluid">
+    <!-- breadcrumbs -->
+    <div class="row">
+        <div class="col-lg-12">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">Transactions</li>
+                <li class="breadcrumb-item">
+                                    Receive
+                </li>
+                <li class="breadcrumb-item">
+                    <a routerLink="/Warehouse/allocate_advance_order_list"> Orders</a>
+                </li>
+                <li class="breadcrumb-item active">Allocate Advance Orders - Details</li>
+            </ol>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+
+    <div class="row">
+        <div class="col-lg-12">
+            <h2 class="fw-b m-title m-title2">Allocate Advance Orders - Details</h2>
+        </div>
+    </div>
+    <form *ngIf="deliveryDetails" [formGroup]="updateForm" (ngSubmit)="onSubmit()" (keydown.enter)="$event.preventDefault()">
+
+        <div class="line2">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="btn-con6">
+                        <input type="button" name="" class="btn btn-danger"  *ngIf="showSaveBtn && deliveryDetails.orderStatus == 2" [disabled]="updateForm.status == 'INVALID'" value="Save" data-toggle="modal" data-target="#saveModal">
+                        <a routerLink="/Warehouse/allocate_advance_order_list" (click)="onCancel()"   class="btn btn-danger btn-r">Cancel</a>
+                    </div>
+                </div>
+            </div>
+            <div class="alert alert-danger" style="text-align: center" *ngIf="errorMessage">
+                <p *ngFor="let err of errorMessage"> {{ err }} </p>
+            </div>
+            <div class="alert alert-success" style="text-align: center" *ngIf="successMessage">
+                <p>  {{ successMessage }} </p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="form-group row">
+                    <label for="" class="col-sm-4 col-form-label sa-input">AO No.: </label>
+                    <div class="col-sm-7">
+                        <p class="sa-input"> {{ deliveryDetails.aoNumber }} </p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="" class="col-sm-4 col-form-label sa-input">Customer Name.:</label>
+                    <div class="col-sm-7">
+                        <p class="sa-input"> {{ deliveryDetails.clientName }}  </p>
+                    </div>
+                </div>
+              
+ 
+                <div class="form-group row" >
+                    <label for="" class="col-sm-4 col-form-label sa-input">Approval Status:</label>
+                    <div class="col-sm-7">
+                        <p class="sa-input"> {{deliveryDetails.requestStatusStr}}  </p>
+                    </div>
+                </div>
+    
+            </div>
+
+            <div class="col-lg-4">
+                <div class="form-group row">
+                    <label for="example-text-input" class="col-sm-4 col-form-label sa-input">AO Date:</label>
+                    <div class="input-group date col-sm-7" id="datetimepicker">
+                        <p class="sa-input"> {{ deliveryDetails.dateCreated | date : "mediumDate" }} </p>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="example-text-input" class="col-sm-4 col-form-label sa-input">Store:</label>
+                    <div class="input-group date col-sm-7" id="datetimepicker">
+                        <p class="sa-input"> {{ deliveryDetails.orderedBy }} </p>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="example-text-input" class="col-sm-4 col-form-label sa-input">Order Status:</label>
+                    <div class="input-group date col-sm-7" id="datetimepicker">
+                        <p class="sa-input"> {{ deliveryDetails.orderStatusStr }} </p>
+                    </div>
+                </div>
+
+        
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Item Code</th>
+                                        <th>Serial</th>
+                                        <th>Item Name</th>
+                                        <th>Tonality</th>
+                                        <th>Size</th>
+                                        <!-- <th>Requested Qty</th> -->
+                                        <th>Approved Qty</th>
+                                        <th>New Item</th>
+                                        <th>Item Details</th>
+                                        <th>Reserved Qty </th>
+                                        <th>Allocation<span class="ic-red">*</span></th>
+                                        <th>Remaining Qty <span class="ic-red">*</span></th>
+                                        
+                                        <th>Remarks</th>
+                                    </tr>
+                                </thead>
+                                <tbody formArrayName="allocateAdvanceOrderDetails">
+                                    <tr *ngFor="let item of allocateAdvanceOrderDetails.controls; let i=index"  [formGroupName]="i">
+                                        <td> {{ deliveryDetails.advanceOrderDetails[i].itemCode }} </td>
+                                        <td> {{ deliveryDetails.advanceOrderDetails[i].serialNumber }} </td>
+                                        <td> {{ deliveryDetails.advanceOrderDetails[i].itemName }}</td>
+                                        <td> {{ deliveryDetails.advanceOrderDetails[i].tonality }}</td>
+                                        <td> {{ deliveryDetails.advanceOrderDetails[i].sizeName }} </td>
+                                        <!-- <td> {{ deliveryDetails.advanceOrderDetails[i].quantity }} </td> -->
+                                        <td> {{ deliveryDetails.advanceOrderDetails[i].approvedQuantity }} </td>
+                                      
+                                      
+                                        <td class="newItem-td">
+
+                                            <select class="form-control" formControlName="itemId" (change)="onChangeValue()" (change)="onChange($event.target.value,item,i)">
+                                                <option></option>
+                                                <ng-container *ngFor="let opt of itemList">
+                                                        <!-- <option [value]="opt.itemId" *ngIf="opt.sizeId ==  deliveryDetails.advanceOrderDetails[i].sizeId" > {{ opt.code }} | {{opt.reserved}}</option> -->
+                                                        <option [value]="opt.itemId"  > {{ opt.code }} | {{opt.reserved}}</option>
+                                                </ng-container>
+                                                
+                                            </select>
+                                 
+                                        </td>
+                                        <td>
+                               
+                                               
+                                               <p> {{ deliveryDetails.advanceOrderDetails[i]?.newTonality}}</p>
+                                               
+                                                <p> {{ deliveryDetails.advanceOrderDetails[i]?.newSerialNumber }}  </p>
+                                              
+                                                <p> {{ deliveryDetails.advanceOrderDetails[i]?.newSizeName }}</p>
+                                            
+                                
+                                        </td>
+
+                                        <td>
+                                            {{ deliveryDetails.advanceOrderDetails[i]?.newReservedQty }}
+                                            
+                                        </td>
+                                        
+                                        <td>
+                                           
+                                            <input type="number" class="qty-input form-control" onlyNumber min="0" (input)="onChangeValue()" formControlName="allocatedQuantity">
+                                            <show-errors [control]="item.controls.allocatedQuantity"></show-errors>
+                                        </td>
+                                        <td> {{ deliveryDetails.advanceOrderDetails[i].forAllocationQty }} </td>
+
+
+                                        <td>
+                                            <textarea class="form-control" rows="1" formControlName="remarks"  (input)="onChangeValue()"></textarea>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="line2">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="btn-con6">
+                        <input type="button" name="" class="btn btn-danger" *ngIf="showSaveBtn && deliveryDetails.orderStatus == 2" [disabled]="updateForm.status == 'INVALID'" value="Save" data-toggle="modal" data-target="#saveModal">
+                        <a routerLink="/Warehouse/allocate_advance_order_list" (click)="onCancel()"  class="btn btn-danger btn-r">Cancel</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="saveModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="myModalLabel">Save</h4>
+
+                    </div>
+                    <div class="modal-body">
+                        <h5 class="modal-text">Are you sure you want to proceed?</h5>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" (click)="onCancel()" [disabled]="updateForm.status == 'INVALID'"  class="btn btn-danger" value="Save">
+                        <button data-dismiss="modal"  class="btn btn-danger btn-r">Cancel</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+
+    </form>
+
+    <ng4-loading-spinner [template]="template"> </ng4-loading-spinner>
+
+
+</div>
+<!-- /.container-fluid -->

@@ -1,0 +1,171 @@
+           <div class="container-fluid">
+                <!-- breadcrumbs -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                              <a href="#">Stock Request</a>
+                            </li>
+                            <li class="breadcrumb-item active">Orders/Transfer</li>
+                        </ol>
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <!-- /.row -->
+                
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h2 class="fw-b m-title m-title2">Orders/Transfer</h2>
+                    </div>
+                </div>
+                <form>
+                    <div class="line">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="form-group row">
+                                  <label for="" class="col-sm-4 col-form-label sa-input">Transaction:</label>
+                                    <div class="col-sm-7">
+                                        <select class="form-control" name="transaction" id="transaction">
+                                           <option></option>
+                                            <option *ngFor="let opt of transactionTypesList" [value]="opt.value"> {{opt.name}} </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                  <label for="" class="col-sm-4 col-form-label sa-input">Trans/PO No.:</label>
+                                    <div class="col-sm-7">
+                                        <input class="form-control" type="text">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4">
+                                <div class="form-group row">
+                                    <label for="example-text-input" class="col-sm-4 col-form-label sa-input"> Trans/PO Date:</label>
+                                    <div class="col-sm-7">
+                                        <div class="input-group date" id="datetimepicker">
+                                            <input type="date" class="form-control" id="rDate">
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                        </div>
+                                        <label for="" class="col-form-label sa-input">To</label>
+                                        <div class="input-group date" id="datetimepicker">
+                                            <input type="date" class="form-control" id="rDate2">
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                            <div class="form-group row">
+                                <label for="example-text-input" class="col-sm-4 col-form-label sa-input"></label>
+                                <div class="date col-sm-7" id="datetimepicker">
+                                    <div class="checkbox">
+                                        <input id="checkbox2" type="checkbox">
+                                        <label for="checkbox2">Pending</label><br>
+                                        <input id="checkbox3" type="checkbox">
+                                        <label for="checkbox3">Approved</label><br>
+                                        <input id="checkbox4" type="checkbox">
+                                        <label for="checkbox4">Waiting Delivery</label><br>
+                                        <input id="checkbox5" type="checkbox">
+                                        <label for="checkbox5">Delivered</label><br>
+                                        <input id="checkbox6" type="checkbox">
+                                        <label for="checkbox6">Cancelled</label><br>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group row btn-con7">
+                                    <input type="submit" name="" class="btn btn-danger" value="Search">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <p class="search_status">3 Records Found</p>
+                                        </div>
+                                        
+                                        <div class="col-md-6">
+                                            <div class="text-right">
+                                                <button type="button" class="btn btn-outline btn-danger" data-toggle="modal" data-target="#advanceSearch">Advanced Search</button>
+                                                <input type="button" name="" class="btn btn-danger" value="Download List">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="table-responsive table-bordered">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Transaction No.</th>
+                                                    <th>Transaction</th>
+                                                    <th>Status</th>
+                                                    <th>PO. No.</th>
+                                                    <th>PO/Request Date</th>
+                                                    <th>Requested By</th>
+                                                    <th>Deliver From</th>
+                                                    <th>DR No.</th>
+                                                    <th>DR Date</th>
+													<td></td>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let storeInventories of storeInventoryList">
+                                                    <td> {{ storeInventories.id }}</td>
+                                                    <td> {{ storeInventories.transactionTypeStr}}</td>
+                                                    <td> {{ storeInventories.requestStatusStr}}</td>
+                                                    <td> {{ storeInventories.poNumber}}</td>
+                                                    <td> {{ storeInventories.poDate | date: 'medium'  }} </td>
+                                                    <td> &nbsp; </td>
+                                                    <td> {{ storeInventories.warehouse.name}} </td>
+                                                    <td> &nbsp; </td>
+                                                    <td> &nbsp; </td>
+													<td><a routerLink="delivery_request/{{storeInventories.id}}" class="btn btn-danger btn-r">Delivery</a></td>
+                                                    <td>
+                                                      <!--  <button type="button" (click)="viewDetails(storeInventories)" class="btn btn-danger" data-toggle="modal" data-target="#details_modal">Details</button> -->
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <app-pager [module]="module" (displayPageList)="getList($event)"></app-pager>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="btn-con">
+                                <input type="button" name="" class="btn btn-danger" value="Download List">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Advanced Search-->
+                    <app-order-transfer-advanced-search></app-order-transfer-advanced-search>
+
+                    <!-- Details-->
+                    <app-order-transfer-details></app-order-transfer-details>
+
+                </form>
+
+
+            </div>
+            <!-- /.container-fluid -->

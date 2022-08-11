@@ -1,0 +1,391 @@
+           <div class="container-fluid">
+                <!-- breadcrumbs -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                              <a href="#">Return/Breakage</a>
+                            </li>
+                            <li class="breadcrumb-item active">Registration</li>
+                        </ol>
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <!-- /.row -->
+                
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h2 class="fw-b m-title m-title2">Registration</h2>
+                    </div>
+                </div>
+                <form>
+
+                    <div class="line2">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="btn-con6">
+                                    <input type="button" name="" class="btn btn-danger" value="Save" data-toggle="modal" data-target="#saveModal">
+                                    <a href="stock_list.html" class="btn btn-danger btn-r">Cancel</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group row">
+                              <label for="" class="col-sm-4 col-form-label sa-input">Return To<span class="ic-red">*</span>:</label>
+                                <div class="col-sm-7">
+                                    <select class="form-control" name="transaction" id="transaction">
+                                        <option></option>
+                                        <option>Store</option>
+                                        <option>Warehouse</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- <div class="form-group row">
+                                <label for="example-text-input" class="col-sm-4 col-form-label sa-input">Return:</label>
+                                <div class="input-group date col-sm-7" id="datetimepicker">
+                                    <label class="checkbox-inline">
+                                    <input type="checkbox" id="s_return">
+                                </label>
+                                </div>
+                            </div> -->
+                        </div>
+
+                        <div class="col-lg-4">
+                            <div class="form-group row">
+                              <label for="" class="col-sm-4 col-form-label sa-input">Vendor:</label>
+                                <div class="col-sm-7 input_select">
+                                    <select class="form-control" id="vendor">
+                                        <option></option>
+                                        <option>Manila</option>
+                                        <option>Cebu</option>
+                                        <option>Davao</option>
+                                        <option>CDO</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <div class="form-group row">
+                                <label for="example-text-input" class="col-sm-4 col-form-label sa-input">Remarks:</label>
+                                <div class="col-sm-7">
+                                    <textarea class="form-control" rows="4"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group row ap-code" id="approve_code">
+                              <label for="" class="col-sm-4 col-form-label sa-input">Approval Code<span class="ic-red">*</span>:</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control" name="">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <!-- Item List -->
+                                    <div class="form-group row form_code">
+                                      <label for="" class="col-sm-2 col-form-label sa-input">Enter Item Code/Serial No.<span class="ic-red">*</span>:</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" name="">
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <input type="button" name="" class="btn btn-danger" value="Add">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Serial</th>
+                                                    <th>Item Code</th>
+                                                    <th>Item Name</th>
+                                                    <th>Specification</th>
+                                                    <th>Tonality</th>
+                                                    <th>Qty</th>
+                                                    <th>Return Reason</th>
+                                                    <th>Remarks</th>
+                                                    <th>Remove</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <input class="form-control " placeholder="" name="" type="text" autofocus="">
+                                                    </td>
+                                                    <td>
+                                                        <input class="form-control " placeholder="" name="" type="text" autofocus="">
+                                                    </td>
+                                                    <td>Brick Yellow</td>
+                                                    <td>30x60</td>
+                                                    <td>17101B</td>
+                                                    <td>
+                                                        <input class="qty-input form-control" type="number" value="1">
+                                                    </td>
+                                                    <td>
+                                                        <select class="form-control" id="reason">
+                                                            <option></option>
+                                                            <option>Breakage</option>
+                                                            <option>Factory Defect</option>
+                                                            <option>Incorrect Delivery</option>
+                                                            <option>CDO</option>
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                         <input class="form-control " placeholder="" name="" type="text" autofocus="">
+                                                    </td>
+                                                    <td class="td-actions text-center">
+                                                        <button type="button" class="btn btn-danger btn-simple btn-xs">
+                                                            <i class="fa fa-times"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <input class="form-control " placeholder="" name="" type="text" autofocus="">
+                                                    </td>
+                                                    <td>
+                                                        <input class="form-control " placeholder="" name="" type="text" autofocus="">
+                                                    </td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>
+                                                        <input class="qty-input form-control" type="number" value="1">
+                                                    </td>
+                                                    <td>
+                                                        <select class="form-control" id="reason">
+                                                            <option></option>
+                                                            <option>Breakage</option>
+                                                            <option>Factory Defect</option>
+                                                            <option>Incorrect Delivery</option>
+                                                            <option>CDO</option>
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                         <input class="form-control " placeholder="" name="" type="text" autofocus="">
+                                                    </td>
+                                                    <td class="td-actions text-center">
+                                                        <button type="button" class="btn btn-danger btn-simple btn-xs">
+                                                            <i class="fa fa-times"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <input class="form-control " placeholder="" name="" type="text" autofocus="">
+                                                    </td>
+                                                    <td>
+                                                        <input class="form-control " placeholder="" name="" type="text" autofocus="">
+                                                    </td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>
+                                                        <input class="qty-input form-control" type="number" value="1">
+                                                    </td>
+                                                    <td>
+                                                        <select class="form-control" id="reason">
+                                                            <option></option>
+                                                            <option>Breakage</option>
+                                                            <option>Factory Defect</option>
+                                                            <option>Incorrect Delivery</option>
+                                                            <option>CDO</option>
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                         <input class="form-control " placeholder="" name="" type="text" autofocus="">
+                                                    </td>
+                                                    <td class="td-actions text-center">
+                                                        <button type="button" class="btn btn-danger btn-simple btn-xs">
+                                                            <i class="fa fa-times"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <input class="form-control " placeholder="" name="" type="text" autofocus="">
+                                                    </td>
+                                                    <td>
+                                                        <input class="form-control " placeholder="" name="" type="text" autofocus="">
+                                                    </td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>
+                                                        <input class="qty-input form-control" type="number" value="1">
+                                                    </td>
+                                                    <td>
+                                                        <select class="form-control" id="reason">
+                                                            <option></option>
+                                                            <option>Breakage</option>
+                                                            <option>Factory Defect</option>
+                                                            <option>Incorrect Delivery</option>
+                                                            <option>CDO</option>
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                         <input class="form-control " placeholder="" name="" type="text" autofocus="">
+                                                    </td>
+                                                    <td class="td-actions text-center">
+                                                        <button type="button" class="btn btn-danger btn-simple btn-xs">
+                                                            <i class="fa fa-times"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <input class="form-control " placeholder="" name="" type="text" autofocus="">
+                                                    </td>
+                                                    <td>
+                                                        <input class="form-control " placeholder="" name="" type="text" autofocus="">
+                                                    </td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>
+                                                        <input class="qty-input form-control" type="number" value="1">
+                                                    </td>
+                                                    <td>
+                                                        <select class="form-control" id="reason">
+                                                            <option></option>
+                                                            <option>Breakage</option>
+                                                            <option>Factory Defect</option>
+                                                            <option>Incorrect Delivery</option>
+                                                            <option>CDO</option>
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                         <input class="form-control " placeholder="" name="" type="text" autofocus="">
+                                                    </td>
+                                                    <td class="td-actions text-center">
+                                                        <button type="button" class="btn btn-danger btn-simple btn-xs">
+                                                            <i class="fa fa-times"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <input class="form-control " placeholder="" name="" type="text" autofocus="">
+                                                    </td>
+                                                    <td>
+                                                        <input class="form-control " placeholder="" name="" type="text" autofocus="">
+                                                    </td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>
+                                                        <input class="qty-input form-control" type="number" value="1">
+                                                    </td>
+                                                    <td>
+                                                        <select class="form-control" id="reason">
+                                                            <option></option>
+                                                            <option>Breakage</option>
+                                                            <option>Factory Defect</option>
+                                                            <option>Incorrect Delivery</option>
+                                                            <option>CDO</option>
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                         <input class="form-control " placeholder="" name="" type="text" autofocus="">
+                                                    </td>
+                                                    <td class="td-actions text-center">
+                                                        <button type="button" class="btn btn-danger btn-simple btn-xs">
+                                                            <i class="fa fa-times"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <input class="form-control " placeholder="" name="" type="text" autofocus="">
+                                                    </td>
+                                                    <td>
+                                                        <input class="form-control " placeholder="" name="" type="text" autofocus="">
+                                                    </td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>
+                                                        <input class="qty-input form-control" type="number" value="1">
+                                                    </td>
+                                                    <td>
+                                                        <select class="form-control" id="reason">
+                                                            <option></option>
+                                                            <option>Breakage</option>
+                                                            <option>Factory Defect</option>
+                                                            <option>Incorrect Delivery</option>
+                                                            <option>CDO</option>
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                         <input class="form-control " placeholder="" name="" type="text" autofocus="">
+                                                    </td>
+                                                    <td class="td-actions text-center">
+                                                        <button type="button" class="btn btn-danger btn-simple btn-xs">
+                                                            <i class="fa fa-times"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="panel-footer">
+                                   <div class="row grid">
+                                       <div class="col-md-6 text-left">
+                                           <input type="submit" name="" class="btn btn-danger" value="Add More Items">
+                                       </div>
+                                       <div class="col-md-6 text-right">
+                                       </div>
+                                   </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="line2">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="btn-con6">
+                                    <input type="button" name="" class="btn btn-danger" value="Save" data-toggle="modal" data-target="#saveModal">
+                                    <a href="stock_list.html" class="btn btn-danger btn-r">Cancel</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" id="saveModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                    <h4 class="modal-title" id="myModalLabel">Save</h4>
+
+                                </div>
+                                <div class="modal-body">
+                                    <h5 class="modal-text">Are you sure you want to proceed?</h5>
+                                </div>
+                                <div class="modal-footer">
+                                    <input type="submit" name="" class="btn btn-danger" value="Save">
+                                    <a href="stock_list.html" class="btn btn-danger btn-r">Cancel</a>
+                                </div>
+                            </div>
+                            <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                    </div>
+
+                </form>
+
+
+            </div>
+            <!-- /.container-fluid -->

@@ -1,0 +1,107 @@
+            <div class="container-fluid">
+                <!-- breadcrumbs -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                              For Pick-up
+                            </li>
+                            <li class="breadcrumb-item active">Client</li>
+                        </ol>
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <!-- /.row -->
+                
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h2 class="fw-b m-title">Delivery List</h2>
+                    </div>
+                </div>
+                <form>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                            <div class="col-md-6">
+                                            <p class="search_status"><b> {{totalRecordMessage}} </b> {{pageRecordMessage}}</p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="text-right">
+                                                <button type="button" class="btn btn-outline btn-danger" data-toggle="modal" data-target="#advanceSearch">Advanced Search</button>
+                                                <input type="button" name="" class="btn btn-danger" value="Download List" *ngIf="deliveryList.length != 0" (click)="downloadList()">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="table-responsive table-bordered">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Transaction No.</th>
+                                                    <th>Transaction</th>
+                                                    <th>DR No.</th>
+                                                    <th>Deliver From</th>
+                                                    <th>Deliver To</th>
+                                                    <th>Delivery Status</th>
+                                                    <th>Requested Delivery Date</th>
+                                                    <th>Approved Delivery Date</th>
+                                                    <th>Delivery Qty</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let delivery of deliveryList">
+                                                    <td> {{ delivery.transactionNo }} </td>
+                                                    <td> {{ delivery.returnTypeStr }} </td>
+                                                    <td> {{ delivery.drNumber }} </td>
+                                                    <td> {{ delivery.returnedBy }} </td>
+                                                    <td> {{ delivery.deliverTo }} </td>
+                                                    <td> {{ delivery.deliveryStatusStr }} </td>
+
+                                                    <td> {{ delivery.pickupDate | date : "mediumDate" }} </td>
+                                                    <td> {{ delivery.approvedDeliveryDate | date : "mediumDate" }} </td>
+                                                    <td> {{ delivery.deliveryQty }} </td>
+                                                    <td>
+                                                        <button type="button" [ngClass]="(delivery.deliveryStatus != 1)  ? 'btn btn-danger btn' : 'btn btn-danger btn-r'" data-toggle="modal" data-target="#details_modal" (click)="onBtnUpdateClick(delivery)"> {{ delivery.deliveryStatus != 1  ? "Update" : "Details" }}</button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- advance search modal -->
+                            <app-rc-advanced-search (updatePage)="filterRecordWithParam($event)"> </app-rc-advanced-search>
+
+                            <!-- delivery update modal -->
+                            <app-rc-update [showSaveBtn]="showSaveBtn" [isClient]="isClient" [delivery]="delivery" [updateForm]="updateForm" (updatePage)="filterRecordWithParam($event)"></app-rc-update>
+
+                            
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        
+                        <div class="col-md-12">
+
+                            <app-pagernew [module]="module" [Keyword]="filterParam" [defaultFilter]="defaultFilter" [Keyword]="filterParam" [isDefaultFiltereredLoading]="isDefaultFiltereredLoading" (displayPageList)="getDeliveries($event)"></app-pagernew>
+
+                            <div class="row">
+                                <div class="col-md-12 btn-con6">
+                                    <input type="button" name="" *ngIf="deliveryList.length != 0" class="btn btn-danger" value="Download List" (click)="downloadList()">
+                                </div>
+                            </div>
+
+                        </div> <!-- col-md-12 -->
+                    </div>
+
+
+                </form>
+
+
+            </div>
+            <!-- /.container-fluid -->

@@ -1,0 +1,176 @@
+  <div class="modal fade" id="details_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;" *ngIf="updateForm">
+                        <div  class="modal-dialog modal-lg modal-xlg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                    <h4 class="modal-title" id="myModalLabel">Sales Detail Trans No. {{releasingDetails.transactionNo}}<!-- [Transaction No.] --></h4>
+
+                                </div>
+
+                                <div>
+                                    <div class="alert alert-danger" style="text-align: center" *ngIf="errorMessage">
+                                                    <p *ngFor="let err of errorMessage"> {{ err }} </p>
+                                    </div>
+                                    
+                                    <div class="alert alert-success" style="text-align: center" *ngIf="successMessage">
+                                                        <p>  {{ successMessage }} </p>
+                                    </div>
+                            </div>
+                        <form [formGroup]="updateForm" (ngSubmit)="onSubmit()" id="updateForm">
+
+                                <div class="modal-body">
+                                    
+                                    <div class="row">
+                                            <div class="col-md-6"><!--
+                                                <div class="form-group row">
+                                                  <label for="" class="col-sm-4 col-form-label sa-input">Delivery Date<span class="ic-red">*</span>:</label>
+                                                    <div class="col-sm-6">
+                                                        <div class="input-group date" id="datetimepicker">
+                                                        <input type="date" formControlName="deliveryDate" class="form-control" id="wadeliveryDate">
+                                                            <span class="input-group-addon">
+                                                                <span class="glyphicon glyphicon-calendar"></span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>-->
+                                                <div class="form-group row">
+                                                  <label for="" class="col-sm-4 col-form-label sa-input">SI No.<span class="ic-red">*</span>:</label>
+                                                    <div class="col-sm-6">
+                                                       {{releasingDetails.siNumber != null ? releasingDetails.siNumber : ""}}
+                                                        <input *ngIf="releasingDetails.siNumber == null" type="text" class="form-control" formControlName="siNumber">
+                                                    </div>
+                                                     <show-errors [control]="updateForm.controls.siNumber"></show-errors>
+                                                </div>
+                                                <div class="form-group row">
+                                                  <label for="" class="col-sm-4 col-form-label sa-input">OR No.<span class="ic-red">*</span>:</label>
+                                                    <div class="col-sm-6">
+                                                          {{releasingDetails.orNumber != null ? releasingDetails.orNumber : ""}}
+                                                        <input *ngIf="releasingDetails.orNumber == null" type="text" class="form-control" formControlName="orNumber">
+                                                    </div>
+                                                    <show-errors [control]="updateForm.controls.orNumber"></show-errors>
+                                                </div>
+                                               
+                                                <div *ngIf="releasingDetails.csPickupFlg == true" class="form-group row">
+                                                  <label for="" class="col-sm-4 col-form-label sa-input">DR No.:</label>
+                                                    <div class="col-sm-6"> {{releasingDetails.drNumber != null ? releasingDetails.drNumber : ""}}
+                                                        <input *ngIf="releasingDetails.siNumber == null" type="text" class="form-control" formControlName="drNumber">
+                                                    </div>
+                                                      <show-errors [control]="updateForm.controls.drNumber"></show-errors>
+                                                </div>
+                                                <div class="form-group row">
+                                                  <label for="" class="col-sm-4 col-form-label sa-input">Remarks:</label>
+                                                    <div *ngIf="releasingDetails.salesType != 3" class="col-sm-6">
+                                                        {{releasingDetails.remarks != null ? releasingDetails.remarks : ""}}
+                                                     
+                                                        <textarea *ngIf="releasingDetails.siNumber == null" class="form-control" rows="4" formControlName="remarks"></textarea>
+                                                    </div>
+                      
+                                                </div>
+
+                                            </div>
+                                            <div class="col-md-6">
+
+                                                <div  class="form-group row">
+                                                  <label for="" class="col-sm-4 col-form-label sa-input">Client's Name:</label>
+                                                    <div class="col-sm-6">
+                                                        {{releasingDetails.clientName}}
+                                            
+                                                    </div>
+                                                </div>
+
+                                            <div class="form-group row">
+                                                  <label for="" class="col-sm-4 col-form-label sa-input">Delivery Type:</label>
+            
+
+                                                     <div class="col-sm-6">
+                                                     {{releasingDetails.deliveryTypeStr}}
+                                                    </div>
+                                                </div>
+
+                                                 <div class="form-group row">
+                                                  <label for="" class="col-sm-4 col-form-label sa-input">Address:</label>
+            
+
+                                                     <div class="col-sm-6">
+                                                     {{releasingDetails.address1}}
+                                                     {{releasingDetails.address2}}
+                                                     {{releasingDetails.address3}} 
+                                                    </div>
+                                                </div>
+
+
+                                              
+                                                <div class="form-group row">
+                                                  <label for="" class="col-sm-4 col-form-label sa-input">Contact Details:</label>
+    
+
+                                                    <div class="col-sm-6">
+                                                       {{releasingDetails.contactNumber}}
+                                                    </div>
+                                                     
+                                                </div>
+                                             
+                                                <div class="form-group row">
+                                                  <label for="" class="col-sm-4 col-form-label sa-input">Sales Agent<span class="ic-red">*</span>:</label>
+                                                     <div *ngIf="releasingDetails.salesType != 3" class="col-sm-6">
+                                                        {{releasingDetails.siNumber != null ? releasingDetails.salesAgent : ""}}
+                                                        <input *ngIf="releasingDetails.siNumber == null" type="text" formControlName="salesAgent" class="form-control" value="">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="table-responsive table-bordered">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Item Code</th>
+                                                            <th>Item Name</th>
+                                                            <th>Size</th>
+                                                            <th>Tonality</th>
+                                                            <th>Qty</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                
+                                                        <tr *ngFor="let i of deliveryItems">
+                                                            <td>{{i.code}}</td>
+                                                            <td>{{i.itemName}}</td>
+                                                            <td>{{i.sizeName}}</td>
+                                                            <td>{{i.tonality}}</td>
+                                                            <td>{{i.quantity}}</td>
+                                                       
+                                                            
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <!-- <input type="submit" name="" class="btn btn-danger" value="Save"> -->
+                                    <div *ngIf="releasingDetails.salesType != 3">
+                                        <button *ngIf="releasingDetails.deliveryType == 1 && releasingDetails.releaseDate == null" type="submit" class="btn btn-danger" [disabled]="!updateForm.valid" id="btnSave">Save
+                                    </button>
+
+                                     <button *ngIf="releasingDetails.deliveryType == 2 && releasingDetails.approvedDeliveryDate != '' && releasingDetails.releaseDate == null" type="submit" class="btn btn-danger" [disabled]="!updateForm.valid" id="btnSave">Save
+                                    </button>
+
+
+
+                                     <button type="button" class="btn btn-default" data-dismiss="modal" id="btnCancel">Close</button>
+
+                                    </div>
+                                   
+                                </div>
+                        </form>
+                            </div>
+                            <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                    </div>

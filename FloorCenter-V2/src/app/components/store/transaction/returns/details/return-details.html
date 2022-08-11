@@ -1,0 +1,136 @@
+    <div class="modal fade" id="rtv_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;" *ngIf="details">
+        <div class="modal-dialog modal-xlg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="myModalLabel">Transaction  No.  {{ details.transactionNo }}<!-- [Transaction No.] --></h4>
+
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="row">
+                                <label for="" class="col-sm-4 col-form-label sa-input">Return To:</label>
+                                <div class="col-sm-6">
+                                    <p class="sa-input">{{ details.returnedTo }}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="" class="col-sm-4 col-form-label sa-input">Request Date:</label>
+                                <div class="col-sm-6">
+                                    <p class="sa-input"> {{ details.requestDate | date : "mediumDate" }} </p>
+                                </div>
+                            </div>
+
+                            <div *ngIf="details.returnType == 2" class="row">
+                                <label for="" class="col-sm-4 col-form-label sa-input">SI No.:</label>
+                                <div class="col-sm-6">
+                                    <p class="sa-input"> {{details.siNumber}} </p>
+                                </div>
+                            </div>
+
+                            
+                            <div *ngIf="details.returnType == 2" class="row">
+                                <label for="" class="col-sm-4 col-form-label sa-input">SSD Approval Code.:</label>
+                                <div class="col-sm-6">
+                                    <p class="sa-input"> {{details.returnDrNumber}} </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <!--div will only display if client return and for pickup-->
+                            <div *ngIf="details.returnType == 2 && details.clientReturnType == 2"  class="row">
+                                <label for="" class="col-sm-4 col-form-label sa-input">Approved Delivery Date:</label>
+                                <div class="col-sm-6">
+                                    <p class="sa-input"> {{ details.approveDeliveryDate | date : "mediumDate" }} </p>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <label for="" class="col-sm-4 col-form-label sa-input">Status:</label>
+                                <div class="col-sm-6">
+                                    <p class="sa-input sa-input2"> {{ details.requestStatusStr }} </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="" class="col-sm-4 col-form-label sa-input">Remarks:</label>
+                                <div class="col-sm-6">
+                                    <p class="sa-input"> {{ details.remarks }} </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table-responsive table-bordered">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Serial No.</th>
+                                            <th>Item Code</th>
+                                            <th>Item Name</th>
+                                            <th>Size</th>
+                                            <th>Tonality</th>
+                                            <!-- return type 1 == RTV type 2 == Client -->
+                                            <!-- <th *ngIf="details.returnType == 1">Return Qty (Broken)</th> -->
+                                            <th *ngIf="details.returnType== 1">Return Qty (Good)</th>
+                                            <th *ngIf="details.returnType== 2">Return Qty</th>
+                                            <th *ngIf="details.returnType == 3">Return Qty (Broken)</th>
+                                            <th>Return Reason</th>
+                                            <th>Remarks</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody *ngIf="details.returnType == 1">
+                                        <tr *ngFor="let item of details.items">
+                                            <td> {{ item.serialNumber }} </td>
+                                            <td> {{ item.itemCode }} </td>
+                                            <td> {{ item.itemName }} </td>
+                                            <td> {{ item.sizeName }} </td>
+                                            <!-- <td> {{ item.tonality }} </td> -->
+                                            <td> {{ item.isTonalityAny == true ? "ANY /" + item.tonality : item.tonality }} </td>
+                                            <!-- <td> {{ item.brokenQuantity }} </td> -->
+                                            <td> {{ item.goodQuantity }} </td>
+                                            <td> {{ item.returnReasonStr }} </td>
+                                            <td> {{ item.remarks }} </td>
+                                        </tr>
+                                    </tbody>
+                                    <tbody *ngIf="details.returnType == 2">
+                                        <tr *ngFor="let item of details.clientPurchasedItems">
+                                            <td> {{ item.serialNumber }} </td>
+                                            <td> {{ item.itemCode }} </td>
+                                            <td> {{ item.itemName }} </td>
+                                            <td> {{ item.sizeName }} </td>
+                                            <td> {{ item.tonality }} </td>
+                                            
+                                            <td> {{ item.quantity }} </td>
+                                            <td> {{ item.returnReasonStr }} </td>
+                                            <td> {{ item.remarks }} </td>
+                                        </tr>
+                                    </tbody>
+                                    <tbody *ngIf="details.returnType == 3">
+                                      <tr *ngFor="let item of details.items">
+                                        <td> {{ item.serialNumber }} </td>
+                                        <td> {{ item.itemCode }} </td>
+                                        <td> {{ item.itemName }} </td>
+                                        <td> {{ item.sizeName }} </td>
+                                        <td> {{ item.tonality }} </td>
+                                        <td> {{ item.brokenQuantity }} </td>
+                                        <td> {{ item.returnReasonStr }} </td>
+                                        <td> {{ item.remarks }} </td>
+                                      </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>

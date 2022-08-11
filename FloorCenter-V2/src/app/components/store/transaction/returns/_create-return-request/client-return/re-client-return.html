@@ -1,0 +1,188 @@
+      <div class="container-fluid">
+                <!-- breadcrumbs -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"> Transactions </li>
+                            <li class="breadcrumb-item">
+                              <a href="sales_list.html">Return</a>
+                            </li>
+                            <li class="breadcrumb-item active">Client Return</li>
+                        </ol>
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <!-- /.row -->
+                
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h2 class="fw-b m-title m-title2">Client Return</h2>
+                    </div>
+                </div>
+   <!-- error and success message -->
+                 <div>
+                    <div class="alert alert-danger" style="text-align: center" *ngIf="errorMessage">
+                            <p *ngFor="let err of errorMessage"> {{ err }} </p>
+                     </div>
+                                    
+                     <div class="alert alert-success" style="text-align: center" *ngIf="successMessage">
+                             <p>  {{ successMessage }} </p>
+                     </div>
+                </div>
+
+    <!-- error and success message end -->
+                <form [formGroup]="newForm" (ngSubmit)="onSubmit()" (keydown.enter)="$event.preventDefault()">
+
+                    <div class="line2">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="btn-con6">
+                                    <input type="submit" name="" class="btn btn-danger" value="Save" [disabled]="!newForm.valid">
+                                    <a href="sales_list.html" class="btn btn-danger btn-r">Cancel</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group row">
+                              <label for="" class="col-sm-4 col-form-label sa-input">TOR Number<span class="ic-red">*</span>:</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control" name="" formControlName="TORNumber" (input)="onChange($event.target.value)">
+                                    <show-errors [control]="newForm.controls.TORNumber"></show-errors>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <div class="form-group row">
+                                <label for="example-text-input" class="col-sm-4 col-form-label sa-input">Release Date<span class="ic-red">*</span>:</label>
+                                <div class="input-group date col-sm-6" id="datetimepicker">
+                                    <input type="date" class="form-control" formControlName="releaseDate" (input)="onChange($event.target.value)">
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                  
+                                </div>
+                                  <show-errors [control]="newForm.controls.releaseDate"></show-errors>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                       <div class="col-md-4">
+                                           <div class="form-group row form_code">
+                                              <label for="" class="col-sm-4 col-form-label sa-input">Serial No.:</label>
+                                                <div class="col-sm-7">
+                                                   <input myNumberOnly  class="form-control"  autofocus (keyup.enter)="getItemDetailsWithSerial()" [(ngModel)]="serialNumber" [ngModelOptions]="{standalone: true}" (input)="onChange($event.target.value)">
+                                        <p class="alert alert-danger" *ngIf="serialErrorMessage">  {{ serialErrorMessage }} </p> 
+                                                </div>
+                                            </div> 
+                                       </div>
+                                       <div class="col-md-4">
+                                           <div class="form-group row form_code">
+                                              <label for="" class="col-sm-4 col-form-label sa-input">Item Code:</label>
+                                                    <div class="col-sm-7" style="padding-top : 4px;">
+                                            <select  class="form-control select2" id="itemCode" (input)="onChange($event.target.value)">
+                                                <option></option>
+                                                <option *ngFor="let opt of itemList" [value]="opt.id"> {{opt.code}} | {{opt.tonality}}  </option>
+                                            </select>
+                                            <p class="alert alert-danger" *ngIf="codeErrorMessage">  {{ codeErrorMessage }} </p> 
+                                    </div>
+                                            </div> 
+                                       </div>
+                                       <div class="col-md-4">
+                                               <div class="form-group row form_code">
+                                    <input type="button" name="" class="btn btn-danger" value="Add" (click)="getItemDetailsWithCode()">
+                                </div>
+                                       </div>
+                                   </div>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Item Code</th>
+                                                    <th>Serial</th>
+                                                    <th>Item Name</th>
+                                                    <th>Size</th>
+                                                    <th>Tonality</th>
+                                                    <th>Qty</th>
+                                                    <th>Remove</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody formArrayName="SoldItems">
+                                    <tr *ngFor="let item of SoldItems.controls; let i=index"  [formGroupName]="i">
+                                        <td>
+                                            <input type="hidden" formControlName="ItemId">
+                                            <input class="form-control" readonly [value]="itemDetail[i].code">
+                                        </td>
+                                        <td>
+                                            <input class="form-control" readonly [value]="itemDetail[i].serialNumber">
+                                        </td>
+                                        <td> {{ itemDetail[i].name }} </td>
+                                        <td> {{ itemDetail[i].size.name }} </td>
+                                        <td> {{ itemDetail[i].tonality }} </td>
+                                        <td>
+                                            <input type="number" class="qty-input form-control" myNumberOnly  formControlName="Quantity" (input)="checkQuantity($event.target.value)" (input)="onChange($event.target.value)">
+                                            <show-errors [control]="item.controls.Quantity"></show-errors>
+                                        </td>
+                                        <td class="td-actions text-center">
+                                            <button type="button" class="btn btn-danger btn-simple btn-xs" (click)="deleteRow(i)">
+                                                <i class="fa fa-times"></i>
+                                            </button>
+                                        </td>
+                                    </tr>                                   
+                                </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="panel-footer">
+                                   <div class="row grid">
+                                       <div class="col-md-6 text-left">
+                                          <!-- <input type="submit" name="" class="btn btn-danger" value="Add More Items"> -->
+                                       </div>
+                                        <!--
+                                       <div class="col-md-6 text-right">
+                                          <div class="row grid">
+                                              <div class="col-md-6">
+                                                  <p>Total Items</p>
+                                                  <p>Total Qty</p>
+                                              </div>
+                                              <div class="col-md-6">
+                                                  <p>{{totalItems}}</p>
+                                                  <p>{{totalQuantity}}</p>
+                                              </div>
+                                          </div>
+                                       </div>
+                                       -->
+                                   </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="line2">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="btn-con6">
+                                    <input type="submit" name="" class="btn btn-danger" value="Save" [disabled]="!newForm.valid">
+                                    <a href="sales_list.html" class="btn btn-danger btn-r">Cancel</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    
+                </form>
+
+
+            </div>
+            <!-- /.container-fluid -->

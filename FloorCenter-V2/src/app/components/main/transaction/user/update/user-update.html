@@ -1,0 +1,135 @@
+    <div class="modal fade" id="update_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;" *ngIf="updateUserForm">
+        <form [formGroup]="updateUserForm" (ngSubmit)="onSubmit(updateUserForm)">
+            <div class="modal-dialog modal-lg modal-xlg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="myModalLabel">User Update</h4>
+
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-danger" style="text-align: center" *ngIf="errorMessage">
+                            <p *ngFor="let err of errorMessage"> {{ err }} </p>
+                        </div>
+                        <div class="alert alert-success" style="text-align: center" *ngIf="successMessage">
+                            <p>  {{ successMessage }} </p>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    <label for="" class="col-sm-4 col-form-label sa-input">User Name<span class="ic-red">*</span>:</label>
+                                    <div class="col-sm-7">
+                                        <p> {{username}}</p>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="" class="col-sm-4 col-form-label sa-input">Full Name<span class="ic-red">*</span>:</label>
+                                    <div class="col-sm-7">
+                                        <input class="form-control" type="text" maxlength="255" formControlName="FullName">
+                                        <show-errors [control]="updateUserForm.controls.FullName"></show-errors>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="" class="col-sm-4 col-form-label sa-input">Password<span class="ic-red">*</span>:</label>
+                                    <div class="col-sm-7">
+                                        <input class="form-control" type="password" formControlName="Password">
+                                        <show-errors [control]="updateUserForm.controls.Password"></show-errors>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    <label for="" class="col-sm-4 col-form-label sa-input">Role<span class="ic-red">*</span>:</label>
+                                    <div class="col-sm-7">
+                                        <select class="form-control"  (change)="onSelectRole($event.currentTarget.value)" formControlName="UserType">
+                                            <option></option>
+                                            <option *ngFor="let opt of userTypeList" [value]="opt.value"> {{opt.name}} </option>
+                                        </select>
+                                        <show-errors [control]="updateUserForm.controls.UserType"></show-errors>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="" class="col-sm-4 col-form-label sa-input">Email<span class="ic-red">*</span>:</label>
+                                    <div class="col-sm-7">
+                                        <input class="form-control" type="email" maxlength="255" formControlName="emailAddress">
+                                        <show-errors [control]="updateUserForm.controls.emailAddress"></show-errors>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="" class="col-sm-4 col-form-label sa-input">Contact No.:</label>
+                                    <div class="col-sm-7">
+                                        <input class="form-control" contact type="text" formControlName="ContactNumber">
+                                        <show-errors [control]="updateUserForm.controls.ContactNumber"></show-errors>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group row">
+                                    <label for="" class="col-sm-4 col-form-label sa-input">Site<span class="ic-red">*</span>:</label>
+                                    <div class="col-sm-7">
+                                        <select class="form-control" id="assignment" (change)="setAssignment($event.currentTarget.value)" formControlName="Assignment">
+                                            <option></option>
+                                            <option *ngFor="let opt of assignmentList" [value]="opt.value"> {{ opt.name }}</option>
+                                        </select>
+                                        <show-errors [control]="updateUserForm.controls.Assignment"></show-errors>
+                                    </div>
+                                </div>
+                                <div class="form-group row" *ngIf="updateUserForm.controls.Assignment.value == 2">
+                                    <label for="" class="col-sm-4 col-form-label sa-input">Warehouse<span class="ic-red">*</span>:</label>
+                                    <div class="col-sm-7">
+                                        <select formControlName="WarehouseId" class="form-control" id="w-select">
+                                            <option></option>
+                                            <option *ngFor="let opt of warehouseList" [value]="opt.id"> {{opt.name}} </option>
+                                        </select>
+                                        <show-errors [control]="updateUserForm.controls.WarehouseId"></show-errors>
+                                    </div>
+                                </div>
+                                <div class="form-group row" *ngIf="updateUserForm.controls.Assignment.value == 3">
+                                    <label for="" class="col-sm-4 col-form-label sa-input">Store<span class="ic-red">*</span>:</label>
+                                    <div class="col-sm-7">
+                                        <select formControlName="StoreId" class="form-control" id="s-select">
+                                            <option></option>
+                                            <option *ngFor="let opt of storeList" [value]="opt.id"> {{opt.name}} </option>
+                                        </select>
+                                        <show-errors [control]="updateUserForm.controls.StoreId"></show-errors>
+                                    </div>
+                                </div>
+                                <!-- <div class="form-group row">
+                                    <label for="" class="col-sm-4 col-form-label sa-input">User Status<span class="ic-red">*</span>:</label>
+                            
+                                        <ui-switch labelOff="Inactive"  labelOn="Active"  [(ngModel)]="isActive" [checked]='isActive'  (change)="changeUserStatus($event)"></ui-switch>
+                
+                                        <show-errors [control]="updateUserForm.controls.StoreId"></show-errors>
+                             
+                                </div> -->
+
+                                <div class="form-group row">
+                                    <label for="" class="col-sm-4 col-form-label sa-input">User Status<span class="ic-red">*</span>:</label>
+                                    <div class="date col-sm-6">
+                                        <div class="checkbox ad_search">
+                                            {{ isActive == true ? 'Active' : 'Inactive'}}
+                                           
+                                        </div>
+                                    </div>
+                                </div>
+
+                                
+
+                       
+                                  
+                                  
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" *ngIf="userType == 1" name="" class="btn btn-danger" [disabled]="!updateUserForm.valid" value="Save">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="onClose()">Close</button>
+                    </div>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </form>
+    </div>
+    <!-- /.modal-dialog -->

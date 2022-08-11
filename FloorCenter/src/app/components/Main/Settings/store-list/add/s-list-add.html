@@ -1,0 +1,102 @@
+<div id="addItems" class="collapse add_new ">
+    <form [formGroup]="newStoreForm" (ngSubmit)="onSubmit()">
+        <div class="row">
+            <div class="alert alert-danger" style="text-align: center" *ngIf="errorMessage">
+                <p *ngFor="let err of errorMessage"> {{ err }} </p>
+            </div>
+            <div class="alert alert-success" style="text-align: center" *ngIf="successMessage">
+                <p>  {{ successMessage }} </p>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group row">
+                    <label for="" class="col-sm-3 col-form-label sa-input">Store Code</label>
+                    <div class="col-sm-9">
+                        <input class="form-control" type="text" formControlName="Code" name="Code">
+                    </div>
+                    <show-errors [control]="newStoreForm.controls.Code"></show-errors>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group row">
+                    <label for="" class="col-sm-3 col-form-label sa-input">Store Name</label>
+                    <div class="col-sm-9">
+                        <input class="form-control" type="text" formControlName="Name" name="Name">
+                        <show-errors [control]="newStoreForm.controls.Name"></show-errors>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group row">
+                    <label for="" class="col-sm-3 col-form-label sa-input">Company</label>
+                    <div class="col-sm-9">
+                        <select class="form-control" formControlName="CompanyId" name="CompanyId">
+                            <option></option>
+                            <option *ngFor="let opt of companyList"  [value]="opt.id"> {{ opt.name }} </option>
+                        </select>
+                        <show-errors [control]="newStoreForm.controls.CompanyId"></show-errors>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8">
+                <div class="form-group row">
+                    <label for="" class="col-sm-1 col-form-label sa-input">Address</label>
+                    <div class="col-sm-11">
+                        <input class="form-control" type="text" formControlName="Address" name="Address">
+                        <show-errors [control]="newStoreForm.controls.Address"></show-errors>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group row">
+                    <label for="" class="col-sm-3 col-form-label sa-input">Contact No.</label>
+                    <div class="col-sm-9">
+                        <input class="form-control" type="text" formControlName="ContactNumber" name="ContactNumber">
+                        <show-errors [control]="newStoreForm.controls.ContactNumber"></show-errors>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group row">
+                    <label for="example-text-input" class="col-sm-2 col-form-label sa-input">Source:</label>
+                    <div class="col-sm-10 check_inline">
+                        <label class="checkbox-inline">
+                            <input type="radio" class="sv-radio">Branch
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="radio" class="sv-radio">Dealer
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="form-group row">
+                    <label for="" class="col-sm-4 col-form-label sa-input">Default Warehouse</label>
+                    <div class="col-sm-7">
+                        <select class="form-control" formControlName="WarehouseId" name="WarehouseId">
+                            <option></option>
+                            <option *ngFor="let opt of warehouseList" [value]="opt.id"> {{ opt.name }} </option>
+                        </select>
+                    </div>
+                    <show-errors [control]="newStoreForm.controls.WarehouseId"></show-errors>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="btn-con6">
+                    <input type="submit" name="" class="btn btn-danger" value="Save">
+                    <button type="button" class="btn btn-danger btn-r" id="cancel" (click)="cancelAdd()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

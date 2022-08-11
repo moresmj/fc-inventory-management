@@ -1,0 +1,129 @@
+            <div class="container-fluid">
+                <!-- breadcrumbs -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                              <a href="#">Store Management</a>
+                            </li>
+                            <li class="breadcrumb-item active">Store List</li>
+                        </ol>
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <!-- /.row -->
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h2 class="fw-b m-title m-title2">Store List</h2> 
+                    </div>
+                </div>
+                        
+                <form>
+                    <div class="row">
+                        <div class="col-lg-12 sv-buttons">
+                            <div class="input-group">
+                              <input class="form-control search-input" type="text" [(ngModel)]="search" (keyup.enter)="filterRecord()" name="search" placeholder="Search">
+                              <span class="input-group-btn">
+                                <button class="btn btn-danger btn-sr" type="button" (click)="filterRecord()">
+                                  <i class="fa fa-search"></i>
+                                </button>
+                              </span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-lg-12 sv-buttons">
+                            <!-- <button type="button" class="btn btn-danger" data-toggle="collapse" data-target="#addItems">Add New Items</button> -->
+                            <button type="button" class="btn btn-danger addNew" (click)="addPanelShow()">Add New Items</button>
+                            <app-s-list-add *ngIf="showAddPanel" (hidePanelAdd)="addPanelShow()"  (updatePage)="reloadRecord($event)"></app-s-list-add>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <p class="search_status"> <b> {{totalRecordMessage}} </b> {{pageRecordMessage}} </p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="text-right">
+                                                <input type="button" name="" class="btn btn-danger" value="Download List" *ngIf="storeList.length != 0" (click)="downloadStoreList()">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="panel-body">
+                                    <div class="table-responsive table-bordered">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Store</th>
+                                                    <th>Store Name</th>
+                                                    <th>Address</th>
+                                                    <th>Contact</th>
+                                                    <th>Company</th>
+                                                    <th>Warehouse</th>
+                                                    <th>Type</th>
+                                                    <th>Date Added</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let store of storeList">
+                                                    <td> {{ store.code }} </td>
+                                                    <td> {{ store.name }} </td>
+                                                    <td> {{ store.address }} </td>
+                                                    <td> {{ store.contactNumber }} </td>
+                                                    <td> {{ store.company.name }} </td>
+                                                    <td> {{ store.warehouse.name }} </td>
+                                                    <td> </td>
+                                                    <td> {{ store.dateCreated | date: 'medium' }} </td>
+                                                    <td>  <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#product_modal" (click)="onBtnViewDetailClick(store)"
+                                                    >Details</button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        
+                        <div class="col-md-12">
+
+                            <app-pager [module]="module" (displayPageList)="getStores($event)"></app-pager>
+
+                            <div class="row">
+                                <div class="col-md-12 btn-con6">
+                                    <input type="button" name="" *ngIf="storeList.length != 0" class="btn btn-danger" value="Download List" (click)="downloadStoreList()">
+                                </div>
+                            </div>
+
+                        </div> <!-- col-md-12 -->
+
+                    </div>
+
+                    <!-- modal -->
+                    <div class="row">
+
+                        <!-- details modal -->
+                        <app-s-list-details [id]="selectedStoreId" [code]="selectedCode" [updateStoreForm]="updateForm" (updatePage)="reloadRecord($event)"></app-s-list-details>
+
+                    </div>
+
+                </form>
+
+                    
+
+
+            </div>
+            <!-- /.container-fluid -->

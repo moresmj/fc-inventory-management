@@ -1,0 +1,55 @@
+<div class="modal fade" id="stored_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                        <div *ngIf="returnDeliveryDetails" class="modal-dialog modal-lg modal-xlg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                    <h4 class="modal-title" id="myModalLabel">Return Delivery Details</h4>
+
+                                </div>
+                                <form method="post">
+                                    <div class="modal-body">
+
+                                        
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <p class="sa-input fb">Item Summary</p>
+                                                <div class="table-responsive table-bordered">
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Item Code</th>
+                                                                <th>Item Name</th>
+                                                                <th>Tonality</th>
+                                                                <th>Size</th>
+                                                                <th>Qty</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr *ngFor="let details of returnDeliveryDetails">
+                                                                <td>{{details.item.code}}</td>
+                                                                <td>{{details.item.name}} </td>
+                                                                <td>{{details.item.tonality}}</td>
+                                                                <td>{{details.item.size.name}}</td>
+                                                                <td>{{details.quantity}}</td>
+                                                            </tr>
+                                                           
+                                                        </tbody>
+                                                    </table>  
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    </div>
+
+                                </form>
+
+                                
+                            </div>
+                            <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                    </div>

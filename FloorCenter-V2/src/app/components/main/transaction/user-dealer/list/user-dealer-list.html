@@ -1,0 +1,201 @@
+<div class="container-fluid">
+  <!-- breadcrumbs -->
+  <div class="row">
+    <div class="col-lg-12">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          Transaction
+        </li>
+        <li class="breadcrumb-item active">Add User Dealer</li>
+      </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+  </div>
+  <!-- /.row -->
+
+  <div class="row">
+    <div class="col-lg-12">
+      <h2 class="fw-b m-title m-title2">Add User Dealer</h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12 sv-buttons">
+      <div class="input-group">
+        <input
+          class="form-control search-input"
+          (keyup)="onSearch()"
+          [(ngModel)]="search"
+          (keyup.enter)="filterRecord()"
+          type="text"
+          placeholder="Search"
+        />
+        <span class="input-group-btn">
+          <button
+            class="btn btn-danger btn-sr"
+            type="button"
+            (click)="filterRecord()"
+          >
+            <i class="fa fa-search"></i>
+          </button>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="userType == 1">
+    <div class="col-lg-12 sv-buttons">
+      <!-- <button type="button" class="btn btn-danger" data-toggle="collapse" data-target="#addItems">Add New Items</button> -->
+      <button
+        type="button"
+        class="btn btn-danger addNew"
+        (click)="addPanelShow()"
+      >
+        Add New User Dealer
+      </button>
+      <br />
+      <br />
+      <app-user-dealer-add
+        *ngIf="showAddPanel"
+        (hidePanelAdd)="addPanelShow()"
+        (updatePage)="reloadRecord($event)"
+      ></app-user-dealer-add>
+    </div>
+  </div>
+
+  <div class="alert alert-success" style="text-align: center" *ngIf="successMessage">
+    <p>  {{ successMessage }} </p>
+</div>
+
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <div class="row">
+            <div class="col-md-6">
+              <p class="search_status">
+                <b> {{ totalRecordMessage }} </b> {{ pageRecordMessage }}
+              </p>
+            </div>
+            <div class="col-md-6">
+              <div class="text-right">
+                <input
+                  type="button"
+                  name=""
+                  class="btn btn-danger"
+                  value="Download List"
+                  *ngIf="userList.length != 0"
+                  (click)="downloadUserList()"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel-body">
+          <div class="table-responsive table-bordered">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>User Name</th>
+                  <th>Full Name</th>
+                  <th>Last Login</th>
+        
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let user of userList">
+                  <td>{{ user.userName }}</td>
+                  <td>{{ user.fullName }}</td>
+                  <td>{{ user.lastLogin | date: "medium" }}</td>
+                  <td>
+                    <button
+                      type="button"
+                      class="btn btn-danger"
+                      data-toggle="modal"
+                      data-target="#update_modal"
+                      (click)="onBtnUpdateClick(user)"
+                    >
+                      Update
+                    </button>
+                  </td>
+                  
+                  <td>
+                    <button 
+                      *ngIf="userType == 1" 
+                      type="button" 
+                      class="btn btn-danger col-md-10" 
+                      data-toggle="modal" 
+                      data-target="#saveModal"
+                      (click)="onBtnUpdateClick(user)"
+                    >                         
+                      {{user.isActive == true ? "Deactivate" : "Activate" }}
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <app-pager
+        [module]="module"
+        (displayPageList)="getUsers($event)"
+      ></app-pager>
+
+      <div class="row">
+        <div class="col-md-12 btn-con6">
+          <input
+            type="submit"
+            name=""
+            class="btn btn-danger"
+            value="Download List"
+            *ngIf="userList.length != 0"
+            (click)="downloadUserList()"
+          />
+        </div>
+      </div>
+    </div>
+    <!-- col-md-12 -->
+  </div>
+
+    <div class="modal fade" id="saveModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button"  class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                  <h4 class="modal-title" id="myModalLabel">Save</h4>
+                  
+              </div>
+              <div class="modal-body">
+                  <h5 class="modal-text">Are you sure you want to proceed?</h5>
+              </div>
+              <div class="modal-footer">
+                  <input type="submit" (click)="onBtnUpdateStatus(null)" class="btn btn-danger" value="Save">
+                  <button data-dismiss="modal"  class="btn btn-danger btn-r">Cancel</button>
+              </div>
+          </div>
+          <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+
+  <!-- modal -->
+  <div class="row">
+    <!-- details modal -->
+    <app-user-dealer-update
+      [id]="selectedId"
+      [username]="selectedUsername"
+      [storesHandled]="storesHandled"
+      [isActive]="isActive"
+      [updateUserForm]="updateForm"
+      (updatePage)="reloadRecord($event)"
+    ></app-user-dealer-update>
+  </div>
+</div>

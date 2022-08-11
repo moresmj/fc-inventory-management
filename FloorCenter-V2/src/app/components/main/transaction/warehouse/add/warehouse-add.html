@@ -1,0 +1,79 @@
+<div id="addItems" class="add_new_items">
+
+    <form [formGroup]="warehouseForm" (ngSubmit)="addWare()">
+
+        <div class="row">
+                <!--<div *ngIf="(warehouseForm.controls.code.dirty || warehouseForm.controls.code.touched) && warehouseForm.controls.code.invalid" class="alert alert-danger errMess">
+                                                         Warehouse code is required
+                                                            </div>
+                                                                <div *ngIf="(warehouseForm.controls.address.dirty || warehouseForm.controls.address.touched) && warehouseForm.controls.address.invalid" class="alert alert-danger">
+                                                                    </div>
+                                                         Warehouse address is required
+                                                            </div>-->
+
+                <div class="col-md-12">
+                    <div *ngIf="statusMessage" class="alert alert-success text-center"> {{statusMessage}}</div>
+                    <ul *ngFor="let err of errorMessage">
+                        <div class="alert alert-danger">
+                            {{err}}
+                        </div>
+                    </ul>
+                </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-5">
+                <div class="form-group row">
+                    <label for="" class="col-sm-5 col-form-label sa-input">Warehouse Code<span class="ic-red">*</span>:</label>
+                    <div class="col-sm-7">
+                        <input class="form-control" type="text" minlength="2" maxlength="50" formControlName="code" (input)="onChange($event.target.value)">
+                        <show-errors [control]="warehouseForm.controls.code"></show-errors>
+
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    <label for="" class="col-sm-5 col-form-label sa-input">Warehouse Name<span class="ic-red">*</span>:</label>
+                    <div class="col-sm-7">
+                        <input class="form-control" type="text" maxlength="50" formControlName="name" (input)="onChange($event.target.value)">
+                        <show-errors [control]="warehouseForm.controls.name"></show-errors>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-7">
+                <div class="form-group row">
+                    <label for="" class="col-sm-5 col-form-label sa-input">Address:</label>
+                    <div class="col-sm-7">
+                        <input class="form-control" type="text"  maxlength="50"  formControlName="address" (input)="onChange($event.target.value)">
+                        <show-errors [control]="warehouseForm.controls.address"></show-errors>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="" class="col-sm-5 col-form-label sa-input">Contact No.<span class="ic-red">*</span>:</label>
+                    <div class="col-sm-7">
+                        <input class="form-control" type="text"  maxlength="10" formControlName="contactNumber" (input)="onChange($event.target.value)" contact >
+                        <show-errors [control]="warehouseForm.controls.contactNumber"></show-errors>
+                    </div>
+                </div>
+                
+            </div>
+
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="btn-con6">
+                    <input type="submit" name="" class="btn btn-danger" value="Save" [disabled]="!warehouseForm.valid">
+                    <button type="button" class="btn btn-danger btn-r" id="cancel" (click)="cancelAdd()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+</div>

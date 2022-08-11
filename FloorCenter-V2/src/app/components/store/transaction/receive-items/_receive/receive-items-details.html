@@ -1,0 +1,229 @@
+<div class="container-fluid">
+    <!-- breadcrumbs -->
+    <div class="row">
+        <div class="col-lg-12">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">Transactions</li>
+                <li class="breadcrumb-item">
+                                    Receive
+                </li>
+                <li class="breadcrumb-item">
+                    <a routerLink="/Store/receive-items"> Orders</a>
+                </li>
+                <li class="breadcrumb-item active">Receive Details</li>
+            </ol>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+
+    <div class="row">
+        <div class="col-lg-12">
+            <h2 class="fw-b m-title m-title2">Receive Details</h2>
+        </div>
+    </div>
+    <form *ngIf="receiveDetails" [formGroup]="updateForm" (ngSubmit)="onSubmit()" (keydown.enter)="$event.preventDefault()">
+
+        <div class="line2">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="btn-con6">
+                        <input type="button" name="" class="btn btn-danger" *ngIf="showSaveBtn" [disabled]="updateForm.status == 'INVALID'" value="Save" data-toggle="modal" data-target="#saveModal">
+                        <a routerLink="/Store/receive-items" (click)="onCancel()"   class="btn btn-danger btn-r">Cancel</a>
+                    </div>
+                </div>
+            </div>
+            <div class="alert alert-danger" style="text-align: center" *ngIf="errorMessage">
+                <p *ngFor="let err of errorMessage"> {{ err }} </p>
+            </div>
+            <div class="alert alert-success" style="text-align: center" *ngIf="successMessage">
+                <p>  {{ successMessage }} </p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="form-group row">
+                    <label for="" class="col-sm-4 col-form-label sa-input">PO No.:</label>
+                    <div class="col-sm-7">
+                        <p class="sa-input"> {{ receiveDetails.poNumber }} </p>
+                    </div>
+                </div>
+                <div class="form-group row" *ngIf="!receiveDetails.isVendor">
+                    <ng-container *ngIf="receiveDetails.orderType != 2 && receiveDetails.deliveryType != 3">
+
+                    
+                    <label for="" class="col-sm-4 col-form-label sa-input">DR No.:</label>
+                    <div class="col-sm-7">
+                        <p class="sa-input"> {{ deliveryDetails.drNumber }}  </p>
+                    </div>
+                    </ng-container>
+                </div>
+                <div class="form-group row" *ngIf="receiveDetails.isVendor">
+                  <label for="" class="col-sm-4 col-form-label sa-input">DR No.<span class="ic-red">*</span>:</label>
+                  <div class="col-sm-7">
+                    <p class="sa-input"> <input type="text" class="form-control" formControlName="DRNumber">
+                    <show-errors [control]="updateForm.controls.DRNumber"></show-errors> </p>
+                  </div>
+                </div>
+                <div class="form-group row" *ngIf="receiveDetails.isTransferShowroomPickup">
+                    <label for="" class="col-sm-4 col-form-label sa-input">{{ receiveDetails.transferHeader }}</label>
+                    <div class="col-sm-7">
+                        <p class="sa-input"> {{ receiveDetails.isInterBranch ? receiveDetails.orNumber : receiveDetails.whdrNumber }}  </p>
+                    </div>
+                </div>
+                <div class="form-group row" *ngIf="!receiveDetails.isTransferShowroomPickup">
+                    <label for="" class="col-sm-4 col-form-label sa-input">WHDR No.:</label>
+                    <div class="col-sm-7">
+                        <p class="sa-input"> {{receiveDetails.whdrNumber}}  </p>
+                    </div>
+                </div>
+                <!-- <div class="form-group row">
+                    <label for="example-text-input" class="col-sm-4 col-form-label sa-input">Return:</label>
+                    <div class="input-group date col-sm-7" id="datetimepicker">
+                        <label class="checkbox-inline">
+                        <input type="checkbox" id="s_return">
+                    </label>
+                    </div>
+                </div> -->
+            </div>
+
+            <div class="col-lg-4">
+                <div class="form-group row">
+                    <label for="example-text-input" class="col-sm-4 col-form-label sa-input">PO Date:</label>
+                    <div class="input-group date col-sm-7" id="datetimepicker">
+                        <p class="sa-input"> {{ receiveDetails.poDate | date : "mediumDate" }} </p>
+                    </div>
+                </div>
+                <div class="form-group row" *ngIf="!receiveDetails.isVendor">
+                    <label for="example-text-input" class="col-sm-4 col-form-label sa-input">DR Date:</label>
+                    <div class="input-group date col-sm-7" id="datetimepicker">
+                        <p class="sa-input"> {{ deliveryDetails.approvedDeliveryDate | date : "mediumDate" }} </p>
+                    </div>
+                </div>
+
+              <div class="form-group row"  *ngIf="receiveDetails.isVendor">
+                <label for="example-text-input" class="col-sm-4 col-form-label sa-input">DR Date<span class="ic-red" *ngIf="receiveDetails.isVendor">*</span>:</label>
+                <div class="input-group date" id="datetimepicker">
+                  <input type="date" class="form-control" id="" formControlName="DeliveryDate">
+                  <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                  </span>
+                </div><show-errors [control]="updateForm.controls.DeliveryDate"></show-errors>
+              </div>
+            </div>
+
+
+
+            <!-- <div class="col-lg-4">
+                <div class="form-group row">
+                    <label for="example-text-input" class="col-sm-4 col-form-label sa-input">Received Date:</label>
+                    <div class="input-group date col-sm-7" id="datetimepicker">
+                        <input type="text" class="form-control" id="poDate">
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+            </div> -->
+            <!-- <div class="col-lg-4">
+                <div class="form-group row">
+                    <label for="" class="col-sm-4 col-form-label sa-input">Checked By:</label>
+                    <div class="col-sm-7 input_select">
+                        <input type="text" class="form-control" name="" id="po_num">
+                    </div>
+                </div>
+            </div> -->
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <!-- Item List -->
+                        <!-- <div class="form-group row form_code">
+                            <label for="" class="col-sm-2 col-form-label sa-input">Enter Serial No.<span class="ic-red">*</span>:</label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control" name="">
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="button" name="" class="btn btn-danger" value="Update">
+                            </div>
+                        </div>  -->
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Item Code</th>
+                                        <th>Serial</th>
+                                        <th>Item Name</th>
+                                        <th>Specification</th>
+                                        <th>Tonality</th>
+                                        <th>Qty</th>
+                                        <th>Received Qty <span class="ic-red">*</span></th>
+                                        <th>Remarks</th>
+                                    </tr>
+                                </thead>
+                                <tbody formArrayName="showroomDeliveries">
+                                    <tr *ngFor="let item of showroomDeliveries.controls; let i=index"  [formGroupName]="i">
+                                        <td> {{ itemDetails[i].item.code }} </td>
+                                        <td> {{ itemDetails[i].item.serialNumber }} </td>
+                                        <td> {{ itemDetails[i].item.name }}</td>
+                                        <td> {{ itemDetails[i].item.size?.name }}</td>
+                                        <!-- <td> {{ itemDetails[i].item.tonality }} </td> -->
+                                        <td> {{ itemDetails[i].isTonalityAny == true ?  "ANY /" + itemDetails[i].item.tonality  : itemDetails[i].item.tonality }} </td> 
+                                        <td> {{ itemDetails[i].quantity }} </td>
+                                        <td>
+                                            <input type="number" class="qty-input form-control" onlyNumber min="0" formControlName="deliveredQuantity">
+                                            <show-errors [control]="item.controls.deliveredQuantity"></show-errors>
+                                        </td>
+                                        <td>
+                                            <textarea class="form-control" rows="1" formControlName="remarks"></textarea>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="line2">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="btn-con6">
+                        <input type="button" name="" class="btn btn-danger" *ngIf="showSaveBtn" [disabled]="updateForm.status == 'INVALID'" value="Save" data-toggle="modal" data-target="#saveModal">
+                        <a routerLink="/Store/receive-items" (click)="onCancel()"  class="btn btn-danger btn-r">Cancel</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="saveModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="myModalLabel">Save</h4>
+
+                    </div>
+                    <div class="modal-body">
+                        <h5 class="modal-text">Are you sure you want to proceed?</h5>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" (click)="onCancel()" [disabled]="updateForm.status == 'INVALID'"  class="btn btn-danger" value="Save">
+                        <button data-dismiss="modal"  class="btn btn-danger btn-r">Cancel</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+
+    </form>
+
+
+</div>
+<!-- /.container-fluid -->

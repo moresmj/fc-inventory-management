@@ -1,0 +1,139 @@
+<div id="addItems" class="add_new_items">
+    <form [formGroup]="newForm" (ngSubmit)="onSubmit()">
+    <div class="row">
+        <div>
+            <div class="alert alert-danger" style="text-align: center" *ngIf="errorMessage">
+                <p *ngFor="let err of errorMessage"> {{ err }} </p>
+            </div>
+            <div class="alert alert-success" style="text-align: center" *ngIf="successMessage">
+                <p>  {{ successMessage }} </p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group row">
+                <label for="" class="col-sm-4 col-form-label sa-input">Serial No.<span class="ic-red">*</span>:</label>
+                <div class="col-sm-8">
+                    <input onlyNumber  class="form-control" type="text" formControlName="SerialNumber" maxlength="9">
+                    <show-errors [control]="newForm.controls.SerialNumber"></show-errors>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="" class="col-sm-4 col-form-label sa-input">Item Code<span class="ic-red">*</span>:</label>
+                <div class="col-sm-8">
+                    <input class="form-control" maxlength="50" type="text" formControlName="Code">
+                    <show-errors [control]="newForm.controls.Code"></show-errors>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="" class="col-sm-4 col-form-label sa-input">Item Name<span class="ic-red">*</span>:</label>
+                <div class="col-sm-8">
+                    <input class="form-control" type="text" formControlName="Name">
+                    <show-errors [control]="newForm.controls.Name"></show-errors>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="" class="col-sm-4 col-form-label sa-input">SRP<span class="ic-red">*</span>:</label>
+                <div class="col-sm-8">
+                    <input price class="form-control" type="text" formControlName="SRP" maxlength="16">
+                    <show-errors [control]="newForm.controls.SRP"></show-errors>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="" class="col-sm-4 col-form-label sa-input">Cost<span class="ic-red">*</span>:</label>
+                <div class="col-sm-8">
+                    <input price class="form-control" type="text" formControlName="Cost" maxlength="16">
+                    <show-errors [control]="newForm.controls.Cost"></show-errors>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="form-group row">
+                <label for="" class="col-sm-4 col-form-label sa-input">Tonality<span class="ic-red">*</span>:</label>
+                <div class="col-sm-8">
+                    <input class="form-control" type="text" maxlength="50" formControlName="Tonality">
+                    <show-errors [control]="newForm.controls.Tonality"></show-errors>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="" class="col-sm-4 col-form-label sa-input">Size<span class="ic-red">*</span>:</label>
+                <div class="col-sm-8">
+                    <select class="form-control add_item_m" formControlName="SizeId">
+                        <option> </option>
+                        <option *ngFor="let opt of sizeList" [value]="opt.id"> {{ opt.name }} </option>
+                    </select>
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#add_size" (click)="onAddSize()"><i class="fa fa-plus fa-fw"></i></button>
+                    <show-errors [control]="newForm.controls.SizeId"></show-errors>
+                </div>
+                   
+            </div>
+            <div class="form-group row">
+                <label for="" class="col-sm-4 col-form-label sa-input">Image:</label>
+                <div class="col-sm-8">
+                    <div class="input-group">
+                        <label class="input-group-btn">
+                            <span class="btn btn-default">
+                                Select files<input type="file" #fileInput (change)="onFileChange($event)" style="display: none;" multiple="">
+                            </span>
+                        </label>
+                        <input class="form-control" type="text" formControlName="ImageName" readonly>
+                    </div>
+                    <p class="alert alert-danger" *ngIf="imageErrorMessage">  {{ imageErrorMessage }} </p>
+                    <div class="image-con" *ngIf="newForm.controls.ImageName.value">
+                        <div class="mpic_con4">
+                            <!-- //image file here -->
+                            <img [src]='imagePath'>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+              <label for="" class="col-sm-4 col-form-label sa-input">Qty/Box<span class="ic-red">*</span>:</label>
+              <div class="col-sm-8">
+                <input onlyNumber class="form-control" type="text" min="1" formControlName="QtyPerBox">
+                <show-errors [control]="newForm.controls.QtyPerBox"></show-errors>
+              </div>
+          </div>   
+        </div>
+
+        <div class="col-md-4">
+            <div class="form-group row">
+                <label for="" class="col-sm-4 col-form-label sa-input">Description:</label>
+                <div class="col-sm-8">
+                    <input class="form-control" type="text" formControlName="Description">
+                    <show-errors [control]="newForm.controls.Description"></show-errors>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="" class="col-sm-4 col-form-label sa-input">Remarks:</label>
+                <div class="col-sm-8">
+                    <textarea class="form-control" rows="3" formControlName="Remarks"></textarea>
+                    <show-errors [control]="newForm.controls.Remarks"></show-errors>
+                </div>
+            </div>
+            <div class="form-group row">
+              <label for="" class="col-sm-4 col-form-label sa-input">Box/Pallet<span class="ic-red">*</span>:</label>
+              <div class="col-sm-8">
+                <input onlyNumber class="form-control" type="text" min="1" formControlName="BoxPerPallet">
+                <show-errors [control]="newForm.controls.BoxPerPallet"></show-errors>
+              </div>
+            </div>   
+        </div>
+
+    </div>
+                                    
+    <div class="row">
+        <div class="col-md-12">
+            <div class="btn-con6">
+                <input type="submit" [disabled]="newForm.status == 'INVALID' || isUploading" name="" class="btn btn-danger" value="Save">
+                <button type="button" class="btn btn-danger btn-r" id="cancel" (click)="cancelAdd()">Cancel</button>
+            </div>
+        </div>
+    </div>
+    </form>
+
+</div>
+
+<app-add-size (updateSize)="load()" [newSizeForm]="newSizeForm"></app-add-size>
+
